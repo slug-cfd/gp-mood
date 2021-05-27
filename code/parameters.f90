@@ -1,0 +1,70 @@
+module parameters
+
+  use constants
+  ! Copy it as paramters.f90 in the main file
+
+  implicit none
+
+  ! Output files parameter
+  character(100) :: file='./plotter/Mach800/Mach800_test_'
+  character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
+
+  ! Time integration
+  real(PR), parameter :: CFL  =  0.0001
+  integer , parameter :: time_method  = SSP_RK3
+  logical , parameter :: dt_reduction = .false.
+
+  integer,  parameter :: space_method   = GP_MOOD
+  logical, parameter ::  cross_stencil  = .false.
+  logical, parameter ::  sphere_stencil = .true.
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+
+
+  ! flux method
+  integer, parameter :: numFlux = HLLC
+
+
+
+  integer :: dim = 2
+
+  ! Mesh parameter
+  integer , parameter :: ngc = 4 ! Number of ghost cells
+  integer,  parameter :: lf = 100 ! Number of cell in the x direction
+  integer,  parameter :: nf = 150  ! Number of cell in the y direction
+
+
+  ! IC, BC and domain setup
+  integer, parameter  :: IC_type = Mach800
+  real(PR), parameter :: tmax = 0.02
+  real(16), parameter :: Lx_16 = 1.0 !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
+
+
+  integer , parameter :: radius = (Mord -1)/2
+  integer , parameter :: sz_sphere = (2*Mord - 1 + 4*(radius - 1)**2) !25
+  integer , parameter :: sz_cross = 2*Mord-1
+
+
+
+  ! MOOD Parameters, leave to true
+  logical, save :: DMP
+  logical , parameter :: U2         = .true.
+  logical , parameter :: U2_tol     = .true.
+
+  ! Secondary variables , don't change
+  real(16), parameter :: dx_16 = Lx_16/lf, dy_16 = Ly_16/nf
+  integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
+  real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
+
+  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell !12*(1./100)!/ell
+
+
+
+!!$  if ((space_method == FOG) .and. (ngp .ne. 1)) then
+!!$     print*, 'FOG should use ngp = 1'
+!!$     stop
+!!$  endif
+  
+end module parameters
