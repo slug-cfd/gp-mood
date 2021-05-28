@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/DblMach1600_GP5th_2quad_RK3_cfl0.8_HLLC_600_'
+  character(100) :: file='./plotter/Mach800/DblMach1600_GP5th_2quad_RK3_cfl0.8_HLLC_300_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
@@ -33,8 +33,8 @@ module parameters
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 600 ! Number of cell in the x direction
-  integer,  parameter :: nf = 600  ! Number of cell in the y direction
+  integer,  parameter :: lf = 300 ! Number of cell in the x direction
+  integer,  parameter :: nf = 300  ! Number of cell in the y direction
 
 
   ! IC, BC and domain setup
