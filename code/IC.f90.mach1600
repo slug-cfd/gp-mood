@@ -180,8 +180,10 @@ contains
 
              ! DL -- this is a hack that seems to stabilize the simulation but I am not sure why;
              !    -- initialize the first interior cells with the jet profile
-             if ((abs(mesh_x(l) - 0.75) .le. 0.05) .and. (mesh_y(n) < dy) .or. (1.5 - mesh_y(n) < dy)) then
+             if ((abs(mesh_x(l) - 0.75) .le. 0.05) .and. (mesh_y(n) < dy)) then
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 1600.0_PR, 1.0_PR/))
+             elseif ((abs(mesh_x(l) - 0.75) .le. 0.05) .and. (1.5 - mesh_y(n) < dy)) then
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -1600.0_PR, 1.0_PR/))
              endif
 
              
