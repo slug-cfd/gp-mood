@@ -10,8 +10,8 @@ module parameters
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.0001
-  integer , parameter :: time_method  = SSP_RK3
+  real(PR), parameter :: CFL  =  0.4
+  integer , parameter :: time_method  = SSP_RK2
   logical , parameter :: dt_reduction = .false.
 
   integer,  parameter :: space_method   = GP_MOOD
@@ -30,14 +30,14 @@ module parameters
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 100 ! Number of cell in the x direction
-  integer,  parameter :: nf = 150  ! Number of cell in the y direction
+  integer,  parameter :: lf = 300 ! Number of cell in the x direction
+  integer,  parameter :: nf = 300  ! Number of cell in the y direction
 
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Mach800
   real(PR), parameter :: tmax = 0.02
-  real(16), parameter :: Lx_16 = 1.0 !Lenght of the domain in the x-direction
+  real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
 

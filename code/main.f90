@@ -11,7 +11,7 @@ program main
 
   implicit none
 
-  Real(PR) :: tic, tac, dt_sim
+  Real(PR) :: tic, tac, dt_sim, cfl_dt
 
   if (cross_stencil .and. sphere_stencil) then
      print*, 'both shape selected'
@@ -181,33 +181,41 @@ program main
      dtfinal = tmax - t
 
      call Boundary_C(U)
-     call Setdt(U, niter)    
+     call Setdt(U, niter)
+     !print*,'CFL dt =', dt
+     cfl_dt = dt
      call time_stepping(U, Ur)
 
      if (dt_sim < dt) then
         t = t + dt_sim
         dt_sim = 2.*dt_sim
+        !force small dt
+        dt = dt_sim
      else
         t =  t + dt
      endif
 
      U = Ur
-     !if ((mod(niter,10) == 0) .or.(niter == 1)) then
-        print*,'nstep = ', niter, '| time = ',t,'| dt=', dt, ' |' , real(100*(tmax-t)/tmax,4),'% remaining'
+     if ((mod(niter,10) == 0) .or.(niter == 1)) then
+        if (cfl_dt - dt > 0.) then
+           print*,'nstep = ', niter, '|time = ',t,'|(dt, cfl_dt)=', dt,cfl_dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
+        else
+           print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
+        endif
         print*,' % of detected cell at the last iteration = ', real(count_FE*100/(nf*lf),4)
         !! DL -- dump outputs regularly, say, every 100 step
-     !end if
+     end if
 
 
      !print*,niter, mod(niter,100)
-     !if (mod(niter,500) == 0) then
+     if (mod(niter,100) == 0) then
         print*,''
-        print*,'==================================='
-        print*,'   a new output has been written'
-        print*,'==================================='
+        print*,'======================================================================'
+        print*,'   a new output has been written, file number=',niter
+        print*,'======================================================================'
         print*,''
         call write_output(niter)
-     !endif
+     endif
 
   end do
 

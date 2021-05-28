@@ -102,6 +102,7 @@ contains
 
           else
              dt = min(dt,  min( dx/(abs(vx)+c), dy/(abs(vy)+c) ))
+             !print*,'printing sound speed =',c
 
           end if
 

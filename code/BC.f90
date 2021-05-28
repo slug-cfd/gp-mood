@@ -137,18 +137,7 @@ contains
        ! [0,1]x[0,1] domain with the strong inflow BC where
        ! 0.45 <= x <= 0.55 @y=0, where the jet density = 1.4, jet velocity = 800
 
-       !bottom = user
-       do l = 1-ngc, lf+ngc
-          ! bottom
-          do n = 1-ngc,0
-             if ((mesh_x(l) .ge. 0.45) .and. (mesh_x(l) .le. 0.55)) then            
-                U(:,l,n) = primitive_to_conservative((/1.4 , 0.0, 800.0, 1.0/))
-             else
-                ! outflow elsewhere
-                U(:,l,n) = U(:,l,1)
-             endif
-          end do
-       end do
+
 
 
        !right, top, left = outflow
@@ -171,10 +160,35 @@ contains
              U(:,l,n) = U(:,l,nf)
           end do
 
-!!$          ! Bottom
+!!$          ! Bottom -- user BC
 !!$          do n = 1-ngc,0
-!!$            U(:,l,n) = U(:,l,1)
+!!$             if ((mesh_x(l) .ge. 0.45) .and. (mesh_x(l) .le. 0.55)) then            
+!!$                U(:,l,n) = primitive_to_conservative((/1.4 , 0.0, 800.0, 1.0/))
+!!$                !U(:,l,n) = f_Mach800(mesh_x(l),mesh_y(n))
+!!$             else
+!!$                ! outflow elsewhere
+!!$                U(:,l,n) = U(:,l,1)
+!!$             endif
 !!$          end do
+       end do
+
+       ! bottom = user
+       ! bottom -- do outflow first and fix later
+       do l = 1-ngc, lf+ngc
+          do n = 1-ngc,0
+             ! outflow elsewhere
+             U(:,l,n) = U(:,l,1)
+          enddo
+       enddo
+
+       ! bottom -- fix here
+       do l = 1-ngc, lf+ngc       
+          do n = 1-ngc,0
+             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
+                !print*,mesh_x(l), mesh_y(n)
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+             endif
+          end do
        end do
 
 

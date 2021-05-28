@@ -167,6 +167,11 @@ contains
              ! DL -- note that the grid configuration assumes xmin and ymin are both zero
              U(:,l,n) = primitive_to_conservative((/0.14, 0.0, 0.0, 1.0/))
 
+             ! DL -- this is a hack that seems to stabilize the simulation but I am not sure why;
+             !    -- initialize the first interior cells with the jet profile
+             if ((abs(mesh_x(l) - 0.75) .le. 0.05).and.(mesh_y(n) < dy)) then
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+             endif
 
           else if (IC_TYPE == KH) then
              r1 = (random_normal())*0.01
@@ -190,6 +195,18 @@ contains
     end do
   end subroutine InitialCdt
 
+
+  function f_Mach800(x,y)result(r)
+    real(PR), intent(in) :: x, y
+    real(PR),dimension(4):: r
+
+    if ((x<=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
+    if ((x>=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
+    if ((x<=4./5).and.(y>=4./5)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
+    if ((x>=4./5).and.(y>=4./5)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
+  end function f_Mach800
+
+  
   function f_RP_2D_6(x,y)result(r)
     real(PR), intent(in) :: x, y
     real(PR),dimension(4):: r
