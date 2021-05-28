@@ -42,7 +42,7 @@ module constants
   real, parameter, dimension(9)  :: D2O8 = (/-1./560, 8./315, -1./5, 8./5, -205./72, 8./5, -1./5, 8./315, -1./560/)
 
 
-  !COnstants for SSP_RK4
+  !Constants for SSP_RK4
   real(PR) :: a10 = 1.               ,                          c1 = 0.391752226571890
   real(PR) :: a20 = 0.444370493651235, a21 = 0.555629506348765, c2 = 0.368410593050371
   real(PR) :: a30 = 0.620101851488403, a32 = 0.379898148511597, c3 = 0.251891774271694
@@ -55,17 +55,6 @@ module constants
   integer :: kM=1, kCloseNrm=2, kCloseTrans=3, kFarTrans = 4, kFarNrm = 5, kCloseNrm2 = 6, kCloseTrans2=7, kFarTrans2=8, kFarNrm2=9
 
   real(PR), dimension(5) :: o3_coef   = (/15./18, 1./3, 1./(4*sqrt(3.)), -1./(4*sqrt(3.)), -1./6 /)
-
-
-
-
-
-
-
-
-
-
-
 
 
 end module

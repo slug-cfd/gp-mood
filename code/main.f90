@@ -12,6 +12,8 @@ program main
   implicit none
 
   Real(PR) :: tic, tac, dt_sim, cfl_dt
+  integer  :: IO_freqCounter = 1
+  
 
   if (cross_stencil .and. sphere_stencil) then
      print*, 'both shape selected'
@@ -197,7 +199,7 @@ program main
 
      U = Ur
      if ((mod(niter,10) == 0) .or.(niter == 1)) then
-        if (cfl_dt - dt > 0.) then
+        if (abs(cfl_dt - dt) > 0.) then
            print*,'nstep = ', niter, '|time = ',t,'|(dt, cfl_dt)=', dt,cfl_dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
         else
            print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
@@ -208,13 +210,29 @@ program main
 
 
      !print*,niter, mod(niter,100)
-     if (mod(niter,100) == 0) then
+     ! dump output files based on the output frequency step
+     if ((IO_freqStep > 0) .and. (mod(niter,IO_freqStep) == 0)) then
         print*,''
         print*,'======================================================================'
         print*,'   a new output has been written, file number=',niter
         print*,'======================================================================'
         print*,''
         call write_output(niter)
+     endif
+
+     ! dump output files based on the output frequency time interval
+     if (IO_freqTime > 0.) then
+        if ((t     -real(IO_freqCounter)*IO_freqTime < 0.) .and. &
+            (t+dt - real(IO_freqCounter)*IO_freqTime > 0.)) then
+
+           IO_freqCounter = IO_freqCounter + 1
+           print*,''
+           print*,'======================================================================'
+           print*,'   a new output has been written, file number=',niter
+           print*,'======================================================================'
+           print*,''
+           call write_output(niter)           
+        endif
      endif
 
   end do

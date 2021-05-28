@@ -10,13 +10,13 @@ module parameters
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.4
+  real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method  = SSP_RK2
   logical , parameter :: dt_reduction = .false.
 
-  integer,  parameter :: space_method   = GP_MOOD
-  logical, parameter ::  cross_stencil  = .false.
-  logical, parameter ::  sphere_stencil = .true.
+  integer, parameter :: space_method   = GP_MOOD
+  logical, parameter :: cross_stencil  = .false.
+  logical, parameter :: sphere_stencil = .true.
   integer, parameter :: Mord= 3  ! Order
   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
@@ -24,6 +24,9 @@ module parameters
   ! flux method
   integer, parameter :: numFlux = HLLC
 
+  ! IO parameter
+  integer, parameter :: IO_freqStep = -1    ! (put a positive number to use, e.g., 500)
+  real(PR), parameter:: IO_freqTime = 1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
