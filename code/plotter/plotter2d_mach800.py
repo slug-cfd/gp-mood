@@ -22,8 +22,8 @@ class data2d:
         self.x   = np.reshape(self.raw[:, 0], (self.xbins, self.ybins))
         self.y   = np.reshape(self.raw[:, 1], (self.xbins, self.ybins))
         self.rho = np.reshape(self.raw[:, 2], (self.xbins, self.ybins))
-        self.mx  = np.reshape(self.raw[:, 3], (self.xbins, self.ybins))
-        self.my  = np.reshape(self.raw[:, 4], (self.xbins, self.ybins))
+        self.vx  = np.reshape(self.raw[:, 3], (self.xbins, self.ybins))
+        self.vy  = np.reshape(self.raw[:, 4], (self.xbins, self.ybins))
         self.p   = np.reshape(self.raw[:, 5], (self.xbins, self.ybins))
 
 
@@ -32,10 +32,10 @@ class data2d:
 
 baseName = 'Mach800_test_final'
 #baseName = 'Mach800/Mach800_2quad_rk2_3rdDivvDMP_200_final'
-dataNumb = '100060'
+dataNumb = '100100'
 dataName = baseName+'_'+dataNumb+'.dat'
 plotName = baseName+'_'+dataNumb+'.png'
-        
+
 d2 = data2d(dataName)
 #d2 = np.transpose(d2)
 #dataFile = "../output/results/2DRP_conf3/o5/divv_3quad_rk4_final.dat"
@@ -94,16 +94,17 @@ def edge_grid(X, Y):
 xi, yi = edge_grid(d2.x, d2.y)
 
 # now, redraw a figure
+plotVar = d2.vy
 fig1 = plt.figure(figsize=(4,3), dpi=600)
 ax = fig1.add_subplot(1, 1, 1)
-ax.pcolormesh(xi, yi, d2.rho, cmap='jet')   # use 'jet' colormap
-fig1.colorbar(ax.pcolormesh(xi, yi, d2.rho, cmap='jet') )
+ax.pcolormesh(xi, yi, plotVar, cmap='jet')   # use 'jet' colormap
+fig1.colorbar(ax.pcolormesh(xi, yi, plotVar, cmap='jet') )
 
 # draw a contour lines also
 levels = np.linspace(0.01, 24, 40)   # this is a 1d array with 40 elements, ranging from 0.1 to 1.8.
                                      # will be used for specifying contours
 extent = (np.amin(d2.x), np.amax(d2.x), np.amin(d2.y), np.amax(d2.y))  # this tupple will be used for specifying x, y axis for contours
-ax.contour(d2.rho, levels=levels, extent=extent, linewidths=0.2, colors='k')  # 40 contours of 0.2 width, black lines
+#ax.contour(d2.rho, levels=levels, extent=extent, linewidths=0.2, colors='k')  # 40 contours of 0.2 width, black lines
 ax.set_aspect(aspect=1)
 
 plt.show()
