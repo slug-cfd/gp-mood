@@ -212,7 +212,7 @@ contains
           do n = nf+1, nf+ngc
              if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
-                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 1600.0_PR, 1.0_PR/))
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -1600.0_PR, 1.0_PR/))
              endif
           end do
        end do
