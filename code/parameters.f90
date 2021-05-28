@@ -6,19 +6,19 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/Mach800_test_'
+  character(100) :: file='./plotter/Mach800/Mach1600_GP5th_3quad_RK3_cfl0.8_HLLC_300_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method  = SSP_RK2
+  integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 3  ! Order
-  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 5  ! Order
+  integer, parameter :: ngp = 3  ! Number of gaussian quadrature points per edges
 
 
   ! flux method
@@ -26,7 +26,7 @@ module parameters
 
   ! IO parameter
   integer, parameter :: IO_freqStep = -1    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 1.e-3 ! (this is the default way to dump output files; put a positive number to use)
+  real(PR), parameter:: IO_freqTime = 5.e-4 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
@@ -39,7 +39,7 @@ module parameters
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Mach800
-  real(PR), parameter :: tmax = 0.02
+  real(PR), parameter :: tmax = 0.001
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Mach800_BC! Boundary conditions

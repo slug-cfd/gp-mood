@@ -247,7 +247,15 @@ program main
   call write_slice(dir_y)
   call write_slice(dir_xy)
   call write_slice(dir_yx)
+
+
+  print*,''
+  print*,'======================================================================'
+  print*,'   a new output has been written, file number=',niter
+  print*,'======================================================================'
+  print*,''
   call write_output(niter)
+  
   call error()
 
 

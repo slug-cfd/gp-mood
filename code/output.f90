@@ -21,9 +21,9 @@ contains
     if (dir == dir_x) then
        open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
        do l = 1, lf
-          uprim = conservative_to_primitive(U(:,l,nf/2))
+          uprim = conservative_to_primitive(U(1:4,l,nf/2))
 
-          write(50,*)mesh_x(l),U(:,l,nf/2), uprim(4)/(uprim(1)*(y-1.))
+          write(50,*)mesh_x(l),U(1:4,l,nf/2), uprim(4)/(uprim(1)*(y-1.))
 
           !write(50,*)mesh_x(l)-0.5,uprim, uprim(4)/(uprim(1)*(y-1.))
           !wri!te(50,*)mesh_x(l),U(:,l,1)
@@ -72,16 +72,16 @@ contains
 
     do n = 1, nf
        do l = 1,lf
-          Uprim(:,l,n) = conservative_to_primitive(U(:,l,n))
+          Uprim(:,l,n) = conservative_to_primitive(U(1:4,l,n))
        end do
     end do
 
 
     open(50, file = trim(adjustl(file))//'final_'//trim(fileID)//'.dat', form='formatted')
-    write(50,*) 'x','y','rho','ux','uy','p'
+    write(50,*) 'x','y','rho','ux','uy','p','ordr'
     do n = 1, nf
        do l = 1, lf
-          write(50,*) mesh_x(l), mesh_y(n), Uprim(:,l,n)
+          write(50,*) mesh_x(l), mesh_y(n), Uprim(:,l,n), CellGPO(l,n)
 
        end do
     end do
@@ -109,8 +109,8 @@ contains
        do n = 1, nf
           do l = 1, lf
 
-             v = conservative_to_primitive(U(:,l,n))
-             vt=conservative_to_primitive(U(:,n,l))
+             v = conservative_to_primitive(U(1:4,l,n))
+             vt=conservative_to_primitive(U(1:4,n,l))
              write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
 
           end do
@@ -125,8 +125,8 @@ contains
        do n = 1, nf
           do l = 1, lf
 
-             v = conservative_to_primitive(U(:,l,n))
-             vt =conservative_to_primitive(U(:,nf-l+1,lf-n+1))
+             v = conservative_to_primitive(U(1:4,l,n))
+             vt =conservative_to_primitive(U(1:4,nf-l+1,lf-n+1))
              write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
 
           end do

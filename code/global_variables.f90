@@ -3,7 +3,7 @@ module global_variables
   implicit none
 
   ! Solution
-  real(PR), dimension(4,lb:le, nb:ne ), save             :: U = 0., Ur = 0.
+  real(PR), dimension(4,lb:le, nb:ne ), save :: U = 0., Ur = 0.
 
   ! High Riemann order states
   real(PR), dimension(4, iL:iB, ngp, lb:le, nb:ne), save :: Uh = 0.
@@ -22,11 +22,11 @@ module global_variables
 
   !cross GP coefficients
   real(PR),dimension(Mord, sz_cross,iL:iB,ngp), save :: zT
-  real(PR),dimension(Mord, sz_cross), save            :: GP_d2x, GP_d2y
+  real(PR),dimension(Mord, sz_cross), save           :: GP_d2x, GP_d2y
 
   !spherical GP coefficients
   real(PR),dimension(Mord, sz_sphere,iL:iB,ngp), save :: zT_sp
-  real(PR),dimension(Mord, sz_sphere), save            :: GP_d2x_sp, GP_d2y_sp
+  real(PR),dimension(Mord, sz_sphere), save           :: GP_d2x_sp, GP_d2y_sp
 
 
   ! Pol Mood coefficients
@@ -38,8 +38,8 @@ module global_variables
   real(PR),dimension(Mord, sz_cross,iL:iB,ngp), save :: Pol_zT
 
   !GP indices
-  integer, dimension(Mord, sz_cross,2), save          :: ixiy
-  integer, dimension(Mord, sz_sphere,2), save         :: ixiy_sp
+  integer, dimension(Mord, sz_cross,2), save   :: ixiy
+  integer, dimension(Mord, sz_sphere,2), save  :: ixiy_sp
 
 
 

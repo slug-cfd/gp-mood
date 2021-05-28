@@ -55,7 +55,7 @@ contains
                 decrease(l,n) = .true.
              else
 
-                p = pressure(Uout(:,l,n))
+                p = pressure(Uout(1:4,l,n))
 
                 if ((p <= 0.).or.(ISNAN(p))) then
                    decrease(l,n) = .true.
@@ -73,10 +73,10 @@ contains
 
 
                    !! second shock-detector
-                   pL = pressure(Uin(:,l-1,n  ))
-                   pR = pressure(Uin(:,l+1,n  ))
-                   pB = pressure(Uin(:,l,  n-1))
-                   pT = pressure(Uin(:,l,  n+1))
+                   pL = pressure(Uin(1:4,l-1,n  ))
+                   pR = pressure(Uin(1:4,l+1,n  ))
+                   pB = pressure(Uin(1:4,l,  n-1))
+                   pT = pressure(Uin(1:4,l,  n+1))
                    gradP = 0.5*(abs(pR-pL)/min(pL,pR)/dx + abs(pT-pB)/min(pB,pT)/dy)
 
                    !print*,'at cell',l,n,' divV =',divV
@@ -231,11 +231,12 @@ contains
              DetFace_x(l  ,n  ) = .true.
              DetFace_x(l-1,n  ) = .true.
 
-             Uout(:,l  ,n-1) = Uin(:,l  ,n-1)
-             Uout(:,l-1,n  ) = Uin(:,l-1,n  )
-             Uout(:,l  ,n  ) = Uin(:,l  ,n  )
-             Uout(:,l+1,n  ) = Uin(:,l+1,n  )
-             Uout(:,l  ,n+1) = Uin(:,l  ,n+1)
+             ! DL -- solution vector: rho, momx, momy, ener
+             Uout(1:4,l  ,n-1) = Uin(1:4,l  ,n-1)
+             Uout(1:4,l-1,n  ) = Uin(1:4,l-1,n  )
+             Uout(1:4,l  ,n  ) = Uin(1:4,l  ,n  )
+             Uout(1:4,l+1,n  ) = Uin(1:4,l+1,n  )
+             Uout(1:4,l  ,n+1) = Uin(1:4,l  ,n+1)
 
           end IF
 
