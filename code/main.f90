@@ -167,7 +167,7 @@ program main
   print*,'----------------------------------------------------------------------------'
 
   call InitialCdt()
-
+  call Boundary_C(U)
 
   call cpu_time (tic)
 
@@ -178,18 +178,20 @@ program main
 
   dt_sim = min(1.e-10,dt)
 
-  do while (t .lt. tmax)
+  do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
      niter = niter + 1
 
      dtfinal = tmax - t
 
-     call Boundary_C(U)
+
      call Setdt(U, niter)
      !print*,'CFL dt =', dt
      cfl_dt = dt
      call time_stepping(U, Ur)
+     call Boundary_C(U)
 
+     
      if (dt_sim < dt) then
         t = t + dt_sim
         dt_sim = 2.*dt_sim

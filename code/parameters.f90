@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/DblMach1600_GP5th_2quad_RK3_cfl0.8_HLLC_600_'
+  character(100) :: file='./plotter/Mach800/Mach800_test_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
@@ -17,7 +17,7 @@ module parameters
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 5  ! Order
+  integer, parameter :: Mord= 3  ! Order
   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
 
@@ -25,24 +25,25 @@ module parameters
   integer, parameter :: numFlux = HLLC
 
   ! IO parameter
-  integer, parameter :: IO_freqStep = -1    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 5.e-4 ! (this is the default way to dump output files; put a positive number to use)
+  integer, parameter :: IO_freqStep = 1    ! (put a positive number to use, e.g., 500)
+  real(PR), parameter:: IO_freqTime = 2.5e-4 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 600 ! Number of cell in the x direction
-  integer,  parameter :: nf = 600  ! Number of cell in the y direction
+  integer,  parameter :: lf = 300 ! Number of cell in the x direction
+  integer,  parameter :: nf = 300  ! Number of cell in the y direction
 
 
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = DoubleMach800
-  real(PR), parameter :: tmax = 0.001
+  integer, parameter  :: IC_type = Mach800
+  real(PR), parameter :: tmax = 0.0001
+  integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = DoubleMach800_BC! Boundary conditions
+  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
 
 
   integer , parameter :: radius = (Mord -1)/2
