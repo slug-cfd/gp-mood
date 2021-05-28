@@ -173,6 +173,18 @@ contains
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 1600.0_PR, 1.0_PR/))
              endif
 
+          else if (IC_type == DoubleMach800) then ! DL -- added the Mach 800 jet problem
+             ! DL -- input primitive vector = (dens, velx, vely, pres)
+             ! DL -- note that the grid configuration assumes xmin and ymin are both zero
+             U(:,l,n) = primitive_to_conservative((/0.14, 0.0, 0.0, 1.0/))
+
+             ! DL -- this is a hack that seems to stabilize the simulation but I am not sure why;
+             !    -- initialize the first interior cells with the jet profile
+             if ((abs(mesh_x(l) - 0.75) .le. 0.05) .and. (mesh_y(n) < dy) .or. (1.5 - mesh_y(n) < dy)) then
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 1600.0_PR, 1.0_PR/))
+             endif
+
+             
           else if (IC_TYPE == KH) then
              r1 = (random_normal())*0.01
              r2 = (random_normal())*0.01
