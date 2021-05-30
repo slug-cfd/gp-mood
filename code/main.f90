@@ -29,7 +29,7 @@ program main
   print*, 'Lx                      =', Real(Lx,4)
   print*, 'Ly                      =' ,Real(Ly,4)
   print*, 'Number of ghost cells   =', ngc
-  print*, 'Number of sphere stencil=', sz_sphere
+
   if (space_method  == GP_MOOD) then
      if (sphere_stencil) then
         print*, 'Number of sphere stencil=', sz_sphere
