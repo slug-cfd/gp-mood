@@ -23,12 +23,20 @@ program main
 
   print*,'----------------------------------------------------------------------------'
   print*,'Simulation parameters : '
-  print*, 'lf                     =', lf
-  print*, 'nf                     =', nf
-  print*, 'CFL                    =', Real(CFL,4)
-  print*, 'Lx                     =', Real(Lx,4)
-  print*, 'Ly                     =' ,Real(Ly,4)
-  print*, ' Number of ghost cells =', ngc
+  print*, 'lf                      =', lf
+  print*, 'nf                      =', nf
+  print*, 'CFL                     =', Real(CFL,4)
+  print*, 'Lx                      =', Real(Lx,4)
+  print*, 'Ly                      =' ,Real(Ly,4)
+  print*, 'Number of ghost cells   =', ngc
+  print*, 'Number of sphere stencil=', sz_sphere
+  if (space_method  == GP_MOOD) then
+     if (sphere_stencil) then
+        print*, 'Number of sphere stencil=', sz_sphere
+     else
+        print*, 'Number of cross stencil = ', sz_cross
+     end if
+  endif
 
   if ( IC_type == Sodx ) then
      print*, 'Problem                =', 'Sod shock tube'
