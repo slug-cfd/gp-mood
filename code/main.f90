@@ -226,7 +226,8 @@ program main
      if ((IO_freqStep > 0) .and. (mod(niter,IO_freqStep) == 0)) then
         print*,''
         print*,'======================================================================'
-        print*,'   a new output has been written, file number=',niter
+        print*,'   A new output has been written, file number=',niter
+        print*,'   Output directory:', file
         print*,'======================================================================'
         print*,''
         call write_output(niter)
@@ -240,7 +241,8 @@ program main
            IO_freqCounter = IO_freqCounter + 1
            print*,''
            print*,'======================================================================'
-           print*,'   a new output has been written, file number=',niter
+           print*,'   A new output has been written, file number=',niter
+           print*,'   Output directory:', file
            print*,'======================================================================'
            print*,''
            call write_output(niter)           
@@ -263,7 +265,8 @@ program main
 
   print*,''
   print*,'======================================================================'
-  print*,'   a new output has been written, file number=',niter
+  print*,'   A new output has been written, file number=',niter
+  print*,'   Output directory:', file
   print*,'======================================================================'
   print*,''
   call write_output(niter)
