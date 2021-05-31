@@ -18,7 +18,7 @@ module constants
   !Space Methods indices
   integer, parameter :: FE      = 8, SSP_RK2 = 9, SSP_RK3 =10, SSP_RK4 =12
   !Flux methods
-  integer, parameter :: HLLC = 100, LLF = 101
+  integer, parameter :: HLLC = 100, LLF = 101, HLL = 102
 
   !BC indices
   integer, parameter :: Neumann =17, Periodic =18, Dirichlet =19, Reflective =20, Mach800_BC = 201, DoubleMach800_BC = 301

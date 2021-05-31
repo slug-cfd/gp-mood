@@ -86,53 +86,53 @@ contains
        end do
     end do
     close(50)
-
-    open(50, file = trim(adjustl(file))//'rho_'//trim(fileID)//'.dat', form='formatted')
-    do n = 1, nf
-
-       write(50,*) Uprim(rho,1:lf,n)
-
-    end do
-    close(50)
-
-    open(49, file = trim(adjustl(file))//'pres_'//trim(fileID)//'.dat', form='formatted')
-    do n = 1, nf
-       write(49,*) Uprim(4,1:lf,n)
-
-    end do
-    close(49)
-
-    open(50, file = trim(adjustl(file))//'final_sym_'//trim(fileID)//'.dat', form='formatted')
-    write(50,*) 'x','y','rho','ux','uy','p'
-
-    if (nf==lf) then
-       do n = 1, nf
-          do l = 1, lf
-
-             v = conservative_to_primitive(U(1:4,l,n))
-             vt=conservative_to_primitive(U(1:4,n,l))
-             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
-
-          end do
-       end do
-    end if
-    close(50)
-
-    open(50, file = trim(adjustl(file))//'final_sym_2_'//trim(fileID)//'.dat', form='formatted')
-    write(50,*) 'x','y','rho','ux','uy','p'
-
-    if (nf==lf) then
-       do n = 1, nf
-          do l = 1, lf
-
-             v = conservative_to_primitive(U(1:4,l,n))
-             vt =conservative_to_primitive(U(1:4,nf-l+1,lf-n+1))
-             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
-
-          end do
-       end do
-    end if
-    close(50)
+    
+!!$    open(50, file = trim(adjustl(file))//'rho_'//trim(fileID)//'.dat', form='formatted')
+!!$    do n = 1, nf
+!!$
+!!$       write(50,*) Uprim(rho,1:lf,n)
+!!$
+!!$    end do
+!!$    close(50)
+!!$
+!!$    open(49, file = trim(adjustl(file))//'pres_'//trim(fileID)//'.dat', form='formatted')
+!!$    do n = 1, nf
+!!$       write(49,*) Uprim(4,1:lf,n)
+!!$
+!!$    end do
+!!$    close(49)
+!!$
+!!$    open(50, file = trim(adjustl(file))//'final_sym_'//trim(fileID)//'.dat', form='formatted')
+!!$    write(50,*) 'x','y','rho','ux','uy','p'
+!!$
+!!$    if (nf==lf) then
+!!$       do n = 1, nf
+!!$          do l = 1, lf
+!!$
+!!$             v = conservative_to_primitive(U(1:4,l,n))
+!!$             vt=conservative_to_primitive(U(1:4,n,l))
+!!$             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
+!!$
+!!$          end do
+!!$       end do
+!!$    end if
+!!$    close(50)
+!!$
+!!$    open(50, file = trim(adjustl(file))//'final_sym_2_'//trim(fileID)//'.dat', form='formatted')
+!!$    write(50,*) 'x','y','rho','ux','uy','p'
+!!$
+!!$    if (nf==lf) then
+!!$       do n = 1, nf
+!!$          do l = 1, lf
+!!$
+!!$             v = conservative_to_primitive(U(1:4,l,n))
+!!$             vt =conservative_to_primitive(U(1:4,nf-l+1,lf-n+1))
+!!$             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
+!!$
+!!$          end do
+!!$       end do
+!!$    end if
+!!$    close(50)
 
   end subroutine write_output
 

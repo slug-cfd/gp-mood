@@ -7,6 +7,7 @@ module mod_FE
   use mod_subroutine_MOOD
   use mod_HLLC
   use mod_LLF
+  use mod_HLL
 
   implicit none
 
@@ -54,6 +55,8 @@ contains
                       Flux_gauss(rho:ener,j) =  HLLC_Flux(ul,ur,dir_x)
                    elseif (numFlux == LLF) then
                       Flux_gauss(rho:ener,j) =  LLF_Flux(ul,ur,dir_x)
+                   elseif (numFlux == HLL) then
+                      Flux_gauss(rho:ener,j) =  HLL_Flux(ul,ur,dir_x)
                    endif
 
                 end do
@@ -83,6 +86,8 @@ contains
                       Flux_gauss(rho:ener,j) =  HLLC_Flux(ub,ut,dir_y)
                    elseif (numFlux == LLF) then
                       Flux_gauss(rho:ener,j) =  LLF_Flux(ub,ut,dir_y)
+                   elseif (numFlux == HLL) then
+                      Flux_gauss(rho:ener,j) =  HLL_Flux(ub,ut,dir_y)
                    endif
 
                 end do
