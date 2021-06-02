@@ -89,9 +89,12 @@ contains
 
     dt = 1.0e30
 
-    do n = 1, nf
-       do l = 1, lf
-
+    !!DL -- Include the guardcell information for dt calculation
+!!$    do n = 1, nf
+!!$       do l = 1, lf
+    do n = 1-ngc, nf+ngc
+       do l = 1-ngc, lf+ngc
+          
           call c2p_local(Uin(:,l,n), vx, vy, vx2, vy2, pres, c)
 
 
