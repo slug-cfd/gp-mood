@@ -196,18 +196,19 @@ program main
      call Setdt(U, niter)
      !print*,'CFL dt =', dt
      cfl_dt = dt
+
+     if (dt_sim < dt) then
+        ! force to use a small dt for slow-start
+        dt = dt_sim
+        dt_sim = 2.*dt_sim
+     endif
+     
      call time_stepping(U, Ur)
      call Boundary_C(U)
 
-     
-     if (dt_sim < dt) then
-        t = t + dt_sim
-        dt_sim = 2.*dt_sim
-        !force small dt
-        dt = dt_sim
-     else
-        t =  t + dt
-     endif
+     ! update clock
+     t =  t + dt
+ 
 
      U = Ur
      if ((mod(niter,10) == 0) .or.(niter == 1)) then
