@@ -14,7 +14,7 @@ OBJS = *.o *.mod *~
 ## Nom de l'exécutable##
 EXEC = gp_mood_ex
 
-OUTPUTLOG = output.log
+OUTPUTLOG = ./plotter/Isentropic/isen_SE5th_3quad_RK4_dtRed_cfl0.4_HLLC_32_ell_1.0.log
 
 $(EXEC):  constants.o \
 	parameters.o \
