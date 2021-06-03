@@ -10,13 +10,46 @@ FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3
 ## Ensemble des fichiers à supprimer lors du make clean ##
 OBJS = *.o *.mod *~
 
-## Nom de l'exécutable##
-EXEC = CFDjet_3rd_1quad_rk3_600
 
-#$(EXEC):  constants.o parameters.o linalg.o global_variables.o GP_init.o mesh_init.o  physics.o IC.o mod_HLL.o mod_HLLC.o mod_Rusanov.o  mod_GP_MOOD.o mod_MOOD1D.o mod_WENO.o mod_GP_SE.o mod_PLM.o mod_PPM.o mod_FOG.o mod_Reconstruction.o BC.o mod_subroutine_MOOD.o mod_FE.o mod_SSP_RK2.o mod_SSP_RK3.o mod_SSP_RK4.o mod_RK5.o time_stepper.o output.o  main.o ## Liste des modules puis programmes à compiler ##
-$(EXEC):  constants.o parameters.o linalg.o global_variables.o GP_init.o mesh_init.o  physics.o random.o IC.o  mod_HLLC.o  mod_LLF.o mod_GP_MOOD.o  mod_GP_SE.o  mod_FOG.o mod_pol_MOOD.o mod_Unlim_Pol.o mod_Reconstruction.o BC.o mod_subroutine_MOOD.o mod_FE.o mod_SSP_RK2.o mod_SSP_RK3.o mod_SSP_RK4.o time_stepper.o output.o  main.o ## Liste des modules puis programmes à compiler ##
+## Nom de l'exécutable##
+EXEC = gp_mood_ex
+
+OUTPUTLOG = output.log
+
+$(EXEC):  constants.o \
+	parameters.o \
+	linalg.o \
+	global_variables.o \
+	GP_init.o \
+	mesh_init.o  \
+	physics.o random.o \
+	IC.o  \
+	mod_HLLC.o \
+	mod_HLL.o \
+	mod_LLF.o \
+	mod_GP_MOOD.o  \
+	mod_GP_SE.o  \
+	mod_FOG.o \
+	mod_pol_MOOD.o \
+	mod_Unlim_Pol.o \
+	mod_Reconstruction.o \
+	BC.o \
+	mod_subroutine_MOOD.o \
+	mod_FE.o \
+	mod_SSP_RK2.o \
+	mod_SSP_RK3.o \
+	mod_SSP_RK4.o \
+	time_stepper.o \
+	output.o  \
+	main.o ## Liste des modules puis programmes à compiler ##
 	$(FC) -o  $(EXEC) $^
-	./$(EXEC) ## Commande exécutant automatiquement le programme ##
+	./$(EXEC) > $(OUTPUTLOG) & ## Commande exécutant automatiquement le programme ##
+	@echo ''
+	@echo ' ================================================== '
+	@echo '  Output log file is written in' $(OUTPUTLOG) 
+	@echo ' ================================================== '
+	@echo ''
+
 
 #DL -- added a suffix rule
 .SUFFIXES : 
