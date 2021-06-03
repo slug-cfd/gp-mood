@@ -48,32 +48,36 @@ contains
              end if
 
 
+
+             !! DL -- reform the data in a 2D Uin array into a long 1D array
              if (reconstruction .eqv. .true.) then
 
                 if (done .eqv. .false.) then
                    if ( cross_stencil ) then
+                      !! for cross stencil
                       do j = 1, sz_cross
                          q(:,j) = Uin(:,l+ixiy(mord,j,1),n+ixiy(mord,j,2))
                       end do
                    else
+                      !! for spherical stencil
                       do j = 1, sz_sphere
                          q_sp(:,j) = Uin(:,l+ixiy_sp(mord,j,1),n+ixiy_sp(mord,j,2))
                       end do
                    end if
-
 
                    done = .true.
 
                 end if
 
 
+                !! DL -- calculate the dot product between the prediction vector z^T and the local data array, q, in 1D 
                 do j = 1, ngp
-
                    do k = rho, ener
                       if ( cross_stencil ) then
-
+                         !! for cross stencil
                          Uh(k,i,j,l,n) = dot_product( zT(ord,1:stcl_sz(ord),i,j),q(k,1:stcl_sz(ord)) )
                       else
+                         !! for spherical stencil
                          Uh(k,i,j,l,n) = dot_product( zT_sp(ord,1:stcl_sz(ord),i,j),q_sp(k,1:stcl_sz(ord)))
 
                       end if

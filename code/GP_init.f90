@@ -8,6 +8,8 @@ module GP_init
 contains
 
 
+  !! DL -- this function variably changes the proper kernel
+  !!       based on the order (ord) on each cell
   function stcl_sz(ord)result(sz) !stencil size
     integer, intent(in) :: ord
     integer             ::  sz, radius
@@ -32,14 +34,14 @@ contains
 
 
   subroutine GP_presim_sphere()
-    real(16), dimension(Mord, sz_sphere,sz_sphere)    :: COV_16, inv_COV_16
-    real(16), dimension(Mord, sz_sphere,sz_sphere)    :: Id
-    real(16), dimension(      sz_sphere,sz_sphere)    :: dkh_x, dkh_y
+    real(16), dimension(Mord, sz_sphere,sz_sphere)   :: COV_16, inv_COV_16
+    real(16), dimension(Mord, sz_sphere,sz_sphere)   :: Id
+    real(16), dimension(      sz_sphere,sz_sphere)   :: dkh_x, dkh_y
 
     real(16), dimension(Mord ,sz_sphere, iL:iB, ngp) :: T_pred_16
     real(16), dimension(      sz_sphere, iL:iB, ngp) :: dks_x, dks_y
 
-    real(16), dimension(Mord ,sz_sphere)              :: GP_d2x_16,  GP_d2y_16
+    real(16), dimension(Mord ,sz_sphere)             :: GP_d2x_16,  GP_d2y_16
 
 
 
