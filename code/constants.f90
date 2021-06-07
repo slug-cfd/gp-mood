@@ -21,14 +21,16 @@ module constants
   integer, parameter :: HLLC = 100, LLF = 101, HLL = 102
 
   !BC indices
-  integer, parameter :: Neumann =17, Periodic =18, Dirichlet =19, Reflective =20, Mach800_BC = 201, DoubleMach800_BC = 301
+  integer, parameter :: Neumann =17, Periodic =18, Dirichlet =19, Reflective =20
+  integer, parameter :: Mach800_BC = 201, DoubleMach800_BC = 301, RMI_BC = 401
   !IC indices
   integer, parameter :: SODx        =21, SODy             =22, SODxy        =23, explosion =36
   integer, parameter :: Lin_Gauss_x =24, Lin_Gauss_y      =25, Lin_Gauss_xy =26, Shu_Osher =27
   integer, parameter :: RP_2D_3     =28, implosion        =29, RP_2D_12     =30, DMR       =35
   integer, parameter :: RP_2D_15    =31, strong_raref     =32, Lax          =33, BLAST     =34
   integer, parameter :: RP_2D_6     =38, sedov            =39, M3WT         =40, KH        =41
-  integer, parameter :: isentropic_vortex = 42, sod_rotated = 43, Shu_Osher_rotated = 44, Mach800 = 45, DoubleMach800 = 46
+  integer, parameter :: isentropic_vortex = 42, sod_rotated = 43, Shu_Osher_rotated = 44
+  integer, parameter :: Mach800 = 45, DoubleMach800 = 46, RMI = 47
 
   !Data indices
   integer, parameter :: rho   = 1, momx  = 2, momy   = 3, ener = 4

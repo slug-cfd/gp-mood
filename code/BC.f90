@@ -173,6 +173,7 @@ contains
           do n = 1-ngc,0
              if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
+!!$                U(:,l,n) = primitive_to_conservative((/0.14_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
              endif
           end do
@@ -212,7 +213,8 @@ contains
           do n = nf+1, nf+ngc
              if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
-                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -100.0_PR, 1.0_PR/))
+!!$                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -100.0_PR, 1.0_PR/))
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
              endif
           end do
        end do
@@ -233,11 +235,41 @@ contains
           do n = 1-ngc,0
              if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
-                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
              endif
           end do
        end do
 
+    else if (BC_type == RMI_BC) then
+       ! [0,6]x[0,1] domain with the strong inflow BC
+
+       !right, top, left = outflow
+       do n = 1-ngc, nf+ngc
+          ! Right
+          do l = lf+1, lf+ngc
+             U(:,l,n) = U(:,lf,n)
+          end do
+
+          ! left -- inflow
+          do l = 1-ngc, 0
+             U(:,l,n) = primitive_to_conservative((/2.66667, 2.*sqrt(1.4), 0., 4.5/))
+          enddo
+
+       end do
+
+
+       do l = 1-ngc, lf+ngc
+          ! top
+          do n = nf+1, nf+ngc
+             U(:,l,n) = U(:,l,nf)
+          end do
+
+          ! bottom
+          do n = 1-ngc,0
+             U(:,l,n) = U(:,l,1)
+          end do
+       end do
+              
        
 
     else if (BC_type == DMR) then

@@ -21,8 +21,11 @@ contains
     !
     ! Local variables:
 
-    integer :: l, n
-    real(PR)    :: r,int,xx,yy, r1,r2, x_p
+    integer  :: l, n
+    real(PR) :: r,int,xx,yy, r1,r2, x_p
+    real(PR) :: slope_dens, dens_amb ! for mach 800 with varying ambient density
+    !real(PR) :: densR, densL, presR, presL, velxR, velxL, velyR, velyL
+    real(PR) :: sim_posn, sim_shockPosn, sim_xcos, sim_ycos, sim_xangle
 
     !Instructions
 
@@ -160,16 +163,37 @@ contains
           else if (IC_type == sedov) then !Lx = 1, Ly = 1, tmax = 0.05
              U(:,l,n) = f_sedov(mesh_x(l),mesh_y(n))
 
-
-
           else if (IC_type == Mach800 .or. IC_type == DoubleMach800) then ! DL -- added the Mach 800 jet problem
              ! DL -- input primitive vector = (dens, velx, vely, pres)
              ! DL -- note that the grid configuration assumes xmin and ymin are both zero
 !!$             U(:,l,n) = primitive_to_conservative((/0.14, 0.0, 0.0, 1.0/))
-             U(:,l,n) = primitive_to_conservative((/14., 0.0, 0.0, 1.0/))             
+!!$             U(:,l,n) = primitive_to_conservative((/14., 0.0, 0.0, 1.0/))
 
+             !! default setup
+!!$             slope_dens = 0.
+!!$             dens_amb   = 14.
 
+             !! varying ambient density
+             slope_dens = (0.14 - 14.)/1.5_PR ! dens(y_min=0) = 14 & dens(y_max=1.5) = 0.14
+             dens_amb   = slope_dens * mesh_y(n) + 14.
+              U(:,l,n) = primitive_to_conservative((/dens_amb, 0.0, 0.0, 1.0/))
+
+          else if (IC_type == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
+
+             sim_xangle = 135.
+             sim_xangle = sim_xangle * 0.017453292519943295        ! Convert to radians.
+             sim_xcos = cos(sim_xangle)
+             sim_ycos = sqrt(1. - sim_xcos*sim_xcos)
+             sim_shockPosn = 0.8
+             sim_posn = 1.0
+             !sim_posn = sim_posn - mesh_y(n) * sim_ycos/sim_xcos
+             sim_posn = mesh_y(n) + 1.0
+!!$             print*,sim_posn
+!!$             stop
+!!$             
+             U(:,l,n) = f_rmi(mesh_x(l),mesh_y(n), sim_shockPosn, sim_posn)
              
+            
           else if (IC_TYPE == KH) then
              r1 = (random_normal())*0.01
              r2 = (random_normal())*0.01
@@ -183,7 +207,8 @@ contains
              end if
 
           else  if (IC_type == isentropic_vortex) then
-             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
+!!$             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
+             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 10., 10., 0.)
           end if
 
 
@@ -322,10 +347,12 @@ contains
 
     do while (xp < 0.)
        xp = xp +10.0
+       !xp = xp +20.0
     end do
 
     do while (yp < 0.)
        yp = yp +10.0
+       !yp = yp +20.0
     end do
 
     xcp = xc
@@ -334,13 +361,73 @@ contains
     r = sqrt( (xp-xcp)*(xp-xcp) + (yp-ycp)*(yp-ycp) )
 
     rho = (1.-(1.4 -1.)*(beta*beta/(8*1.4*pi*pi))*exp(1.-r*r))**(1./(1.4-1.))
-    vx  = 1. - 0.5*(beta/pi) * exp(0.5*(1.-r*r))*(yp-5.)
-    vy  = 1. + 0.5*(beta/pi) * exp(0.5*(1.-r*r))*(xp-5.)
+    vx  = 1. - 0.5*(beta/pi) * exp(0.5*(1.-r*r))*(yp-xc)
+    vy  = 1. + 0.5*(beta/pi) * exp(0.5*(1.-r*r))*(xp-yc)
     p   = rho**(1.4)
 
     res = primitive_to_conservative((/rho, vx, vy, p/))
 
   end function f_isentropic_vortex
+
+
+  function f_rmi(x,y,shockLoc,posn) result(r)
+
+    real(PR), intent(in) :: x, y, shockLoc, posn
+    real(PR), dimension(4) :: r
+    real(PR) :: densR, densL, presR, presL, velxR, velxL, velyR, velyL
+    real(PR) :: dens, velx, vely, pres
+    real(PR) :: gam,gamp,gamm,mach2,shockMach
+
+    gam  = 1.4
+    gamp = gam + 1.
+    gamm = gam - 1.
+    shockMach = 2.
+    mach2 = shockMach*shockMach
+
+    densL = 1.
+    presL = 1.
+    velxL = 0.
+    velyL = 0.
+
+    densR = 3.
+    presR = 1.
+    velxR = 0.
+    velyR = 0.
+    
+!!$    print*,shockLoc, posn
+    
+    
+    !! First initialize the post-shock values
+    if (x .le. 0.8) then
+!!$       dens = densL*(gamp*mach2)/(gamm*mach2 + 2.0) !=2.66667
+!!$       pres = presL*(2.0*gam*mach2-gamm)/gamp       !=4.5
+!!$       velx = shockMach*sqrt(gam*presL/densL)       !=2*sqrt(1.4)=2.3664320
+!!$       vely = velyL
+!!$       print*,'x<0.8'
+!!$       print*,x
+!!$       dens = 2.66667
+!!$       pres = 4.5       !=4.5
+!!$       velx = 2*sqrt(1.4) !=2.3664320
+!!$       vely = 0.
+       
+       !print*,dens-2.66667, pres-4.5, velx-2.3664320,vely
+!!$    elseif (x .ge. shockLoc .and. x .lt. posn) then
+!!$       !print*,x,y,shockLoc,posn
+       dens = densL
+       pres = presL
+       velx = velxL
+       vely = velyL
+    else
+!!$       print*,'x>0.8'
+!!$       print*,x
+       dens = densR
+       pres = presR
+       velx = velxR
+       vely = velyR
+    endif
+    r =  primitive_to_conservative((/dens, velx, vely, pres/))
+    
+  end function f_rmi
 
 
   function quadrature(ax, bx, ay, by, xc, yc, t)result(r)

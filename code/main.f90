@@ -74,6 +74,8 @@ program main
      print*, 'Problem              =', 'Mach800 jet in y-direction'
   else if ( IC_type == DoubleMach800) then
      print*, 'Problem              =', 'Double Mach800 jets collision in y-direction'
+  else if ( IC_type == RMI) then
+     print*, 'Problem              =', 'RMI problem'
   else
      print*, 'problem not discussed in the paper'
      stop
