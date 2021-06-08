@@ -12,9 +12,15 @@ OBJS = *.o *.mod *~
 
 
 ## Nom de l'exécutable##
-EXEC = gp_mood_ex
+EXEC = gp_mood.exe
 
-OUTPUTLOG = ./plotter/Isentropic/isen_SE5th_3quad_RK4_dtRed_cfl0.4_HLLC_32_ell_1.0.log
+OUTPUTLOG = ./plotter/Isentropic/isen_GP3rd_2quad_RK3_nodtRed_cfl0.8_HLLC_Lx20_400_ell_1.0_cross.log
+#OUTPUTLOG = ./plotter/ShuOsher/shuosher1d_GP7th_1quad_RK4_nodtRed_cfl0.8_HLLC_256.log
+#OUTPUTLOG = ./plotter/Mach800/DblMach800-800_GP3rd_2quad_RK3_cfl0.8_HLL_600.log
+#OUTPUTLOG = ./plotter/2DRP_C3/2drp_GP3rd_2quad_RK4_noDtRed_cfl0.8_HLLC_400.log
+#OUTPUTLOG = ./plotter/Implosion/implosion_GP5th_3quad_RK3_nodtRed_cfl0.8_HLLC_400.log
+#OUTPUTLOG = ./plotter/RMI/rmi_gp5th_3quad_RK3_nodtRed_cfl0.8_HLLC_2400x400.log
+#OUTPUTLOG = ./plotter/Sedov/sedov_GP7th_4quad_rk4_noDtRed_cfl0.8_hllc_256.log
 
 $(EXEC):  constants.o \
 	parameters.o \
