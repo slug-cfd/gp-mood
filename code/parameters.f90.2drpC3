@@ -6,18 +6,18 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/2DRP_C3/2drp_GP7th_4quad_RK3_cfl0.8_HLLC_400_'
+  character(100) :: file='./plotter/2DRP_C3/2drp_GP3rd_2quad_RK4_noDtRed_cfl0.8_HLLC_400_'
   character(100) :: file_slice_x = './plotter/2DRP_C3/slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method    = SSP_RK3
+  integer , parameter :: time_method    = SSP_RK4
   logical , parameter :: dt_reduction = .false.
 
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 7  ! Order
-  integer, parameter :: ngp = 4  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
 
   ! flux method
@@ -35,7 +35,11 @@ module parameters
   integer,  parameter :: lf = 400 ! Number of cell in the x direction
   integer,  parameter :: nf = 400  ! Number of cell in the y direction
 
+  ! Set the baseline lf0 and nf0 for the dt reduction
+  integer,  parameter :: lf0 = 400 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 400 !
 
+  
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = RP_2D_3
   real(PR), parameter :: tmax = 0.8

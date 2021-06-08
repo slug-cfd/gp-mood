@@ -6,19 +6,19 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Isentropic/isen_GP3rd_2quad_RK3_cfl0.8_HLLC_Lx20_050_ell_1.0_'
+  character(100) :: file='./plotter/Isentropic/isen_GP7th_4quad_RK4_dtRed_cfl0.8_HLLC_Lx20_050_ell_1.0_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method  = SSP_RK3
-  logical , parameter :: dt_reduction = .false.
+  integer , parameter :: time_method  = SSP_RK4
+  logical , parameter :: dt_reduction = .true.
 
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 3  ! Order
-  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 7  ! Order
+  integer, parameter :: ngp = 4  ! Number of gaussian quadrature points per edges
 
 
   ! flux method
@@ -36,15 +36,19 @@ module parameters
   integer,  parameter :: lf = 50 ! Number of cell in the x direction
   integer,  parameter :: nf = 50  ! Number of cell in the y direction
 
+  ! Set the baseline lf0 and nf0 for the dt reduction
+  integer,  parameter :: lf0 = 50 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 50  !
+  
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = isentropic_vortex
-  real(PR), parameter :: tmax = 10.
+  real(PR), parameter :: tmax = 20. !20.
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 20. !Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 20. !Lenght of the domain in the y-direction
+  real(16), parameter :: Lx_16 = 20.!20. !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 20.!20. !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Periodic ! Boundary conditions
-
+  
 
   integer , parameter :: radius = (Mord -1)/2
   integer , parameter :: sz_sphere = min( (2*Mord - 1 + 4*(radius - 1)**2), 25)

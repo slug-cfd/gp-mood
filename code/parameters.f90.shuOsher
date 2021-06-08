@@ -6,19 +6,19 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/ShuOsher/shuosher_GP3rd_2quad_RK3_cfl0.8_HLLC_400_'
+  character(100) :: file='./plotter/ShuOsher/shuosher_GP5th_ell6_3quad_RK4_DtRed_cfl0.8_HLLC_1024_'
   character(100) :: file_slice_x = './plotter/ShuOsher/slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method  = SSP_RK3
-  logical , parameter :: dt_reduction = .false.
+  integer , parameter :: time_method  = SSP_RK4
+  logical , parameter :: dt_reduction = .true.
 
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 3  ! Order
-  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 5  ! Order
+  integer, parameter :: ngp = 3  ! Number of gaussian quadrature points per edges
 
 
   ! flux method
@@ -34,8 +34,12 @@ module parameters
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 400 ! Number of cell in the x direction
-  integer,  parameter :: nf = 400  ! Number of cell in the y direction
+  integer,  parameter :: lf = 1024 ! Number of cell in the x direction
+  integer,  parameter :: nf = 1024  ! Number of cell in the y direction
+
+  ! Set the baseline lf0 and nf0 for the dt reduction
+  integer,  parameter :: lf0 = 1024 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 1024 ! Number of cell in the y direction
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Shu_Osher_rotated
@@ -61,7 +65,7 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell
+  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
 
 
 end module

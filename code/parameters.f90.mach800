@@ -33,6 +33,10 @@ module parameters
   integer,  parameter :: lf = 300 ! Number of cell in the x direction
   integer,  parameter :: nf = 300  ! Number of cell in the y direction
 
+  ! Set the baseline lf0 and nf0 for the dt reduction
+  integer,  parameter :: lf0 = 300 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 300 ! Number of cell in the y direction
+
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Mach800
