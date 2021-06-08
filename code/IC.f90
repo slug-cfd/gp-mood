@@ -208,7 +208,7 @@ contains
 
           else  if (IC_type == isentropic_vortex) then
 !!$             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
-             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 10., 10., 0.)
+             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 0.5*Lx, 0.5*Ly, 0.)
           end if
 
 
@@ -330,8 +330,8 @@ contains
     if (sqrt(r2) <  sqrt(dr2)) then
        r = primitive_to_conservative((/1.0, 0.0, 0.0, (1.4-1.)*E/(pi*dr2)/))
     else
-       r = primitive_to_conservative((/1.0, 0.0, 0.0, 1./))
-
+!!$       r = primitive_to_conservative((/1.0, 0.0, 0.0, 1./))
+       r = primitive_to_conservative((/1.0, 0.0, 0.0, 1.e-5/))
     end if
   end function f_sedov
 
@@ -346,13 +346,13 @@ contains
     yp = y - t
 
     do while (xp < 0.)
-       xp = xp +10.0
-       !xp = xp +20.0
+       !xp = xp +10.0
+       xp = xp + 0.5*Lx
     end do
 
     do while (yp < 0.)
-       yp = yp +10.0
-       !yp = yp +20.0
+       !yp = yp +10.0
+       yp = yp + 0.5*Ly
     end do
 
     xcp = xc
@@ -398,11 +398,11 @@ contains
     
     
     !! First initialize the post-shock values
-    if (x .le. 0.8) then
-!!$       dens = densL*(gamp*mach2)/(gamm*mach2 + 2.0) !=2.66667
-!!$       pres = presL*(2.0*gam*mach2-gamm)/gamp       !=4.5
-!!$       velx = shockMach*sqrt(gam*presL/densL)       !=2*sqrt(1.4)=2.3664320
-!!$       vely = velyL
+    if (x .lt. shockLoc) then
+       dens = densL*(gamp*mach2)/(gamm*mach2 + 2.0) !=2.66667
+       pres = presL*(2.0*gam*mach2-gamm)/gamp       !=4.5
+       velx = shockMach*sqrt(gam*presL/densL)       !=2*sqrt(1.4)=2.3664320
+       vely = velyL
 !!$       print*,'x<0.8'
 !!$       print*,x
 !!$       dens = 2.66667
@@ -411,7 +411,7 @@ contains
 !!$       vely = 0.
        
        !print*,dens-2.66667, pres-4.5, velx-2.3664320,vely
-!!$    elseif (x .ge. shockLoc .and. x .lt. posn) then
+    elseif (x .ge. shockLoc .and. x .lt. posn) then
 !!$       !print*,x,y,shockLoc,posn
        dens = densL
        pres = presL
@@ -442,6 +442,8 @@ contains
 
     integer :: i,j
 
+    ! Gauss–Legendre quadrature (see https://en.wikipedia.org/wiki/Gaussian_quadrature)
+    
     w(1) = (322.0-13.0*sqrt(70.0))/900.0;
     w(2) = (322.0+13.0*sqrt(70.0))/900.0;
     w(3) = 128.0/225.0;

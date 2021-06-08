@@ -241,32 +241,44 @@ contains
        end do
 
     else if (BC_type == RMI_BC) then
-       ! [0,6]x[0,1] domain with the strong inflow BC
+       ! [0,6]x[0,1] domain with the strong inflow BC;
+       ! reflective on top and bottom; outflow on right
 
-       !right, top, left = outflow
+       ! ==========================================
+       ! Left -- inflow
        do n = 1-ngc, nf+ngc
-          ! Right
+          do l = 1-ngc, 0
+             U(:,l,n) = primitive_to_conservative((/2.666666666666667, 2.*sqrt(1.4), 0., 4.5/))
+          enddo
+       end do
+       
+       ! ==========================================
+       ! Right -- outflow
+       do n = 1-ngc, nf+ngc
           do l = lf+1, lf+ngc
              U(:,l,n) = U(:,lf,n)
           end do
-
-          ! left -- inflow
-          do l = 1-ngc, 0
-             U(:,l,n) = primitive_to_conservative((/2.66667, 2.*sqrt(1.4), 0., 4.5/))
-          enddo
-
        end do
 
-
+       ! ==========================================
+       ! Top and bottom -- reflective
        do l = 1-ngc, lf+ngc
           ! top
+          k = 0
           do n = nf+1, nf+ngc
-             U(:,l,n) = U(:,l,nf)
+             U(:,l,n) = U(:,l,nf-k)
+             !U(:,l,n) = U(:,l,nf)
+             k = k + 1
+             U(momy,l,n) = -U(momy,l,n)
           end do
 
           ! bottom
-          do n = 1-ngc,0
-             U(:,l,n) = U(:,l,1)
+          k = 0
+          do n = 0, 1-ngc,-1
+             U(:,l,n) = U(:,l,1+k)
+             !U(:,l,n) = U(:,l,1)
+             k = k + 1
+             U(momy,l,n) = -U(momy,l,n)
           end do
        end do
               
