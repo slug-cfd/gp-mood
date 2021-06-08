@@ -18,7 +18,7 @@ contains
 
           print*, 'the cov matrix is not symmetric', i,j
           print*, 'the difference is about', ((A(i,j)-A(j,i))/A(j,i))*100, '%'
-          stop
+          !stop
 
 
         end if
