@@ -79,7 +79,9 @@ contains
     !============= Variables ==============!
     integer            :: l, n
 
-    real(PR) ::  vx, vy, vx2, vy2, pres, c, dx0 =  0.31250000000000000*(Lx/10), dy0 =0.31250000000000000*(Lx/10)
+    real(PR) ::  vx, vy, vx2, vy2, pres, c
+    !real(PR) ::  vx, vy, vx2, vy2, pres, c, dx0 =  0.31250000000000000*(Lx/10), dy0 =0.31250000000000000*(Lx/10)
+    real(PR) :: dx0, dy0
 
     real(PR), dimension(4,lb:le, nb:ne ), intent(in) :: Uin
 
@@ -89,6 +91,9 @@ contains
 
     dt = 1.0e30
 
+    dx0 = Lx/lf0
+    dy0 = Ly/nf0
+    
     !!DL -- Include the guardcell information for dt calculation
 !!$    do n = 1, nf
 !!$       do l = 1, lf
@@ -99,9 +104,12 @@ contains
 
 
           if (dt_reduction)  then
-
-             if(dim == 2 ) dt = min(dt,  min( dx0/(abs(vx)+c), dy0/(abs(vy)+c) ))
-             if(dim == 1 ) dt = min(dt,  dx0/(abs(vx)+c))
+             
+             if (dim == 1) then
+                dt = min(dt,  dx0/(abs(vx)+c))
+             elseif (dim == 2) then
+                dt = min(dt,  min( dx0/(abs(vx)+c), dy0/(abs(vy)+c) ))
+             endif
 
           else
              dt = min(dt,  min( dx/(abs(vx)+c), dy/(abs(vy)+c) ))
