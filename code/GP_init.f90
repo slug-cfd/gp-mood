@@ -65,6 +65,13 @@ contains
       gauss_pt    (2,2) = +0.5_16/sq3
     end if
 
+    !! DL -- here, I see lots of warning messages of
+    !!       out of array bounds; better to have
+    !!       #if ngp > 2
+    !!       but the code uses .f90 convention
+    !!       so let's leave them as they are
+    !!       since it doesn't do any damage
+    
     if( ngp >= 3) then
       gauss_weight(3,1) = 0.5_16*5._16/9
       gauss_weight(3,2) = 0.5_16*8._16/9
