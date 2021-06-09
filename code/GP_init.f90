@@ -339,16 +339,16 @@ contains
     end if
 
     if ( ngp >= 4) then
-      ! gauss_weight(4,1) = 0.5*(1./36)*(18. - sq30)
-      ! gauss_weight(4,2) = 0.5*(1./36)*(18. + sq30)
-      ! gauss_weight(4,3) = 0.5*(1./36)*(18. + sq30)
-      ! gauss_weight(4,4) = 0.5*(1./36)*(18. - sq30)
-      !
-      !
-      ! gauss_pt    (4,1) = -0.5*sqrt(3./7 + (2./7)*sq65)
-      ! gauss_pt    (4,2) = -0.5*sqrt(3./7 - (2./7)*sq65)
-      ! gauss_pt    (4,3) = +0.5*sqrt(3./7 - (2./7)*sq65)
-      ! gauss_pt    (4,4) = +0.5*sqrt(3./7 + (2./7)*sq65)
+      gauss_weight(4,1) = 0.5*(1./36)*(18. - sq30)
+      gauss_weight(4,2) = 0.5*(1./36)*(18. + sq30)
+      gauss_weight(4,3) = 0.5*(1./36)*(18. + sq30)
+      gauss_weight(4,4) = 0.5*(1./36)*(18. - sq30)
+
+
+      gauss_pt    (4,1) = -0.5*sqrt(3./7 + (2./7)*sq65)
+      gauss_pt    (4,2) = -0.5*sqrt(3./7 - (2./7)*sq65)
+      gauss_pt    (4,3) = +0.5*sqrt(3./7 - (2./7)*sq65)
+      gauss_pt    (4,4) = +0.5*sqrt(3./7 + (2./7)*sq65)
     end if
 
     if ( ngp >= 5) then
