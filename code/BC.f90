@@ -160,21 +160,17 @@ contains
        end do
 
        ! bottom = user
-       ! bottom -- do outflow first and fix later
-       do l = 1-ngc, lf+ngc
-          do n = 1-ngc,0
-             ! outflow elsewhere
-             U(:,l,n) = U(:,l,1)
-          enddo
-       enddo
-
-       ! bottom -- fix here
        do l = 1-ngc, lf+ngc       
           do n = 1-ngc,0
-             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
+
+             if (abs(mesh_x(l) - 0.5*Lx) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
 !!$                U(:,l,n) = primitive_to_conservative((/0.14_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
+
+             else
+                ! outflow elsewhere
+                U(:,l,n) = U(:,l,1)
              endif
           end do
        end do
@@ -201,20 +197,16 @@ contains
        ! top = user
        ! top -- do outflow first and fix later
        ! ==========================================
-       
-       do l = 1-ngc, lf+ngc
-          ! top
-          do n = nf+1, nf+ngc
-             U(:,l,n) = U(:,l,nf)
-          end do
-       end do
-       ! top -- fix here
+
        do l = 1-ngc, lf+ngc       
           do n = nf+1, nf+ngc
-             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
+             if (abs(mesh_x(l) - 0.5*Lx) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
 !!$                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -100.0_PR, 1.0_PR/))
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
+             else
+                ! outflow elsewhere
+                U(:,l,n) = U(:,l,nf)                
              endif
           end do
        end do
@@ -223,19 +215,14 @@ contains
        ! bottom = user
        ! bottom -- do outflow first and fix later
        ! ==========================================
-       do l = 1-ngc, lf+ngc
-          do n = 1-ngc,0
-             ! outflow elsewhere
-             U(:,l,n) = U(:,l,1)
-          enddo
-       enddo
-
-       ! bottom -- fix here
        do l = 1-ngc, lf+ngc       
           do n = 1-ngc,0
-             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
+             if (abs(mesh_x(l) - 0.5*Lx) .le. 0.05) then
                 !print*,mesh_x(l), mesh_y(n)
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+             else
+                ! outflow elsewhere
+                U(:,l,n) = U(:,l,1)                
              endif
           end do
        end do
