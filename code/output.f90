@@ -82,7 +82,6 @@ contains
     do n = 1, nf
        do l = 1, lf
           write(50,*) mesh_x(l), mesh_y(n), Uprim(:,l,n), CellGPO(l,n)
-
        end do
     end do
     close(50)
@@ -154,8 +153,8 @@ contains
           yy = mesh_y(n)
 
           if( IC_type == isentropic_vortex) then
-!!$             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,5.,5.,10.))
-             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,10.,10.,20.))
+             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,0.5*Lx, 0.5*Ly, 0.))
+!!$             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,10.,10.,20.))
              
           else if(IC_type == Lin_Gauss_xy) then
              int =     (-0.0886227*erf(-5*dx - 10*xx +5.) + 0.0886227*erf(5*dx - 10*xx + 5.))
