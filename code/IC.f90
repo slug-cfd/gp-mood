@@ -169,14 +169,33 @@ contains
 !!$             U(:,l,n) = primitive_to_conservative((/0.14, 0.0, 0.0, 1.0/))
 !!$             U(:,l,n) = primitive_to_conservative((/14., 0.0, 0.0, 1.0/))
 
-             !! default setup
-!!$             slope_dens = 0.
-!!$             dens_amb   = 14.
+!!$             !! default setup
+             slope_dens = 0.
+             dens_amb   = 14.
+!!$             
+!!$             !! varying ambient density
+!!$             slope_dens = (0.14 - 14.)/Ly ! dens(y_min) = 14 & dens(y_max) = 0.14
+!!$             dens_amb   = slope_dens * mesh_y(n) + 14.
+             
+             U(:,l,n) = primitive_to_conservative((/dens_amb, 0.0, 0.0, 1.0/))
+             
+             ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
+             !    -- initialize the first interior cells with the jet profile             
+             if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05).and.(mesh_y(n) < dy)) then
+                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
+             endif
 
-             !! varying ambient density
-             slope_dens = (0.14 - 14.)/1.5_PR ! dens(y_min=0) = 14 & dens(y_max=1.5) = 0.14
-             dens_amb   = slope_dens * mesh_y(n) + 14.
-              U(:,l,n) = primitive_to_conservative((/dens_amb, 0.0, 0.0, 1.0/))
+             
+             if (IC_type == DoubleMach800) then
+                ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
+                !    -- initialize the first interior cells with the jet profile       
+                if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (mesh_y(n) < dy)) then
+                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+                elseif ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (Ly - mesh_y(n) < dy)) then
+                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
+                endif
+             endif
+             
 
           else if (IC_type == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
 
