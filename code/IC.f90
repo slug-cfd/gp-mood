@@ -187,21 +187,25 @@ contains
              if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05).and.(mesh_y(n) < dy)) then
                 if (IC_type == Mach800) then
                    U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
-                elseif (IC_type == DoubleMach800) then
-                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+!!$                elseif (IC_type == DoubleMach800) then
+!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
                 endif
              endif
 
-             
-             if (IC_type == DoubleMach800) then
-                ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
-                !    -- initialize the first interior cells with the jet profile       
-                if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (mesh_y(n) < dy)) then
-                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
-                elseif ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (Ly - mesh_y(n) < dy)) then
-                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
-                endif
-             endif
+             !! NOTE 6/9/21 -- DL: Very weird that the double mach jet fails with the hack
+             !!                while the single mach jet works better in getting the taller
+             !!                and consistent heights with FLASH data WITH the IC hack.
+!!$             if (IC_type == DoubleMach800) then
+!!$                ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
+!!$                !    -- initialize the first interior cells with the jet profile       
+!!$                if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (mesh_y(n) < dy)) then
+!!$                   ! bottom
+!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+!!$                elseif ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (Ly - mesh_y(n) < dy)) then
+!!$                   ! top
+!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
+!!$                endif
+!!$             endif
              
 
           else if (IC_type == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
