@@ -6,8 +6,9 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/RMI/rmi_gp3rd_2quad_RK3_nodtRed_cfl0.8_HLLC_1536x256_'
-  !character(100) :: file_slice_x = './plotter/RMI/rmi_slice_x.dat'
+  character(100) :: file='./plotter/DMR/dmr_gp3_2quad_RK3_nodtRed_cfl0.8_800x200_'
+  !character(100) :: file_slice_x = 'output/slice_x.dat'
+
 
 
   ! Time integration
@@ -31,23 +32,24 @@ module parameters
 
 
   integer :: dim = 2
-  
+
+
   ! Mesh parameter
-  integer , parameter :: ngc = 4  ! Number of ghost cells
-  integer,  parameter :: lf = 1536 !768 ! Number of cell in the x direction
-  integer,  parameter :: nf = 256  !128 ! Number of cell in the y direction
+  integer , parameter  :: ngc = 3 ! Number of ghost cells
+  integer,  parameter :: lf = 800 ! Number of cell in the x direction
+  integer,  parameter :: nf = 200  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 768 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 128 !
+  integer,  parameter :: lf0 = 800 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 200 !
   
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = RMI
-  real(PR), parameter :: tmax = 2.0
+  integer, parameter  :: IC_type = DMR
+  real(PR), parameter :: tmax = 0.25
   integer, parameter  :: nmax = 1000000000    ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 6.           ! Length of the domain in the x-direction
+  real(16), parameter :: Lx_16 = 4.           ! Length of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.           ! Length of the domain in the y-direction
-  integer, parameter  :: BC_type = RMI_BC     ! Boundary conditions
+  integer, parameter  :: BC_type = DMR     ! Boundary conditions
 
 
 

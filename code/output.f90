@@ -19,7 +19,8 @@ contains
 
 
     if (dir == dir_x) then
-       open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
+!!$       open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
+       open(50, file = trim(adjustl(file))//'slice_x.dat', form ='formatted')
        do l = 1, lf
           uprim = conservative_to_primitive(U(1:4,l,nf/2))
 
