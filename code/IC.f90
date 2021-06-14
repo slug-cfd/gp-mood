@@ -337,11 +337,11 @@ contains
     ymin = (x-xmin)*sqrt(3.)
 
     if (y > ymin) then
-       !in the shock region
+       !in the shocked region (left)
        r(:) = primitive_to_conservative((/8. , 7.1447096 , -4.125  , 116.5/))
 
     else
-       !outside shock
+       !outside the shocked region (right)
        r(:) = primitive_to_conservative((/1.4 , 0.0, 0.0  , 1.0/))
 
     end if

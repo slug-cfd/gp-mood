@@ -107,7 +107,7 @@ contains
                       if ( Mm > dx**3 ) then
 
                          if ((Uout(rho,l,n) > Maxlocal ).or.(Uout(rho,l,n) < minlocal)) then
-
+                            
                             decrease(l,n) = .true.
 
                             if (U2) then
@@ -192,6 +192,8 @@ contains
              end if
 
           end if
+
+
 
           if (decrease(l,n) .eqv. .false.) then
 

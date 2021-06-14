@@ -276,14 +276,18 @@ contains
        do n = 1-ngc, nf+ngc
           ! Right Dirichlet
           do l = lf+1, lf+ngc
-
-             U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
+             
+             !U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
              !print*,l,n,'R'
+             !DL -- use outflow at x=x_R
+             U(:,l,n) = U(:,lf,n)
           end do
 
           ! Left dirichlet
           do l = 1-ngc,0
-             U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
+             !U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
+             !DL -- use inflow at x=x_L
+             U(:,l,n) = primitive_to_conservative((/8. , 7.1447096 , -4.125  , 116.5/))
              !print*,l,n,'L'
           end do
 
