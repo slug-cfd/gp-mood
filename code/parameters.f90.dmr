@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/DMR/dmr_gp3_2quad_RK3_nodtRed_cfl0.8_800x200_'
+  character(100) :: file='./plotter/DMR/dmr_gp7_4quad_RK3_nodtRed_cfl0.8_800x200_'
   !character(100) :: file_slice_x = 'output/slice_x.dat'
 
 
@@ -20,8 +20,8 @@ module parameters
   integer,  parameter :: space_method   = GP_MOOD
   logical, parameter ::  cross_stencil  = .false.
   logical, parameter ::  sphere_stencil = .true.
-  integer , parameter :: Mord= 3  ! Order
-  integer , parameter :: ngp = 2  ! Number of gaussian quadrature points per edges (somehow, pol_mood should use ngp=2)
+  integer , parameter :: Mord= 7  ! Order
+  integer , parameter :: ngp = 4  ! Number of gaussian quadrature points per edges (somehow, pol_mood should use ngp=2)
   
   ! flux method
   integer, parameter :: numFlux = HLLC
@@ -35,7 +35,7 @@ module parameters
 
 
   ! Mesh parameter
-  integer , parameter  :: ngc = 3 ! Number of ghost cells
+  integer , parameter  :: ngc = 4 ! Number of ghost cells
   integer,  parameter :: lf = 800 ! Number of cell in the x direction
   integer,  parameter :: nf = 200  ! Number of cell in the y direction
 
