@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/DblMach800-800_GP5th_3quad_RK3_cfl0.8_HLL_600_'
+  character(100) :: file='./plotter/Mach800/dblmach800-800_GP3_2quad_RK3_cfl0.8_HLL_600_new_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
@@ -17,8 +17,8 @@ module parameters
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 5  ! Order
-  integer, parameter :: ngp = 3  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
 
   ! flux method
@@ -26,7 +26,7 @@ module parameters
 
   ! IO parameter
   integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 3.e-3 ! (this is the default way to dump output files; put a positive number to use)
+  real(PR), parameter:: IO_freqTime = 1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
@@ -42,7 +42,7 @@ module parameters
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = DoubleMach800
-  real(PR), parameter :: tmax = 0.06 !balsara says 0.003 for 3.2 mach 100 light jet but it seems to be a typo and should be 0.003 (correction: i was using mach 1600)
+  real(PR), parameter :: tmax = 6.E-3 !balsara says 0.003 for 3.2 mach 100 light jet but it seems to be a typo and should be 0.003 (correction: i was using mach 1600)
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction

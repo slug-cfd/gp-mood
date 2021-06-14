@@ -6,10 +6,10 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/2DRP_C3/2drp_GP3rd_2quad_RK4_noDtRed_cfl0.8_HLLC_400_'
+  character(100) :: file='./plotter/2DRP_C3/2drp_GP5th_3quad_RK4_noDtRed_cfl0.45_HLLC_400_'
   character(100) :: file_slice_x = './plotter/2DRP_C3/slice_x.dat'
 
-  real(PR), parameter :: CFL  =  0.8
+  real(PR), parameter :: CFL  =  0.45
   integer , parameter :: time_method    = SSP_RK4
   logical , parameter :: dt_reduction = .false.
 
