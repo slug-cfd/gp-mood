@@ -30,4 +30,4 @@ contains
     Uout = 0.5*(Uin+Uout)
   end subroutine
 
-end module
+end module mod_SSP_RK2

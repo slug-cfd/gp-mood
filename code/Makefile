@@ -1,3 +1,10 @@
+### NOTE -- DL: IT'S ALWAYS SAFE TO DO (8/18/2021)
+### >> MAKE CLEAN FIRST AND THEN MAKE (E.G., MAKE CLEAN && MAKE)
+
+## NOTE -- DL: (8/19/21): added a new command (https://stackoverflow.com/questions/816370/how-do-you-force-a-makefile-to-rebuild-a-target)
+### >>> make new
+### this will clean and make
+
 FC = gfortran
 
 ## Choix des options de compilation ##
@@ -9,18 +16,24 @@ FC = gfortran
 FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3
 ## Ensemble des fichiers à supprimer lors du make clean ##
 OBJS = *.o *.mod *~
-
+.PHONY: clean
 
 ## Nom de l'exécutable##
 EXEC = gp_mood.exe
-
-OUTPUTLOG = ./plotter/Isentropic/isen_GP3rd_2quad_RK3_nodtRed_cfl0.8_HLLC_Lx20_400_ell_1.0_cross.log
+ 
+#OUTPUTLOG = ./plotter/Isentropic/isen_GP7th_4quad_RK4_dtRed_cfl0.8_HLLC_Lx20_400_ell_1.0_cross.log
 #OUTPUTLOG = ./plotter/ShuOsher/shuosher1d_GP7th_1quad_RK4_nodtRed_cfl0.8_HLLC_256.log
-#OUTPUTLOG = ./plotter/Mach800/DblMach800-800_GP3rd_2quad_RK3_cfl0.8_HLL_600.log
-#OUTPUTLOG = ./plotter/2DRP_C3/2drp_GP3rd_2quad_RK4_noDtRed_cfl0.8_HLLC_400.log
+#OUTPUTLOG = ./plotter/Mach800/dblmach800-800_GP3_2quad_RK3_cfl0.8_HLL_600x600_new.log
+#OUTPUTLOG = ./plotter/Mach800//mach100_GP7_4quad_RK3_cfl0p8_HLL_600x600_new.log
+#OUTPUTLOG = ./plotter/2DRP_C3/2drp_GP3rd_2quad_RK4_noDtRed_cfl0.45_HLLC_400.log
 #OUTPUTLOG = ./plotter/Implosion/implosion_GP5th_3quad_RK3_nodtRed_cfl0.8_HLLC_400.log
-#OUTPUTLOG = ./plotter/RMI/rmi_gp5th_3quad_RK3_nodtRed_cfl0.8_HLLC_2400x400.log
+#OUTPUTLOG = ./plotter/Implosion/implosion_GP3_2quad_RK3_cfl0.8_HLLC_400_noA_PrioriCheck.log
+#OUTPUTLOG = ./plotter/RMI/rmi_gp3_2quad_RK3_nodtRed_cfl0.8_HLLC_1536x256.log
 #OUTPUTLOG = ./plotter/Sedov/sedov_GP7th_4quad_rk4_noDtRed_cfl0.8_hllc_256.log
+OUTPUTLOG = ./plotter/Sedov/sedov_pol1_1quad_rk3_noDtRed_cfl0.5_hllc_128_CSD.log
+#OUTPUTLOG = ./plotter/DMR/dmr_gp7_4quad_RK3_nodtRed_cfl0.8_800x200_gc4.log
+#OUTPUTLOG = ./plotter/Sedov/sedov_gp5th_2quad_rk3_noDtRed_cfl0.95_hllc_256_CFL-TESTING.log
+#OUTPUTLOG = ./plotter/Isentropic/pol-mood3_2quad_RK3_cfl0p6_HLLC_Lx20_400.log
 
 $(EXEC):  constants.o \
 	parameters.o \
@@ -49,7 +62,7 @@ $(EXEC):  constants.o \
 	output.o  \
 	main.o ## Liste des modules puis programmes à compiler ##
 	$(FC) -o  $(EXEC) $^
-	./$(EXEC) > $(OUTPUTLOG) & ## Commande exécutant automatiquement le programme ##
+	./$(EXEC) #> $(OUTPUTLOG) & ## Commande exécutant automatiquement le programme ##
 	@echo ''
 	@echo ' ================================================== '
 	@echo '  Output log file is written in' $(OUTPUTLOG) 
@@ -66,3 +79,7 @@ $(EXEC):  constants.o \
 
 clean:
 	rm -f $(OBJS)
+
+## run "make new" instead of "make"
+new: clean
+	$(MAKE)

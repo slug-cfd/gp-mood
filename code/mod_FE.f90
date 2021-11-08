@@ -29,7 +29,7 @@ contains
 
 
     count_FE = 0
-    CellGPO   =  Mord
+    CellGPO   =  Mord; !print*,'cellGPO from mod_FE.f90', Mord
     DetCell   = .true.
     DetFace_x = .true.
     DetFace_y = .true.

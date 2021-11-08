@@ -39,7 +39,7 @@ contains
     count = 0
 
     !! initialize DMP here
-    DMP = .false.
+    DMP = .true.
     threshold1 = 5.0
     threshold2 = threshold1
 
@@ -79,14 +79,14 @@ contains
                    pT = pressure(Uin(1:4,l,  n+1))
                    gradP = 0.5*(abs(pR-pL)/min(pL,pR)/dx + abs(pT-pB)/min(pB,pT)/dy)
 
-                   !print*,'at cell',l,n,' divV =',divV
-                   if (divV < -threshold2 .and. gradP > threshold1) then
+!!$                   !print*,'at cell',l,n,' divV =',divV
+!!$                   if (divV < -threshold2 .and. gradP > threshold1) then
 !!$   DMP = .true.
 !!$else
 !!$   DMP = .false.
 !!$endif
 
-                      !               if ( (DMP) ) then
+                   if ( (DMP) ) then
 
                       UB = Uin(rho,l,n-1)
                       UL = Uin(rho,l-1,n)
@@ -104,6 +104,7 @@ contains
 
                       Mm = Maxlocal-Minlocal
 
+                      !! Plateau detection
                       if ( Mm > dx**3 ) then
 
                          if ((Uout(rho,l,n) > Maxlocal ).or.(Uout(rho,l,n) < minlocal)) then
