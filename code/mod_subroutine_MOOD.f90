@@ -63,13 +63,18 @@ contains
 
 
                    !! first shock-detector
+                   !! nabla \cdot (rho U) = (rho \nabla \cdot U) + (U \cdot \nabla rho)
+                   !! ==> \nabla \cdot U = [\nabla \cdot (rho U)]/rho - (U \cdot \nabla rho)/rho
                    divV = (Uin(momx,l+1,n  ) - Uin(momx,l-1,n  ))/dx &
                         + (Uin(momy,l,  n+1) - Uin(momy,l,  n-1))/dy
 
+                   !! [nabla \cdot (rho U)]/rho
                    divV = 0.5*divV/Uin(rho,l,n)
+
+                   !! [nabla \cdot (rho U)]/rho - (U \cdot \nabla rho)/rho from 
                    divV = divV - 0.5*(Uin(momx,l,n)*(Uin(rho,l+1,n  ) - Uin(rho,l-1,n  ))/dx &
-                        +Uin(momy,l,n)*(Uin(rho,l,  n+1) - Uin(rho,l,  n-1))/dy)&
-                        /Uin(rho, l,n)**2
+                                     +Uin(momy,l,n)*(Uin(rho,l,  n+1) - Uin(rho,l,  n-1))/dy)&
+                                     /Uin(rho, l,n)**2
 
 
                    !! second shock-detector
