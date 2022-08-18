@@ -30,7 +30,8 @@ contains
 
     integer :: l, n, i, j, count, k, ord, ord_derr
 
-    real(PR) :: divV, gradP, pL, pR, pT, pB, threshold1, threshold2
+    real(PR) :: divV, gradP, pL, pR, pT, pB, threshold1, threshold2, Ca, Mach
+    !!real(PR) :: Mach
 
 
     MOOD_finished = .true.
@@ -41,8 +42,9 @@ contains
     !! initialize DMP here
     DMP = .true.
     threshold1 = 5.0
+    !threshold2 = max(dx**2, dy**2) !threshold1
     threshold2 = threshold1
-
+    
     call Boundary_C(Uout)
 
 
@@ -76,6 +78,15 @@ contains
                                      +Uin(momy,l,n)*(Uin(rho,l,  n+1) - Uin(rho,l,  n-1))/dy)&
                                      /Uin(rho, l,n)**2
 
+                   !! define sound speed
+                   Ca = 1.4*pressure(Uin(1:4,l,n))/Uin(rho,l,n)
+                   !Ca = sqrt(Ca)
+                   ! threshold2 = 1.e2
+
+                   !! local Mach number
+                   Mach =  (Uin(momx,l,n)**2 + Uin(momy,l,n)**2)/Uin(rho,l,n)**2
+                   Mach = sqrt(Mach/Ca)
+                   
 
                    !! second shock-detector
                    pL = pressure(Uin(1:4,l-1,n  ))
@@ -84,12 +95,52 @@ contains
                    pT = pressure(Uin(1:4,l,  n+1))
                    gradP = 0.5*(abs(pR-pL)/min(pL,pR)/dx + abs(pT-pB)/min(pB,pT)/dy)
 
-!!$                   !print*,'at cell',l,n,' divV =',divV
-!!$                   if (divV < -threshold2 .and. gradP > threshold1) then
-!!$   DMP = .true.
-!!$else
-!!$   DMP = .false.
-!!$endif
+                   !print*,'at cell',l,n,' divV =',divV
+
+
+                   !if (divV < -threshold2*Ca/dx*0.5 .and. gradP > threshold1) then
+
+                  
+                   !! This is the *OLD* CSD check
+                   if (divV < -threshold2 .and. gradP > threshold1) then
+                      !print*, Mach
+                      DMP = .true.
+                   else
+                      DMP = .false.
+                   endif
+                
+
+!!$                   print*,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+!!$                   print*,'l,n=',l,n
+!!$                   print*,'divV =', divV
+!!$                   print*,'Mach =', Mach
+!!$                   print*,'gradP=', gradP
+!!$                   print*,'==========================================='
+!!$
+                   !! DL -- 8/14/22
+                   !! It's very weird that in 1D shock tube (Sod, Shu-Osher), even though
+                   !! they are solved in 2D in x-direction, DMP order reduction never happens.
+                   !! Shu-Osher looks "ok" without reduction, but Sod looks a bit oscillatory;
+                   !! We've been lucky that we thought it was reducing orders until now;
+                   !! In 1D shock tubes, we are using \ell = 6\Delta;
+                   !! At this point, we will leave more investigation for a near future task
+                   !! and wrap up the study and submit a paper.
+                   !!
+                   !! DL -- 8/15/22
+                   !! Well, Sod 1D in a 256x256 2D domain does drop the order from 3 to 1
+                   !! exactly at the shock. This means that CDS works in the new form
+                   !! but not sufficient to suppress the oscillations at the tail of
+                   !! the rarefaction and at the post shock regions.
+                  
+!!$                   if (divV < -(max(dx,dy))**2 .and. Mach > 0.2 .and. gradP > threshold1) then
+!!$                      !if (divV < 0. .and. Mach > 0.2 ) then !.and. gradP > threshold1) then
+!!$!$                      print*,'We are in'
+!!$!$                      stop
+!!$                      DMP = .true.
+!!$                   else
+!!$                      DMP = .false.
+!!$                   endif
+
 
                    if ( (DMP) ) then
 

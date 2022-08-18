@@ -6,18 +6,18 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/2DRP_C3/2drp_GP5th_3quad_RK4_noDtRed_cfl0p8_HLLC_400_noCSD_'
+  character(100) :: file='./plotter/2DRP_C3/2drp_pol-mood3_2quad_RK3_noDtRed_cfl0p8_HLLC_400_noCSD_'
   character(100) :: file_slice_x = './plotter/2DRP_C3/slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method    = SSP_RK4
+  integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
-  integer, parameter :: space_method   = GP_MOOD
-  logical, parameter :: cross_stencil  = .false.
-  logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 5  ! Order
-  integer, parameter :: ngp = 3  ! Number of gaussian quadrature points per edges
+  integer, parameter :: space_method   = POL_MOOD
+  logical, parameter :: cross_stencil  = .true.
+  logical, parameter :: sphere_stencil = .false.
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
 
   ! flux method

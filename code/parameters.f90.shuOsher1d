@@ -6,23 +6,22 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/ShuOsher/shuosher1d_pol3rd_1quad_RK3_nodtRed_cfl0.8_HLLC_4096_'
-  character(100) :: file_slice_x = './plotter/ShuOsher/shuosher1d_order3_poly.dat'
-
+  character(100) :: file='./plotter/ShuOsher/shuosher1d_GP3rd_1quad_RK3_nodtRed_cfl0.8_HLLC_256_'
+  character(100) :: file_slice_x = './plotter/ShuOsher/shuosher1d.dat'
 
   ! Time integration
-
   real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
   ! Space integration
-  integer,  parameter :: space_method   = pol_MOOD
-  logical, parameter ::  cross_stencil  = .true.
-  logical, parameter ::  sphere_stencil = .false.
-  integer , parameter :: Mord= 3  ! Order
-  integer , parameter :: ngp = 2  ! Number of gaussian quadrature points per edges (somehow, pol_mood should use ngp=2)
-  
+  integer, parameter :: space_method   = GP_MOOD
+  logical, parameter :: cross_stencil  = .true.
+  logical, parameter :: sphere_stencil = .false.
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 1  ! Number of gaussian quadrature points per edges (somehow, pol_mood should use ngp=2)
+
+
   ! flux method
   integer, parameter :: numFlux = HLLC
 
@@ -33,13 +32,14 @@ module parameters
 
   integer :: dim = 1
   
+  
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 4096 ! Number of cell in the x direction
+  integer,  parameter :: lf = 256 ! Number of cell in the x direction
   integer,  parameter :: nf = 1   ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 128 ! Number of cell in the x direction
+  integer,  parameter :: lf0 = 256 ! Number of cell in the x direction
   integer,  parameter :: nf0 = 1   ! Number of cell in the y direction
 
 

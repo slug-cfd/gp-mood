@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/DMR/dmr_gp3_2quad_RK3_nodtRed_cfl0p8_800x200_'
+  character(100) :: file='./plotter/DMR/dmr_pol-mood3_2quad_RK3_nodtRed_cfl0p8_800x200_'
   !character(100) :: file_slice_x = 'output/slice_x.dat'
 
 
@@ -17,7 +17,7 @@ module parameters
   logical , parameter :: dt_reduction = .false.
 
   ! Space integration
-  integer,  parameter :: space_method   = GP_MOOD
+  integer,  parameter :: space_method   = POL_MOOD
   logical, parameter ::  cross_stencil  = .true.
   logical, parameter ::  sphere_stencil = .false.
   integer , parameter :: Mord= 3  ! Order

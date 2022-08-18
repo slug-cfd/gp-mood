@@ -19,8 +19,7 @@ contains
 
 
     if (dir == dir_x) then
-!!$       open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
-       open(50, file = trim(adjustl(file))//'slice_x.dat', form ='formatted')
+       open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
        do l = 1, lf
           uprim = conservative_to_primitive(U(1:4,l,nf/2))
 
@@ -139,12 +138,11 @@ contains
 
   subroutine error()
 
-    real(PR) :: error_1, error_2, int,xx,yy
+    real(PR) :: error_, int,xx,yy
     real(PR), dimension(4) :: sol
     integer :: l,n
 
-    error_1 = 0. !L_1 error
-    error_2 = 0. !L_2 error (newly added for a revision)
+    error_ = 0.
 
 
     do n = 1, nf
@@ -177,15 +175,8 @@ contains
           end if
 
 
-          if( dim ==2) then
-             error_1 = error_1 + abs(sol(1) - U(rho,l,n))*dx*dy ! L_1 error
-             !error_2 = error_2 + sqrt( ( dx*dy*(sol(1) - U(rho,l,n))**2 ) ) ! L_2 error -- this is wrong
-             error_2 = error_2 + (sol(1) - U(rho,l,n))**2
-          endif
-          
-          if( (dim ==1) .and. (n==1)) then
-             error_1 = error_1 + abs(sol(1) - U(rho,l,n))*dx
-          endif
+          if( dim ==2) error_ = error_ + abs(sol(1) - U(rho,l,n))*dx*dy
+          if( (dim ==1) .and. (n==1)) error_ = error_ + abs(sol(1) - U(rho,l,n))*dx
 
 
        end do
@@ -193,20 +184,10 @@ contains
 
     if ( (IC_type == isentropic_vortex) .or.  ( (IC_type == Lin_Gauss_xy) .or.(IC_type == Lin_Gauss_x) )) then
 
-       print*, 'L1 error = ', error_1
-       open (50, file = trim(adjustl(file))//'error_L1.dat', form='formatted',position='append')
-       write(50,*)lf,nf,error_1, error_inversion
+       print*, 'L1 error = ', error_
+       open(50, file = trim(adjustl(file))//'error.dat', form='formatted',position='append')
+       write(50,*)lf,nf,error_, error_inversion
        close(50)
-
-       if (dim == 2) then
-          error_2 = dx*dy*error_2
-          error_2 = sqrt(error_2)
-       endif
-       
-       print*, 'L2 error = ', error_2
-       open (60, file = trim(adjustl(file))//'error_L2.dat', form='formatted',position='append')
-       write(60,*)lf,nf,error_2, error_inversion
-       close(60)
 
     end if
   end subroutine error

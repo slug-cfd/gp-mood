@@ -6,19 +6,19 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Isentropic/isen_GP7_4quad_RK4_cfl0.8_HLLC_Lx20_200_ell_1.0_cross_'
+  character(100) :: file='./plotter/Isentropic/pol-mood3_2quad_RK3_cfl0p8_HLLC_Lx20_200_'
   character(100) :: file_slice_x = './plotter/Isentropic/slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method  = SSP_RK4
+  integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
-  integer, parameter :: space_method   = GP_MOOD
+  integer, parameter :: space_method   = POL_MOOD
   logical, parameter :: cross_stencil  = .true.
   logical, parameter :: sphere_stencil = .false.
-  integer, parameter :: Mord= 7  ! Order
-  integer, parameter :: ngp = 4  ! Number of gaussian quadrature points per edges
+  integer, parameter :: Mord= 3  ! Order
+  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges (somehow, pol_mood should use ngp=2)
 
 
   ! flux method
@@ -34,12 +34,12 @@ module parameters
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
   integer,  parameter :: lf = 200 ! Number of cell in the x direction
-  integer,  parameter :: nf = 200 ! Number of cell in the y direction
+  integer,  parameter :: nf = 200  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
   integer,  parameter :: lf0 = 50 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 50 !
-  
+  integer,  parameter :: nf0 = 50  !
+ 
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = isentropic_vortex

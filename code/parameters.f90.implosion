@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Implosion/implosion_GP3rd_2quad_RK3_cfl0.8_HLLC_400_'
+  character(100) :: file='./plotter/Implosion/implosion_GP7th_4quad_RK3_nodtRed_cfl0p8_HLLC_400_'
   character(100) :: file_slice_x = './plotter/Implosion/slice_x.dat'
 
   ! Time integration
@@ -15,10 +15,10 @@ module parameters
   logical , parameter :: dt_reduction = .false.
 
   integer,  parameter :: space_method   = GP_MOOD
-  logical, parameter ::  cross_stencil = .false.
+  logical, parameter ::  cross_stencil  = .false.
   logical, parameter ::  sphere_stencil = .true.
-  integer , parameter :: Mord= 3  ! Order
-  integer , parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+  integer , parameter :: Mord= 7  ! Order
+  integer , parameter :: ngp = 4  ! Number of gaussian quadrature points per edges
 
   ! flux method
   integer, parameter :: numFlux = HLLC

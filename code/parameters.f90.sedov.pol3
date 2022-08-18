@@ -6,7 +6,7 @@
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Sedov/sedov_GP3rd_2quad_RK3_cfl0p8_HLLC_256_'
+  character(100) :: file='./plotter/Sedov/sedov_pol3_2quad_rk3_noDtRed_cfl0.8_hllc_256_wCSD_'
   character(100) :: file_slice_x = './plotter/Sedov/slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8
@@ -14,9 +14,9 @@
   logical , parameter :: dt_reduction = .false.
 
   ! Space integration
-  integer,  parameter :: space_method   = GP_MOOD
-  logical, parameter ::  cross_stencil = .false.
-  logical, parameter ::  sphere_stencil = .true.
+  integer,  parameter :: space_method   = POL_MOOD
+  logical, parameter ::  cross_stencil = .true.
+  logical, parameter ::  sphere_stencil = .false.
   integer , parameter :: Mord= 3  ! Order
   integer , parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 

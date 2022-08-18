@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/Mach100_GP3_2quad_RK3_cfl0.8_HLL_300x300_deb_'
+  character(100) :: file='./plotter/Mach800/mach100_GP3_2quad_RK3_cfl0p8_HLL_600x600_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
@@ -14,9 +14,9 @@ module parameters
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
-  integer,  parameter :: space_method   = GP_MOOD
-  logical, parameter ::  cross_stencil  = .false.
-  logical, parameter ::  sphere_stencil = .true.
+  integer, parameter :: space_method   = GP_MOOD
+  logical, parameter :: cross_stencil  = .false.
+  logical, parameter :: sphere_stencil = .true.
   integer, parameter :: Mord= 3  ! Order
   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
@@ -32,12 +32,12 @@ module parameters
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 300 ! Number of cell in the x direction
-  integer,  parameter :: nf = 300  ! Number of cell in the y direction
+  integer,  parameter :: lf = 600 ! Number of cell in the x direction
+  integer,  parameter :: nf = 600  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 400 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 800 ! Number of cell in the y direction
+  integer,  parameter :: lf0 = 600 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 600 ! Number of cell in the y direction
 
 
   ! IC, BC and domain setup
