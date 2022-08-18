@@ -11,3 +11,9 @@ To run:
 (4) other parameters.f90.* files are manually copied to parameters.f90
 
 (5) the newest problem added to the code is the mach 800 jet, which seems to have some stability issues (e.g., runs only with cfl = 0.0001 or so)
+
+
+Note (8/17/22)
+(1) a new code was prepared for a revision
+(2) they are all checked in to the repo and the repo is up-to-date as of 8/17/22
+
