@@ -1,0 +1,75 @@
+ ----------------------------------------------------------------------------
+ Simulation parameters : 
+ lf                      =          32
+ nf                      =          32
+ CFL                     =  0.800000012    
+ Lx                      =   10.0000000    
+ Ly                      =   10.0000000    
+ Number of ghost cells   =           4
+ Number of sphere stencil=          13
+ Problem              =isentropic_vortex
+ Boundary Condition   =Periodic
+ Space method         = GP MOOD - Squared exponential kernel
+ Radius =           2
+ \ell =   1.0000000000000000     
+ stencil shape      =sphere
+ \ell/dx              =   3.20000005    
+  Number au gaussian point per edge =           2
+ time method          = SSP_RK4
+  The time step is reduced to match 5th order
+ output directory:./plotter/Isentropic/isen_GP5th_2quad_RK4_dtRed_cfl0.8_HLLC_32_ell_1.0_                             
+  Error in the inversion of the main kernel matrix of order           1 =   0.00000000     must be close to 0
+  Error in the inversion of the main kernel matrix of order           3 =   3.03224851E-32 must be close to 0
+  Error in the inversion of the main kernel matrix of order           5 =   3.66820321E-29 must be close to 0
+ ----------------------------------------------------------------------------
+ nstep =            1 |time =    1.0000000000000000E-010 |(dt, cfl_dt)=   2.0000000000000001E-010   8.5899951815303743E-002 |   100.000000     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           10 |time =    1.0230000000000001E-007 |(dt, cfl_dt)=   1.0240000000000000E-007   8.6029424788476652E-002 |   100.000000     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           20 |time =    1.0485750000000001E-004 |(dt, cfl_dt)=   1.0485760000000000E-004   8.5870289523046289E-002 |   99.9989548     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           30 |time =   0.10737418230000001      |(dt, cfl_dt)=  0.10737418240000000        8.6044625707609984E-002 |   98.9262619     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           40 |time =   0.96753454136393313      |dt=   8.5985022281452939E-002 |   90.3246536     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           50 |time =    1.8281884030918381      |dt=   8.6192759877019937E-002 |   81.7181168     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           60 |time =    2.6886706517804964      |dt=   8.6018280897485352E-002 |   73.1132965     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           70 |time =    3.5491173019181370      |dt=   8.6078423453471942E-002 |   64.5088272     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =           80 |time =    4.4093074582064498      |dt=   8.5917452590694943E-002 |   55.9069252     % done
+  % of detected cell at the last iteration =    0.00000000    
+ 
+ ======================================================================
+    A new output has been written, file number=          86
+    Output directory:./plotter/Isentropic/isen_GP5th_2quad_RK4_dtRed_cfl0.8_HLLC_32_ell_1.0_                             
+ ======================================================================
+ 
+ nstep =           90 |time =    5.2695671510116631      |dt=   8.6120359250456066E-002 |   47.3043289     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =          100 |time =    6.1296513380575703      |dt=   8.5980415248673836E-002 |   38.7034874     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =          110 |time =    6.9900333169915552      |dt=   8.6139698296642531E-002 |   30.0996666     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =          120 |time =    7.8504782844847965      |dt=   8.6037781539150648E-002 |   21.4952164     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =          130 |time =    8.7112127396504171      |dt=   8.6162917287395557E-002 |   12.8878727     % done
+  % of detected cell at the last iteration =    0.00000000    
+ nstep =          140 |time =    9.5720724537282269      |dt=   8.5990086878279012E-002 |   4.27927542     % done
+  % of detected cell at the last iteration =    0.00000000    
+ 
+ ======================================================================
+    A new output has been written, file number=         144
+    Output directory:./plotter/Isentropic/isen_GP5th_2quad_RK4_dtRed_cfl0.8_HLLC_32_ell_1.0_                             
+ ======================================================================
+ 
+ time =    10.000000000000000      dt=   8.3473995666945910E-002
+ Res time =   0.43770199999999998     
+ 
+ ======================================================================
+    A new output has been written, file number=         145
+    Output directory:./plotter/Isentropic/isen_GP5th_2quad_RK4_dtRed_cfl0.8_HLLC_32_ell_1.0_                             
+ ======================================================================
+ 
+ L1 error =    3.4687040286497313     
