@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-
 import sys
 from colors import *
+
+torch.set_default_dtype(torch.float32) #single precision
 
 #input types
 raw_VF_data=0
@@ -19,6 +20,8 @@ class radius_picker(nn.Module):
     def __init__(self, max_radius, nb_layers, layer_sizes, input_type=raw_VF_data, n_var_used=n_var_hydro_2D):
 
         super(radius_picker, self).__init__()
+
+        print("\n")
 
         print("Initializing a radius picker neural network")
         self.max_radius=max_radius
@@ -56,7 +59,7 @@ class radius_picker(nn.Module):
             print(colors.red+"Error, expected", nb_layers-1, "layer sizes, got", len(layer_sizes))
             sys.exit()
 
-        self.layers=[]
+        self.layers=nn.ModuleList()
         self.nb_layers=nb_layers
         
         print("initializing", nb_layers,"layers")
@@ -72,6 +75,14 @@ class radius_picker(nn.Module):
         k_layer=nb_layers-1
 
         print(k_layer, "th layer has I/O size:", layer_sizes[nb_layers-2], self.output_size)
+
+        # Count the number of parameters
+        num_params = sum(p.numel() for p in self.parameters())
+
+        # Print the number of parameters
+        print(colors.yellow+f"Number of parameters: {num_params}"+colors.ENDC)
+
+        print("\n")
 
     def forward(self, x): #Feed forward function
 
@@ -92,12 +103,15 @@ class radius_picker(nn.Module):
 
         return R.item(), p.item()
 
-NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[40,40], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+
+
+
+NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[40,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
 batch_size=2
 data=torch.rand((batch_size, NN.input_size)) #some random data
 
-print(NN.forward(data)) #print the result of the NN 
+print(NN.forward(data)) #print the result of the NN of that data
 
-R,p=NN.pick_radius(data, 1) #Pick a radius for the first data of the batch
+R,p=NN.pick_radius(data, 1) #Pick a radius for the #1 data of the batch
 print("Radius", R , "picked with probability", p)
