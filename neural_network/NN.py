@@ -18,6 +18,7 @@ n_var_hydro_2D=4
 class radius_picker(nn.Module):
 
     def __init__(self, max_radius, nb_layers, layer_sizes, input_type=raw_VF_data, n_var_used=n_var_hydro_2D):
+        self.init_parameters = max_radius, nb_layers, layer_sizes, input_type, n_var_used
 
         super(radius_picker, self).__init__()
 
@@ -102,16 +103,35 @@ class radius_picker(nn.Module):
         R = torch.argmax(R)
 
         return R.item(), p.item()
+    
+    def save(self, file='NN.pt'):
+        print(colors.yellow+"... Saving the NN in file ...", file)
+        torch.save(self.state_dict(), file)
+        print(colors.green+"Saved the NN in file", file, colors.ENDC)
+
+    def load(self, file):
+        print(colors.yellow+"... Loading the NN from file ...", file)
+        self.load_state_dict(torch.load(file))
+        print(colors.green+"Loaded the NN from file", file, colors.ENDC)
 
 
 
 
-NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[40,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+
+
+NN=radius_picker(max_radius=3, nb_layers=5, layer_sizes=[40,10,90,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
 batch_size=2
 data=torch.rand((batch_size, NN.input_size)) #some random data
 
-print(NN.forward(data)) #print the result of the NN of that data
+print("NN output =", NN.forward(data)) #print the result of the NN of that data
 
 R,p=NN.pick_radius(data, 1) #Pick a radius for the #1 data of the batch
 print("Radius", R , "picked with probability", p)
+
+#testing save and load
+NN.save("backup.pt") #saving NN
+NN2=radius_picker(*NN.init_parameters) #Declaring a new NN with the same parameter
+print("NN2 output before loading NN =", NN2.forward(data)) 
+NN2.load("backup.pt")
+print("NN2 output after loading NN = ",NN2.forward(data), "should be the same as the first output")
