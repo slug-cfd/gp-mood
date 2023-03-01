@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/SO'
+  character(100) :: file='./output_R1ell6/SS2D'
   character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
@@ -36,21 +36,21 @@ module parameters
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
   integer,  parameter :: lf = 256 ! Number of cell in the x direction
-  integer,  parameter :: nf = 256  ! Number of cell in the y direction
+  integer,  parameter :: nf = 256 ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 1024 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 1024 ! Number of cell in the y direction
+  integer,  parameter :: lf0 = 256 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 256 ! Number of cell in the y direction
 
 
 
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = Shu_Osher_rotated
-  real(PR), parameter :: tmax = 1.8
+  integer, parameter  :: IC_type = SlowShock
+  real(PR), parameter :: tmax = 1.0 !0.2
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 28.2842712474619!Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 28.2842712474619!Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Periodic! Boundary conditions
+  real(16), parameter :: Lx_16 = 20.0 !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 20.0 !Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = Neumann! Boundary conditions
 
 
 
@@ -69,7 +69,7 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
+  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell
 
 
 end module

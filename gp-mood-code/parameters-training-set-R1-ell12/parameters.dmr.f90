@@ -66,6 +66,6 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
+  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell
 
 end module

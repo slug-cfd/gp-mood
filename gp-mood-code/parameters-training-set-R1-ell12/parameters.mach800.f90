@@ -6,7 +6,8 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/Mach800800'
+  character(100) :: file='./output_R1ell6/Mach800'
+  character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
@@ -25,8 +26,7 @@ module parameters
 
   ! IO parameter
   integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
-
+  real(PR), parameter:: IO_freqTime = -1.e-2  ! (this is the default way to dump output files; put a positive number to use)
 
   integer :: dim = 2
 
@@ -39,13 +39,14 @@ module parameters
   integer,  parameter :: lf0 = 600 ! Number of cell in the x direction
   integer,  parameter :: nf0 = 600 ! Number of cell in the y direction
 
+
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = DoubleMach800
-  real(PR), parameter :: tmax = 6.E-3 !balsara says 0.003 for 3.2 mach 100 light jet but it seems to be a typo and should be 0.003 (correction: i was using mach 1600)
+  integer, parameter  :: IC_type = Mach800
+  real(PR), parameter :: tmax = 6.E-3
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = DoubleMach800_BC! Boundary conditions
+  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
 
 
   integer , parameter :: radius = (Mord -1)/2
@@ -54,7 +55,7 @@ module parameters
 
 
 
- ! MOOD Parameters, leave to true; don't change 
+  ! MOOD Parameters, leave to true
   logical, save :: DMP
   logical , parameter :: U2         = .true.
   logical , parameter :: U2_tol     = .true.
@@ -64,7 +65,7 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
+  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell !12*(1./100)!/ell
 
 
 

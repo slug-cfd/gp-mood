@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/Sod2D'
+  character(100) :: file='./output_R1ell6/isentropic_vortex'
   character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
@@ -14,7 +14,6 @@ module parameters
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
-  ! Space integration
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
@@ -26,12 +25,11 @@ module parameters
   integer, parameter :: numFlux = HLLC
 
   ! IO parameter
-  integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
+  integer, parameter :: IO_freqStep = -1    ! (put a positive number to use, e.g., 500)
+  real(PR), parameter:: IO_freqTime = -1.0 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
-
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
@@ -39,27 +37,26 @@ module parameters
   integer,  parameter :: nf = 256 ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 256 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 256 ! Number of cell in the y direction
-
-
+  integer,  parameter :: lf0 = 50 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 50 !
+  
 
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = Sodx
-  real(PR), parameter :: tmax = 0.2 !0.2
+  integer, parameter  :: IC_type = isentropic_vortex
+  real(PR), parameter :: tmax = 20. !20.
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 1.0 !Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 1.0 !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Neumann! Boundary conditions
-
-
+  real(16), parameter :: Lx_16 = 20.!20. !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 20.!20. !Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = Periodic ! Boundary conditions
+  
 
   integer , parameter :: radius = (Mord -1)/2
   integer , parameter :: sz_sphere = min( (2*Mord - 1 + 4*(radius - 1)**2), 25)
   integer , parameter :: sz_cross = 2*Mord-1
 
 
-  ! MOOD Parameters, leave to true; don't change 
+
+ ! MOOD Parameters, leave to true; don't change 
   logical, save :: DMP
   logical , parameter :: U2         = .true.
   logical , parameter :: U2_tol     = .true.
@@ -69,7 +66,11 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
+  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell
 
-
-end module
+!!$  if ((space_method == FOG) .and. (ngp .ne. 1)) then
+!!$     print*, 'FOG should use ngp = 1'
+!!$     stop
+!!$  endif
+  
+end module parameters
