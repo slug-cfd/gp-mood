@@ -6,7 +6,8 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Mach800/mach100_GP3_2quad_RK3_cfl0p8_HLL_600x600_'
+  !character(100) :: file='./plotter/Mach800/Mach100fixedIC_GP5th_2quad_RK3_cfl0.8_HLL_600_'
+  character(100) :: file='./plotter/Mach800/TEST_'
   character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
 
   ! Time integration
@@ -22,31 +23,32 @@ module parameters
 
 
   ! flux method
-  integer, parameter :: numFlux = HLL
+  integer, parameter :: numFlux = HLLC
 
   ! IO parameter
-  integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 1.e-2  ! (this is the default way to dump output files; put a positive number to use)
+  integer, parameter :: IO_freqStep = 10    ! (put a positive number to use, e.g., 500)
+  real(PR), parameter:: IO_freqTime = 3.e-3 ! (this is the default way to dump output files; put a positive number to use)
+
 
   integer :: dim = 2
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 600 ! Number of cell in the x direction
-  integer,  parameter :: nf = 600  ! Number of cell in the y direction
+  integer,  parameter :: lf = 256 ! Number of cell in the x direction
+  integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 600 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 600 ! Number of cell in the y direction
+  integer,  parameter :: lf0 = 300 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 300 ! Number of cell in the y direction
 
 
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = Mach800
-  real(PR), parameter :: tmax = 0.04
+  integer, parameter  :: IC_type = DoubleMach800
+  real(PR), parameter :: tmax = 0.06 !balsara says 0.003 for 3.2 mach 100 light jet but it seems to be a typo and should be 0.003 (correction: i was using mach 1600)
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
+  integer, parameter  :: BC_type = DoubleMach800_BC! Boundary conditions
 
 
   integer , parameter :: radius = (Mord -1)/2
@@ -55,7 +57,7 @@ module parameters
 
 
 
-  ! MOOD Parameters, leave to true
+ ! MOOD Parameters, leave to true; don't change 
   logical, save :: DMP
   logical , parameter :: U2         = .true.
   logical , parameter :: U2_tol     = .true.
@@ -65,7 +67,7 @@ module parameters
   integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
   real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
 
-  real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell !12*(1./100)!/ell
+  real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
 
 
 

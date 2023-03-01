@@ -6,57 +6,52 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/ShuOsher/shuosher_GP5th_ell6_3quad_RK4_DtRed_cfl0.8_HLLC_1024_'
-  character(100) :: file_slice_x = './plotter/ShuOsher/slice_x.dat'
+  character(100) :: file='./plotter/Implosion/implosion_GP7th_4quad_RK3_nodtRed_cfl0p8_HLLC_400_'
+  character(100) :: file_slice_x = './plotter/Implosion/slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method  = SSP_RK3
+  integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
-  ! Space integration
-  integer, parameter :: space_method   = GP_MOOD
-  logical, parameter :: cross_stencil  = .false.
-  logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 3  ! Order
-  integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
-
+  integer,  parameter :: space_method   = GP_MOOD
+  logical, parameter ::  cross_stencil  = .false.
+  logical, parameter ::  sphere_stencil = .true.
+  integer , parameter :: Mord= 3  ! Order
+  integer , parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
   ! flux method
   integer, parameter :: numFlux = HLLC
 
   ! IO parameter
   integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 1.e-3 ! (this is the default way to dump output files; put a positive number to use)
+  real(PR), parameter:: IO_freqTime = -1.e0 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
 
-
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 1024 ! Number of cell in the x direction
-  integer,  parameter :: nf = 1024  ! Number of cell in the y direction
+  integer,  parameter :: lf = 256 ! Number of cell in the x direction
+  integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 1024 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 1024 ! Number of cell in the y direction
-
-
+  integer,  parameter :: lf0 = 400 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 400 ! Number of cell in the y direction
 
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = Shu_Osher_rotated
-  real(PR), parameter :: tmax = 1.8
+  integer, parameter  :: IC_type = implosion
+  real(PR), parameter :: tmax = 2.5
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 28.2842712474619!Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 28.2842712474619!Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Periodic! Boundary conditions
-
+  real(16), parameter :: Lx_16 = 0.3 !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 0.3 !Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = reflective! Boundary conditions
 
 
   integer , parameter :: radius = (Mord -1)/2
   integer , parameter :: sz_sphere = min( (2*Mord - 1 + 4*(radius - 1)**2), 25)
   integer , parameter :: sz_cross = 2*Mord-1
+
 
 
   ! MOOD Parameters, leave to true; don't change 
@@ -71,5 +66,4 @@ module parameters
 
   real(16), parameter :: l_16 = 6.*min(dx_16,dy_16) !/ell
 
-
-end module
+end module parameters
