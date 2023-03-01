@@ -27,7 +27,7 @@ module parameters
 
   ! IO parameter
   integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
-  real(PR), parameter:: IO_freqTime = 1.e-3 ! (this is the default way to dump output files; put a positive number to use)
+  real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
 
   integer :: dim = 2
