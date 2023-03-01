@@ -101,13 +101,13 @@ contains
                    !if (divV < -threshold2*Ca/dx*0.5 .and. gradP > threshold1) then
 
                   
-                   !! This is the *OLD* CSD check
-                   if (divV < -threshold2 .and. gradP > threshold1) then
-                      !print*, Mach
-                      DMP = .true.
-                   else
-                      DMP = .false.
-                   endif
+!!$                   !! This is the *OLD* CSD check
+!!$                   if (divV < -threshold2 .and. gradP > threshold1) then
+!!$                      !print*, Mach
+!!$                      DMP = .true.
+!!$                   else
+!!$                      DMP = .false.
+!!$                   endif
                 
 
 !!$                   print*,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
@@ -132,14 +132,14 @@ contains
                    !! but not sufficient to suppress the oscillations at the tail of
                    !! the rarefaction and at the post shock regions.
                   
-!!$                   if (divV < -(max(dx,dy))**2 .and. Mach > 0.2 .and. gradP > threshold1) then
-!!$                      !if (divV < 0. .and. Mach > 0.2 ) then !.and. gradP > threshold1) then
-!!$!$                      print*,'We are in'
-!!$!$                      stop
-!!$                      DMP = .true.
-!!$                   else
-!!$                      DMP = .false.
-!!$                   endif
+                   if (divV < -(max(dx,dy))**2 .and. Mach > 0.2 .and. gradP > threshold1) then
+                      !if (divV < 0. .and. Mach > 0.2 ) then !.and. gradP > threshold1) then
+!$                      print*,'We are in'
+!$                      stop
+                      DMP = .true.
+                   else
+                      DMP = .false.
+                   endif
 
 
                    if ( (DMP) ) then
