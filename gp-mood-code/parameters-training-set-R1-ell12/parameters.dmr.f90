@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/DMR'
+  character(100) :: file='./output_R1ell12/DMR'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8

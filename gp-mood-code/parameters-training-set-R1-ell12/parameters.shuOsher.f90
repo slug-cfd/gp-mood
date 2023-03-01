@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/SO'
+  character(100) :: file='./output_R1ell12/SO'
   character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration

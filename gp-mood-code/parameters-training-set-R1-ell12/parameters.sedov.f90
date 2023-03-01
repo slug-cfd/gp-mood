@@ -6,7 +6,7 @@
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/sedov'
+  character(100) :: file='./output_R1ell12/sedov'
   character(100) :: file_slice_x = './slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8

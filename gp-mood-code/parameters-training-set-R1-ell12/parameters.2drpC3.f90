@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell6/2DRPC3'
+  character(100) :: file='./output_R1ell12/2DRPC3'
 
   real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method    = SSP_RK3
