@@ -6,9 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  !character(100) :: file='./plotter/Mach800/Mach100fixedIC_GP5th_2quad_RK3_cfl0.8_HLL_600_'
-  character(100) :: file='./plotter/Mach800/TEST_'
-  character(100) :: file_slice_x = './plotter/Mach800/slice_x.dat'
+  character(100) :: file='./output_R1ell6/Mach600'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8

@@ -6,8 +6,8 @@
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Sedov/sedov_GP3rd_2quad_RK3_cfl0p8_HLLC_256_'
-  character(100) :: file_slice_x = './plotter/Sedov/slice_x.dat'
+  character(100) :: file='./output_R1ell6/sedov'
+  character(100) :: file_slice_x = './slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method    = SSP_RK3

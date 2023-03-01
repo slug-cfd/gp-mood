@@ -6,8 +6,8 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/ShuOsher/shuosher1d_GP3rd_1quad_RK3_nodtRed_cfl0.8_HLLC_256_'
-  character(100) :: file_slice_x = './plotter/ShuOsher/shuosher1d.dat'
+  character(100) :: file='./output_R1ell6/SO1D'
+  character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8

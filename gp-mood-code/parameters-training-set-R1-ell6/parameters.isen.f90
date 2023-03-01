@@ -6,8 +6,8 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/Isentropic/isen_GP7_4quad_RK4_cfl0.8_HLLC_Lx20_200_ell_1.0_cross_'
-  character(100) :: file_slice_x = './plotter/Isentropic/slice_x.dat'
+  character(100) :: file='./output_R1ell6/isentropic_vortex'
+  character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8

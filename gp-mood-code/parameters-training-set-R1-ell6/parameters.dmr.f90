@@ -6,10 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/DMR/dmr_gp3_2quad_RK3_nodtRed_cfl0p8_800x200_'
-  !character(100) :: file_slice_x = 'output/slice_x.dat'
-
-
+  character(100) :: file='./output_R1ell6/DMR'
 
   ! Time integration
   real(PR), parameter :: CFL  =  0.8

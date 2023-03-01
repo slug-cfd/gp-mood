@@ -6,8 +6,8 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/RMI/rmi_gp3rd_2quad_RK3_nodtRed_cfl0.8_HLLC_1536x256_'
-  !character(100) :: file_slice_x = './plotter/RMI/rmi_slice_x.dat'
+  character(100) :: file='./output_R1ell6/rmi'
+  character(100) :: file_slice_x = './slice_x.dat'
 
 
   ! Time integration

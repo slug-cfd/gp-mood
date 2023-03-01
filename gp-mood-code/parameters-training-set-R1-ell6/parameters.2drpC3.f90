@@ -6,8 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./plotter/2DRP_C3/2drp_GP5th_3quad_RK4_noDtRed_cfl0p8_HLLC_400_noCSD_'
-  character(100) :: file_slice_x = './slice_x.dat'
+  character(100) :: file='./output_R1ell6/2DRPC3'
 
   real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method    = SSP_RK3
