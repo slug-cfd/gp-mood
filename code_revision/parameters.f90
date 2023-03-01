@@ -6,17 +6,17 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./gp_mood5_2drp_'
+  character(100) :: file='./plotter/2DRP_C3/2drp_GP5th_3quad_RK4_noDtRed_cfl0p8_HLLC_400_noCSD_'
   character(100) :: file_slice_x = './slice_x.dat'
 
   real(PR), parameter :: CFL  =  0.8
-  integer , parameter :: time_method    = SSP_RK4
+  integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
-  integer, parameter :: Mord= 5  ! Order
+  integer, parameter :: Mord= 3  ! Order
   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
 
@@ -32,17 +32,17 @@ module parameters
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
-  integer,  parameter :: lf = 256 ! Number of cell in the x direction
-  integer,  parameter :: nf = 256  ! Number of cell in the y direction
+  integer,  parameter :: lf = 200 ! Number of cell in the x direction
+  integer,  parameter :: nf = 200  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 256 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 256 !
+  integer,  parameter :: lf0 = 200 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 200 !
 
   
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = RP_2D_3
-  real(PR), parameter :: tmax = 0.8
+  real(PR), parameter :: tmax = 0.9
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
