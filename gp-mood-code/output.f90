@@ -78,7 +78,7 @@ contains
     end do
 
 
-    open(50, file = trim(adjustl(file))//'final_'//trim(fileID)//'.dat', form='formatted')
+    open(50, file = trim(adjustl(file))//'_'//trim(fileID)//'.dat', form='formatted')
     write(50,*) 'x','y','rho','ux','uy','p','ordr'
     do n = 1, nf
        do l = 1, lf
