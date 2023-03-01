@@ -171,11 +171,8 @@ contains
        ! bottom -- fix here
        do l = 1-ngc, lf+ngc       
           do n = 1-ngc,0
-!!$             if (abs(mesh_x(l) - 0.75) .le. 0.05) then ! this for [0, 1.5]x[0, 1.5]
-             if (abs(mesh_x(l) - 0.5) .le. 0.05) then     ! this for [0, 1.0]x[0, 1.5]     
-                !print*,mesh_x(l), mesh_y(n)
-!!$                U(:,l,n) = primitive_to_conservative((/0.14_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
-                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
+               if (abs(mesh_x(l) - 0.75) .le. 0.05) then ! this for [0, 1.5]x[0, 1.5]
+                  U(:,l,n) = primitive_to_conservative((/0.14_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
              endif
           end do
        end do
@@ -212,10 +209,7 @@ contains
        ! top -- fix here
        do l = 1-ngc, lf+ngc       
           do n = nf+1, nf+ngc
-!!$             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
-             if (abs(mesh_x(l) - 0.5) .le. 0.05) then     ! this for [0, 1.0]x[0, 1.5]                   
-                !print*,mesh_x(l), mesh_y(n)
-!!$                U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -100.0_PR, 1.0_PR/))
+                if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
              endif
           end do
@@ -235,9 +229,7 @@ contains
        ! bottom -- fix here
        do l = 1-ngc, lf+ngc       
           do n = 1-ngc,0
-!!$             if (abs(mesh_x(l) - 0.75) .le. 0.05) then
-             if (abs(mesh_x(l) - 0.5) .le. 0.05) then     ! this for [0, 1.0]x[0, 1.5]                   
-                !print*,mesh_x(l), mesh_y(n)
+                if (abs(mesh_x(l) - 0.75) .le. 0.05) then
                 U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
              endif
           end do

@@ -169,18 +169,12 @@ contains
              U(:,l,n) = f_sedov(mesh_x(l),mesh_y(n))
 
           else if (IC_type == Mach800 .or. IC_type == DoubleMach800) then ! DL -- added the Mach 800 jet problem
-             ! DL -- input primitive vector = (dens, velx, vely, pres)
-             ! DL -- note that the grid configuration assumes xmin and ymin are both zero
-!!$             U(:,l,n) = primitive_to_conservative((/0.14, 0.0, 0.0, 1.0/))
-!!$             U(:,l,n) = primitive_to_conservative((/14., 0.0, 0.0, 1.0/))
 
              if (IC_type == Mach800) then
              !! default setup
                 slope_dens = 0.
                 dens_amb   = 14.
              elseif (IC_type == DoubleMach800) then
-                !! varying ambient density
-                ! dens(y_min) = 14 & dens(y_max) = 0.14
                 slope_dens = (0.14 - 14.)/Ly 
                 dens_amb   = slope_dens * mesh_y(n) + 14.
              endif
@@ -191,26 +185,9 @@ contains
              !    -- initialize the first interior cells with the jet profile             
              if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05).and.(mesh_y(n) < dy)) then
                 if (IC_type == Mach800) then
-                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 100.0_PR, 1.0_PR/))
-!!$                elseif (IC_type == DoubleMach800) then
-!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+                      U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
                 endif
              endif
-
-             !! NOTE 6/9/21 -- DL: Very weird that the double mach jet fails with the hack
-             !!                while the single mach jet works better in getting the taller
-             !!                and consistent heights with FLASH data WITH the IC hack.
-!!$             if (IC_type == DoubleMach800) then
-!!$                ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
-!!$                !    -- initialize the first interior cells with the jet profile       
-!!$                if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (mesh_y(n) < dy)) then
-!!$                   ! bottom
-!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
-!!$                elseif ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05) .and. (Ly - mesh_y(n) < dy)) then
-!!$                   ! top
-!!$                   U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, -800.0_PR, 1.0_PR/))
-!!$                endif
-!!$             endif
              
 
           else if (IC_type == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
