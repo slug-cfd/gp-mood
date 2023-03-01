@@ -55,7 +55,6 @@ xi, yi = edge_grid(d2.x, d2.y)
 
 sndSpd=np.sqrt(1.4*d2.p/d2.rho) 
 mach = np.sqrt(d2.vx**2 + d2.vy**2)/sndSpd 
-plotVar = np.log10(d2.rho)
 
 if (var=='ordr'):
     plotVar = d2.ordr
@@ -75,23 +74,19 @@ else:
     print("wrong var")
     sys.exit()
 
-minval = 0.1
-maxval = 1.8
 fig1 = plt.figure(figsize=(4,3), dpi=400)
 ax = fig1.add_subplot(1, 1, 1)
 
 cmapValue = 'jet'
 cmapValue = 'seismic'
 
+print(np.shape(xi))
+print(np.shape(yi))
+print(np.shape(plotVar))
 ax.pcolormesh(xi, yi, plotVar, cmap=cmapValue) 
 fig1.colorbar(ax.pcolormesh(xi, yi, plotVar, cmap=cmapValue)) 
 print(np.min(d2.rho),np.max(d2.rho))
 
-# draw a contour lines also
-levels = np.linspace(minval,maxval, 40) 
-extent = (np.amin(d2.x), np.amax(d2.x), np.amin(d2.y), np.amax(d2.y))  # this tupple will be used for specifying x, y axis for contours
-ax.contour(d2.rho, levels=levels, extent=extent, linewidths=0.2, colors='k')  # 40 contours of 0.2 width, black lines
-ax.set_aspect(aspect=1)
 ax.set_title(var)
 
 fig1.savefig(plotName)
