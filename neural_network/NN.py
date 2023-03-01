@@ -22,11 +22,7 @@ class radius_picker(nn.Module):
 
         super(radius_picker, self).__init__()
 
-        print("\n")
-
-        print("Initializing a radius picker neural network")
         self.max_radius=max_radius
-        print("max radius =", max_radius)
 
         if (input_type==raw_VF_data):
             if (max_radius == 1 ):
@@ -46,15 +42,9 @@ class radius_picker(nn.Module):
             print(colors.red+"not implemented yet #2")
             sys.exit()
 
-        print("stencil size =", self.stencil_size)
-
         self.input_size=self.stencil_size*n_var_used
                 
-        print("input size =", self.input_size, "i.e. looking at", n_var_used, "var per cells")
-
         self.output_size=max_radius+1
-
-        print("output size =", self.output_size, "i.e choosing between radiuses", *range(0, max_radius+1))
 
         if (len(layer_sizes)!=nb_layers-1):
             print(colors.red+"Error, expected", nb_layers-1, "layer sizes, got", len(layer_sizes))
@@ -63,27 +53,25 @@ class radius_picker(nn.Module):
         self.layers=nn.ModuleList()
         self.nb_layers=nb_layers
         
-        print("initializing", nb_layers,"layers")
         self.layers.append(  nn.Linear(self.input_size, layer_sizes[0])  )
         k_layer=0
-        print(k_layer, "th layer has I/O size:", self.input_size, layer_sizes[0])
         for k_layer in range(1,nb_layers-1):
             
             self.layers.append(  nn.Linear(layer_sizes[k_layer-1], layer_sizes[k_layer])  )
-            print(k_layer, "th layer has I/O size:", layer_sizes[k_layer-1], layer_sizes[k_layer])
 
         self.layers.append(  nn.Linear(layer_sizes[nb_layers-2], self.output_size)  )
         k_layer=nb_layers-1
 
-        print(k_layer, "th layer has I/O size:", layer_sizes[nb_layers-2], self.output_size)
-
-        # Count the number of parameters
         num_params = sum(p.numel() for p in self.parameters())
 
-        # Print the number of parameters
+        print('\n'+colors.HEADER+" --- Initialized a radius picker neural network ---"+colors.ENDC)
+        print("max radius =", max_radius)
+        print("stencil size =", self.stencil_size)
+        print("input size =", self.input_size, "i.e. looking at", n_var_used, "var per cells")
+        print("output size =", self.output_size, "i.e choosing between radiuses", *range(0, max_radius+1))
+        print("Initialized", nb_layers,"layers")
         print(colors.yellow+f"Number of parameters: {num_params}"+colors.ENDC)
-
-        print("\n")
+        print(colors.HEADER+" ---------------------- End -----------------------\n"+colors.ENDC)
 
     def forward(self, x): #Feed forward function
 
@@ -114,24 +102,25 @@ class radius_picker(nn.Module):
         self.load_state_dict(torch.load(file))
         print(colors.green+"Loaded the NN from file", file, colors.ENDC)
 
+def unitary_check_NN_class():
 
+    NN1=radius_picker(max_radius=3, nb_layers=5, layer_sizes=[40,10,90,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
+    batch_size=2
+    data=torch.rand((batch_size, NN1.input_size)) #some random data
+    out1=NN1.forward(data)
+    print("NN output =", out1) #print the result of the NN of that data
 
+    R,p=NN1.pick_radius(data, 1) #Pick a radius for the #1 data of the batch
+    print("Radius", R , "picked with probability", p)
 
+    #testing save and load
+    NN1.save("backup.pt") #saving NN
+    NN2=radius_picker(*NN1.init_parameters) #Declaring a new NN with the same parameter
+    print("NN2 output before loading NN1 =", NN2.forward(data)) 
+    NN2.load("backup.pt")
+    out2=NN2.forward(data)
+    print("NN2 output after loading NN1 = ",out2, "should be the same as NN1")
+    print("difference is", torch.max(out1-out2).item())
 
-NN=radius_picker(max_radius=3, nb_layers=5, layer_sizes=[40,10,90,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
-
-batch_size=2
-data=torch.rand((batch_size, NN.input_size)) #some random data
-
-print("NN output =", NN.forward(data)) #print the result of the NN of that data
-
-R,p=NN.pick_radius(data, 1) #Pick a radius for the #1 data of the batch
-print("Radius", R , "picked with probability", p)
-
-#testing save and load
-NN.save("backup.pt") #saving NN
-NN2=radius_picker(*NN.init_parameters) #Declaring a new NN with the same parameter
-print("NN2 output before loading NN =", NN2.forward(data)) 
-NN2.load("backup.pt")
-print("NN2 output after loading NN = ",NN2.forward(data), "should be the same as the first output")
+unitary_check_NN_class()
