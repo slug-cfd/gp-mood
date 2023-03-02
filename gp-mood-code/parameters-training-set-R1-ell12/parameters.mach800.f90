@@ -42,7 +42,7 @@ module parameters
 
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Mach800
-  real(PR), parameter :: tmax = 6.E-3
+  real(PR), parameter :: tmax = 0.005
   integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
