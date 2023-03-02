@@ -13,7 +13,7 @@ FC = gfortran
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized  -Wall
 
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3 -Wall -Wextra -fbacktrace -fcheck=all -Wuninitialized
-FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3
+FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized -Wall -Wextra -pg
 ## Ensemble des fichiers à supprimer lors du make clean ##
 OBJS = *.o *.mod *~
 .PHONY: clean
@@ -54,6 +54,7 @@ $(EXEC):  constants.o \
 	mesh_init.o  \
 	physics.o random.o \
 	IC.o  \
+	mod_write_NN_dataset.o  \
 	mod_HLLC.o \
 	mod_HLL.o \
 	mod_LLF.o \
