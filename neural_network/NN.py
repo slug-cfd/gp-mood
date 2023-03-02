@@ -42,7 +42,7 @@ class radius_picker(nn.Module):
             print(colors.red+"not implemented yet #2")
             sys.exit()
 
-        self.input_size=self.stencil_size*n_var_used
+        self.input_size=self.stencil_size*n_var_used + n_var_used + 1#(variables + normalisation factors + CFL )
                 
         self.output_size=max_radius+1
 
@@ -81,7 +81,8 @@ class radius_picker(nn.Module):
             if (k_layer<self.nb_layers-1): #RELU except for last layer
                 x = torch.relu(x)
 
-        return F.softmax(x,dim=1) #Softmax for last layer to output probability
+        #return F.softmax(x,dim=1) #Softmax for last layer to output probability
+        return x
     
     def pick_radius(self, x, index): #Pick a radius from data
         
