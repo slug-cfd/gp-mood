@@ -172,7 +172,7 @@ contains
        do l = 1-ngc, lf+ngc       
           do n = 1-ngc,0
                if (abs(mesh_x(l) - 0.75) .le. 0.05) then ! this for [0, 1.5]x[0, 1.5]
-                  U(:,l,n) = primitive_to_conservative((/0.14_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
+                  U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
              endif
           end do
        end do
