@@ -31,11 +31,10 @@ class data2d:
 name = sys.argv[1]
 var = sys.argv[2]
 
-pName = 'ordr_'
 dataName = name+'.dat'
 plotName = name+'_'+var+'.png'
 
-d2 = data2d(dataName)
+data = data2d(dataName)
 
 
 def edge_grid(X, Y):
@@ -51,42 +50,37 @@ def edge_grid(X, Y):
 
     return xi, yi
 
-xi, yi = edge_grid(d2.x, d2.y)
+xi, yi = edge_grid(data.x, data.y)
 
-sndSpd=np.sqrt(1.4*d2.p/d2.rho) 
-mach = np.sqrt(d2.vx**2 + d2.vy**2)/sndSpd 
+sndSpd=np.sqrt(1.4*data.p/data.rho) 
+mach = np.sqrt(data.vx**2 + data.vy**2)/sndSpd 
 
 if (var=='ordr'):
-    plotVar = d2.ordr
+    plotVar = data.ordr
 elif(var=='p'):
-    plotVar = d2.p
+    plotVar = data.p
 elif(var=='sndSpd'):
     plotVar = sndSpd
 elif(var=='mach'):
     plotVar = mach
 elif(var=='rho'):
-    plotVar = d2.rho
+    plotVar = data.rho
 elif(var=='vx'):
-    plotVar = d2.vx
+    plotVar = data.vx
 elif(var=='vy'):
-    plotVar = d2.vy
+    plotVar = data.vy
 else:
     print("wrong var")
     sys.exit()
 
-fig1 = plt.figure(figsize=(4,3), dpi=400)
-ax = fig1.add_subplot(1, 1, 1)
-
+fig1 = plt.figure(dpi=400)
+ax = fig1.add_subplot()
+print(np.shape(xi), np.shape(yi))
 cmapValue = 'jet'
 cmapValue = 'seismic'
-
-print(np.shape(xi))
-print(np.shape(yi))
-print(np.shape(plotVar))
+ax.set_aspect(1) 
 ax.pcolormesh(xi, yi, plotVar, cmap=cmapValue) 
 fig1.colorbar(ax.pcolormesh(xi, yi, plotVar, cmap=cmapValue)) 
-print(np.min(d2.rho),np.max(d2.rho))
-
 ax.set_title(var)
 
 fig1.savefig(plotName)
