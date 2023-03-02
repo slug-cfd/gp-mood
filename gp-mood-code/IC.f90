@@ -198,11 +198,8 @@ contains
              sim_ycos = sqrt(1. - sim_xcos*sim_xcos)
              sim_shockPosn = 0.8
              sim_posn = 1.0
-             !sim_posn = sim_posn - mesh_y(n) * sim_ycos/sim_xcos
              sim_posn = mesh_y(n) + 1.0
-!!$             print*,sim_posn
-!!$             stop
-!!$             
+
              U(:,l,n) = f_rmi(mesh_x(l),mesh_y(n), sim_shockPosn, sim_posn)
              
             

@@ -13,7 +13,7 @@ FC = gfortran
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized  -Wall
 
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3 -Wall -Wextra -fbacktrace -fcheck=all -Wuninitialized
-FFLAGS = -fdefault-real-8  -ffree-line-length-none -O
+FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3
 ## Ensemble des fichiers à supprimer lors du make clean ##
 OBJS = *.o *.mod *~
 .PHONY: clean
@@ -44,7 +44,7 @@ EXEC = gp_mood.exe
 #OUTPUTLOG = ./plotter/Sedov/sedov_GP7th_4quad_RK4_cfl0p8_HLLC_256.log
 #OUTPUTLOG = ./plotter/Sod/sodx2d_gp3_2quad_RK3_cfl0p8_hllc_256x256.log
 #OUTPUTLOG = ./plotter/SlowShock/SS2d_fog_1quad_RK_comp_cfl0p8_hllc_256x1.log
-OUTPUTLOG = ./gp-mood5_test.log
+OUTPUTLOG = ./log.log
 
 $(EXEC):  constants.o \
 	parameters.o \
