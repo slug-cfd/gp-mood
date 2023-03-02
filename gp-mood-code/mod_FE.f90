@@ -8,15 +8,18 @@ module mod_FE
   use mod_HLLC
   use mod_LLF
   use mod_HLL
+  use mod_write_NN_dataset
 
   implicit none
 
 contains
 
-  subroutine Forward_Euler(Uin, Uout)
+  subroutine Forward_Euler(Uin, Uout, first)
 
     real(PR), intent(inout)    , dimension(4,lb:le, nb:ne) :: Uin
     real(PR), intent(out)      , dimension(4,lb:le, nb:ne) :: Uout
+
+    logical, intent(in) :: first
 
     real(PR), dimension(4)                                 :: ul, ur, ut, ub
     real(PR), dimension(4,ngp)                             :: Flux_gauss
@@ -123,6 +126,9 @@ contains
 
     end do
 
+    if (first) then
+      call write_NN_datatset(Uin, CellGPO)
+    end if
 
     if ((time_method == SSP_RK4)) Uout = Uout - Uin
 

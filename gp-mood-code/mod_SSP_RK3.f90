@@ -19,19 +19,19 @@ contains
 
     t_rk = t
     count_RK = 0
-    call Forward_Euler(Uin,U1 )
+    call Forward_Euler(Uin,U1, .true. )
     count_RK = count_RK + count_FE
 
     t_rk = t + dt
 
-    call Forward_Euler(U1 ,U2 )
+    call Forward_Euler(U1 ,U2, .false. )
     count_RK = count_RK + count_FE
 
 
     U2 = (0.75)*Uin + 0.25*U2
     t_rk = t + 0.5*dt
 
-    call Forward_Euler(U2 ,Uout)
+    call Forward_Euler(U2 ,Uout, .false.)
     count_RK = count_RK + count_FE
 
 

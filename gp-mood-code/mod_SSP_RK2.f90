@@ -17,11 +17,11 @@ contains
     real(PR),              dimension(4,lb:le, nb:ne) :: U1
 
     count_RK = 0
-    call Forward_Euler(Uin,U1  )
+    call Forward_Euler(Uin,U1, .true.  )
 
     count_RK = count_RK + count_FE
 
-    call Forward_Euler(U1 ,Uout)
+    call Forward_Euler(U1 ,Uout, .false.)
     count_RK = count_RK + count_FE
 
     count_FE = count_RK/2
