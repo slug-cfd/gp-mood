@@ -11,7 +11,7 @@ subroutine write_NN_datatset(Uin, CellGPO)
 
     real(PR),  intent(in), dimension(4,lb:le, nb:ne) :: Uin
     integer ,  intent(in), dimension(lb:le, nb:ne)   :: CellGPO
-    real(PR), dimension(4,sz_sphere) :: q_sp
+    real(PR), dimension(4,sz_sphere_p1) :: q_sp
 
     real(kind=4) :: real_numbers(25)
 
@@ -25,12 +25,11 @@ subroutine write_NN_datatset(Uin, CellGPO)
 
     open(10,file='training_data.txt', status='old', action='write', position='append')
 
-    do n = ngc, nf+ngc-1
-        do l = ngc,lf+ngc-1
-         !   print*, l,n
-            do j = 1, sz_sphere
-                q_sp(:,j) = Uin(:,l+ixiy_sp(mord,j,1),n+ixiy_sp(mord,j,2))
-              !  print*,ixiy_sp(mord,j,1),ixiy_sp(mord,j,2)
+    do n = nb+ngc, ne-ngc
+        do l = lb+ngc,le-ngc
+
+            do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
+                q_sp(:,j) = Uin(:,l+ixiy_sp1(mord+2,j,1),n+ixiy_sp1(mord+2,j,2))
             end do
 
             cst=.true.
@@ -40,7 +39,7 @@ subroutine write_NN_datatset(Uin, CellGPO)
                 max = maxval(q_sp(var,:))
                 min = minval(q_sp(var,:))
 
-                if (max-min < 1e-13) then 
+                if (max-min < 1e-14) then 
                     F(var) = sign(1.0,min)
                     do j = 1, sz_sphere
                          q_sp(var,j)= 1.0
@@ -52,15 +51,14 @@ subroutine write_NN_datatset(Uin, CellGPO)
                         q_sp(var,j)= (q_sp(var,j)- 0.5*(min+max))*(2/(max-min))
                     end do
                 end if
+
             end do
 
             if ((cst .eqv. .true.).and.(CellGPO(l,n)==1)) then 
-                print*, 'weird', q_sp(4,:)
+                print*, 'weird'
             end if
 
-            if (cst .eqv. .false.) then 
-                write(10,"(25(e12.5), i3)") real(q_sp(:,:),kind=4), real(F(:),kind=4), real(CFL,kind=4), CellGPO(l,n)
-            end if
+            write(10,"(57(e12.5), i3)") real(q_sp(:,:),kind=4), real(F(:),kind=4), real(CFL,kind=4), CellGPO(l,n)
 
         end do 
     end do
