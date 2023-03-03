@@ -58,8 +58,16 @@ program main
      print*, 'Problem              =','Kevin Helmoltz instability'
   else if ( IC_type == RP_2D_3) then
      print*, 'Problem              =', '2D Riemann problem, config 3'
+  else if ( IC_type == RP_2D_4) then
+     print*, 'Problem              =', '2D Riemann problem, config 4'
+  else if ( IC_type == RP_2D_6) then
+     print*, 'Problem              =', '2D Riemann problem, config 6'
   else if ( IC_type == RP_2D_12) then
      print*, 'Problem              =', '2D Riemann problem, config 12'
+  else if ( IC_type == RP_2D_15) then
+     print*, 'Problem              =', '2D Riemann problem, config 15'
+  else if ( IC_type == RP_2D_17) then
+     print*, 'Problem              =', '2D Riemann problem, config 17'
   else if ( IC_type == DMR) then
      print*, 'Problem              =', 'double mach reflection'
   else if ( IC_type == implosion) then
