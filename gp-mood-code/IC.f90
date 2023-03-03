@@ -149,18 +149,21 @@ contains
 
           else if (IC_type == RP_2D_3) then !t =0.3 Lx = Ly = 1
              U(:,l,n) = f_RP_2D_3(mesh_x(l),mesh_y(n))
+         
+          else if (IC_type == RP_2D_4) then !t =0.25 Lx = Ly = 1
+             U(:,l,n) = f_RP_2D_4(mesh_x(l),mesh_y(n))
 
-
-          else if (IC_type == RP_2D_15) then !t =0.3 Lx = Ly = 1
-             U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
+          else if (IC_type == RP_2D_6) then !t =0.3 Lx = Ly = 1
+            U(:,l,n) = f_RP_2D_6(mesh_x(l),mesh_y(n))
 
           else if (IC_type == RP_2D_12) then !t =0.25 Lx = Ly = 1
-             U(:,l,n) = f_RP_2D_12(mesh_x(l),mesh_y(n))
-
-
-          else if (IC_type == RP_2D_6) then !t =0.25 Lx = Ly = 1
-             U(:,l,n) = f_RP_2D_6(mesh_x(l),mesh_y(n))
-
+            U(:,l,n) = f_RP_2D_12(mesh_x(l),mesh_y(n))
+  
+          else if (IC_type == RP_2D_15) then !t =0.2 Lx = Ly = 1
+            U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
+            
+         else if (IC_type == RP_2D_15) then !t =0.3 Lx = Ly = 1
+             U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
 
           else if (IC_type == DMR) then !Lx = 4, Ly = 1 tmax =0.25
              U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
@@ -227,29 +230,37 @@ contains
   end subroutine InitialCdt
 
 
-  
-  function f_RP_2D_6(x,y)result(r)
-    real(PR), intent(in) :: x, y
-    real(PR),dimension(4):: r
 
-    if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/2.0, 0.75 , 0.5    , 1.0/)) !TL
-
-    if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.0   , 0.75   , -0.5    , 1.0/)) !TR
-
-    if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/1.0 , -0.75 , 0.5  , 1.0/))!BL
-
-    if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/3.0, -0.75   , -0.5  , 1.0/)) !BR
-  end function f_RP_2D_6
 
   function f_RP_2D_3(x,y)result(r)
     real(PR), intent(in) :: x, y
     real(PR),dimension(4):: r
-
     if ((x<=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
     if ((x>=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
     if ((x<=4./5).and.(y>=4./5)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
     if ((x>=4./5).and.(y>=4./5)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
   end function f_RP_2D_3
+
+
+  function f_RP_2D_4(x,y)result(r)
+   real(PR), intent(in) :: x, y
+   real(PR),dimension(4):: r
+   if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/1.1_PR , 0.8939_PR  , 0.8939_PR  , 1.1_PR/))!BL
+   if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.5065_PR, 0.0_PR   , 0.8939_PR  , 0.35_PR/)) !BR
+   if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/0.5065_PR, 0.8939_PR, 0.0_PR    , 0.35_PR/)) !TL
+   if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.1_PR   , 0.0_PR   , 0.0_PR    , 1.1_PR/)) !TR   
+ end function f_RP_2D_4
+
+  function f_RP_2D_6(x,y)result(r)
+   real(PR), intent(in) :: x, y
+   real(PR),dimension(4):: r
+
+   if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/2.0, 0.75 , 0.5    , 1.0/)) !TL
+   if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.0   , 0.75   , -0.5    , 1.0/)) !TR
+   if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/1.0 , -0.75 , 0.5  , 1.0/))!BL
+   if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/3.0, -0.75   , -0.5  , 1.0/)) !BR
+
+  end function f_RP_2D_6
 
   function f_RP_2D_12(x,y)result(r)
     real(PR), intent(in) :: x, y
@@ -271,6 +282,17 @@ contains
     if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/0.5197 , -0.6259 , -0.3  , 0.4/))!TL
     if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.0   , 0.1   , -0.3    , 1.0/)) !TR
   end function f_RP_2D_15
+
+  function f_RP_2D_17(x,y)result(r)
+   real(PR), intent(in) :: x, y
+   real(PR),dimension(4):: r
+
+   if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/1.0625_PR, 0.0_PR    , 0.2145_PR  , 0.4_PR/))!BL
+   if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.5197_PR   , 0.0_PR   , -1.1259_PR   , 0.4_PR/)) !BR
+   if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/2.0_PR, 0.0_PR    , -0.3_PR, 1.0_PR/)) !TL
+   if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.0_PR   , 0.0_PR   , -0.4_PR    , 1.0_PR/)) !TR
+   
+ end function f_RP_2D_17
 
   function f_implosion(x,y)result(r)
     real(PR), intent(in) :: x, y

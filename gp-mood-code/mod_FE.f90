@@ -126,7 +126,7 @@ contains
 
     end do
 
-    if (first) then
+    if ((first).and.(write_NN_dataset)) then
       call write_NN_datatset(Uin, CellGPO)
     end if
 

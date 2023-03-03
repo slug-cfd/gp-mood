@@ -31,6 +31,8 @@ module constants
   integer, parameter :: RP_2D_6     =38, sedov            =39, M3WT         =40, KH        =41
   integer, parameter :: isentropic_vortex = 42, sod_rotated = 43, Shu_Osher_rotated = 44
   integer, parameter :: Mach800 = 45, DoubleMach800 = 46, RMI = 47, SlowShock = 48
+  integer, parameter :: RP_2D_4=49, RP_2D_17=50
+
 
   !Data indices
   integer, parameter :: rho   = 1, momx  = 2, momy   = 3, ener = 4
