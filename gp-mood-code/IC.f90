@@ -162,7 +162,7 @@ contains
           else if (IC_type == RP_2D_15) then !t =0.2 Lx = Ly = 1
             U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
             
-         else if (IC_type == RP_2D_15) then !t =0.3 Lx = Ly = 1
+         else if (IC_type == RP_2D_17) then !t =0.3 Lx = Ly = 1
              U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
 
           else if (IC_type == DMR) then !Lx = 4, Ly = 1 tmax =0.25
@@ -235,10 +235,10 @@ contains
   function f_RP_2D_3(x,y)result(r)
     real(PR), intent(in) :: x, y
     real(PR),dimension(4):: r
-    if ((x<=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
-    if ((x>=4./5).and.(y<=4./5)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
-    if ((x<=4./5).and.(y>=4./5)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
-    if ((x>=4./5).and.(y>=4./5)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
+    if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
+    if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
+    if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
+    if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
   end function f_RP_2D_3
 
 
