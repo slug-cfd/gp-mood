@@ -40,6 +40,7 @@ module global_variables
   !GP indices
   integer, dimension(Mord, sz_cross,2), save   :: ixiy
   integer, dimension(Mord, sz_sphere,2), save  :: ixiy_sp
+  integer, dimension(Mord+2, sz_sphere_p1,2), save  :: ixiy_sp1
 
 
 

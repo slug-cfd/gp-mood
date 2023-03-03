@@ -300,6 +300,91 @@ contains
 
     end do
 
+    do ord = 1, Mord+2,2
+  
+      ixiy_sp1(ord,1, dir_x) = 0
+      ixiy_sp1(ord,1, dir_y) = 0
+  
+      if (ord >= 3) then
+        ixiy_sp1(ord,2, dir_x) = -1
+        ixiy_sp1(ord,2, dir_y) =  0
+  
+        ixiy_sp1(ord,3, dir_x) = 0
+        ixiy_sp1(ord,3, dir_y) = 1
+  
+        ixiy_sp1(ord,4, dir_x) = 1
+        ixiy_sp1(ord,4, dir_y) = 0
+  
+        ixiy_sp1(ord,5, dir_x) = 0
+        ixiy_sp1(ord,5, dir_y) = -1
+      end if
+  
+      if (ord >= 5) then
+        ixiy_sp1(ord,6, dir_x) = -1
+        ixiy_sp1(ord,6, dir_y) = -1
+  
+        ixiy_sp1(ord,7, dir_x) = -1
+        ixiy_sp1(ord,7, dir_y) =  1
+  
+        ixiy_sp1(ord,8, dir_x) = 1
+        ixiy_sp1(ord,8, dir_y) = 1
+  
+        ixiy_sp1(ord,9, dir_x) = 1
+        ixiy_sp1(ord,9, dir_y) = -1
+  
+        ixiy_sp1(ord,10, dir_x) = 0
+        ixiy_sp1(ord,10, dir_y) = -2
+  
+        ixiy_sp1(ord,11, dir_x) = -2
+        ixiy_sp1(ord,11, dir_y) = 0
+  
+        ixiy_sp1(ord,12, dir_x) = 0
+        ixiy_sp1(ord,12, dir_y) = 2
+  
+        ixiy_sp1(ord,13, dir_x) = 2
+        ixiy_sp1(ord,13, dir_y) = 0
+      end if
+  
+      if (ord >= 7) then
+        ixiy_sp1(ord,14, dir_x) = -3
+        ixiy_sp1(ord,14, dir_y) = 0
+  
+        ixiy_sp1(ord,15, dir_x) = -2
+        ixiy_sp1(ord,15, dir_y) = 1
+  
+        ixiy_sp1(ord,16, dir_x) = -1
+        ixiy_sp1(ord,16, dir_y) = 2
+  
+        ixiy_sp1(ord,17, dir_x) = 0
+        ixiy_sp1(ord,17, dir_y) = 3
+  
+        ixiy_sp1(ord,18, dir_x) = 1
+        ixiy_sp1(ord,18, dir_y) = 2
+  
+        ixiy_sp1(ord,19, dir_x) = 2
+        ixiy_sp1(ord,19, dir_y) = 1
+  
+        ixiy_sp1(ord,20, dir_x) = 3
+        ixiy_sp1(ord,20, dir_y) = 0
+  
+        ixiy_sp1(ord,21, dir_x) = 2
+        ixiy_sp1(ord,21, dir_y) = -1
+  
+        ixiy_sp1(ord,22, dir_x) = 1
+        ixiy_sp1(ord,22, dir_y) = -2
+  
+        ixiy_sp1(ord,23, dir_x) = 0
+        ixiy_sp1(ord,23, dir_y) = -3
+  
+        ixiy_sp1(ord,24, dir_x) = -1
+        ixiy_sp1(ord,24, dir_y) = -2
+  
+        ixiy_sp1(ord,25, dir_x) = -2
+        ixiy_sp1(ord,25, dir_y) = -1
+  
+      end if
+    end do
+
   end subroutine
 
   subroutine GP_presim()

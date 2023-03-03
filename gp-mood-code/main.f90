@@ -188,8 +188,9 @@ program main
   ! dump outout at t=0
   call write_output(niter)
 
-  dt_sim = min(1.e-10,dt)
-
+  !dt_sim = min(1.e-10,dt)
+  dt_sim = dt
+  
   do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
      niter = niter + 1
@@ -215,7 +216,7 @@ program main
  
 
      U = Ur
-     if ((mod(niter,10) == 0) .or.(niter == 1)) then
+     if ((mod(niter,1) == 0) .or.(niter == 1)) then
         if (abs(cfl_dt - dt) > 0.) then
            print*,'nstep = ', niter, '|time = ',t,'|(dt, cfl_dt)=', dt,cfl_dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
         else
