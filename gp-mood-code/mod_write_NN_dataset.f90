@@ -15,15 +15,27 @@ subroutine write_NN_datatset(Uin, CellGPO)
 
     real(kind=4) :: real_numbers(25)
 
-
     real(PR), dimension(4) :: F
 
     integer :: n,l,j,var,i
+    character(len=7) :: test_case
     real(PR) :: max, min
 
-    logical :: cst
+    logical :: cst, exist
 
-    open(10,file='training_data.txt', status='old', action='write', position='append')
+    character(len=3) :: CFL_string
+
+    test_case = file(18:18+7)
+    write(CFL_string, '(f3.1)') CFL
+  !  print*, test_case, CFL_string, CFL
+
+
+    inquire(file="TD_"//test_case//"_CFL_"//CFL_string//".txt", exist=exist)
+    if (exist) then
+      open(10, file="TD_"//test_case//"_CFL_"//CFL_string//".txt", status="old", position="append", action="write")
+    else
+      open(10, file="TD_"//test_case//"_CFL_"//CFL_string//".txt", status="new", action="write")
+    end if
 
     do n = nb+ngc, ne-ngc
         do l = lb+ngc,le-ngc
@@ -39,7 +51,7 @@ subroutine write_NN_datatset(Uin, CellGPO)
                 max = maxval(q_sp(var,:))
                 min = minval(q_sp(var,:))
 
-                if (max-min < 1e-14) then 
+                if (max-min < 1e-10) then 
                     F(var) = sign(1.0,min)
                     do j = 1, sz_sphere
                          q_sp(var,j)= 1.0
@@ -58,8 +70,9 @@ subroutine write_NN_datatset(Uin, CellGPO)
                 print*, 'weird'
             end if
 
-            write(10,"(57(e12.5), i3)") real(q_sp(:,:),kind=4), real(F(:),kind=4), real(CFL,kind=4), CellGPO(l,n)
-
+            if (cst .eqv. .false.) then
+                write(10,"(57(e12.5,' '), i3)") real(q_sp(:,:),kind=4), real(F(:),kind=4), real(CFL,kind=4), (CellGPO(l,n)-1)/2
+            end if
         end do 
     end do
 

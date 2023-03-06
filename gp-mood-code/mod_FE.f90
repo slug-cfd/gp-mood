@@ -28,13 +28,12 @@ contains
     real(PR)   , dimension(4,  0:lf+1  , -1:nf+1) :: L_Flux_y
 
     integer :: l, n, j, k
-    !!real(PR) :: divV
+
+    logical :: criterion_iter
 
 
     count_FE = 0
     CellGPO   =  Mord;
-!!$    print*,'cellGPO from mod_FE.f90', Mord
-!!$    stop
     DetCell   = .true.
     DetFace_x = .true.
     DetFace_y = .true.
@@ -126,7 +125,8 @@ contains
 
     end do
 
-    if ((first).and.(write_NN_dataset)) then
+    criterion_iter=( ((niter>=0).and.(niter<=5)) .or. ((niter>=100).and.(niter<=100)) )
+    if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
       call write_NN_datatset(Uin, CellGPO)
     end if
 
