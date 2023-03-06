@@ -8,7 +8,7 @@ module parameters
   ! Output files parameter
   character(100) :: file='./output_R1ell12/2DRPC3'
 
-  logical :: write_NN_dataset=.false.
+  logical :: write_NN_dataset=.true.
 
   real(PR), parameter :: CFL  =  0.9
   integer , parameter :: time_method    = SSP_RK3
@@ -42,7 +42,7 @@ module parameters
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = RP_2D_3
   real(PR), parameter :: tmax = 0.3
-  integer, parameter  :: nmax = 1000000 ! put a large number if want to finish based on tmax only
+  integer, parameter  :: nmax = 106 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Neumann ! Boundary conditions
