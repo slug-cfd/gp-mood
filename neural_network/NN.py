@@ -26,11 +26,11 @@ class radius_picker(nn.Module):
 
         if (input_type==raw_VF_data):
             if (max_radius == 1 ):
-                self.stencil_size = 5 #3rd order
+                self.stencil_size = 13 #3rd order
             elif (max_radius == 2 ):
-                self.stencil_size = 13 #5th order
+                self.stencil_size = 25 #5th order
             elif (max_radius == 3 ):
-                self.stencil_size = 25 #7th order
+                self.stencil_size = -1000 #7th order
             else:
                 print(colors.red+"not implemented yet #0")
                 sys.exit()
@@ -81,8 +81,8 @@ class radius_picker(nn.Module):
             if (k_layer<self.nb_layers-1): #RELU except for last layer
                 x = torch.relu(x)
 
-        return F.softmax(x,dim=1) #Softmax for last layer to output probability
-        #return x
+        #return F.softmax(x,dim=1) #Softmax for last layer to output probability
+        return x
     
     def pick_radius(self, x, index): #Pick a radius from data
         
@@ -105,7 +105,7 @@ class radius_picker(nn.Module):
 
 def unitary_check_NN_class():
 
-    NN1=radius_picker(max_radius=3, nb_layers=5, layer_sizes=[40,10,90,10], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+    NN1=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[58,58], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
     batch_size=2
     data=torch.rand((batch_size, NN1.input_size)) #some random data
@@ -124,4 +124,4 @@ def unitary_check_NN_class():
     print("NN2 output after loading NN1 = ",out2, "should be the same as NN1")
     print("difference is", torch.max(out1-out2).item())
 
-unitary_check_NN_class()
+#unitary_check_NN_class()

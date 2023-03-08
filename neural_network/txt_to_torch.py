@@ -1,4 +1,5 @@
 import os
+import NN
 
 class data_point():
 
@@ -50,3 +51,4 @@ print(len(data0), len(data1))
 
 
 
+NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[58,58], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
