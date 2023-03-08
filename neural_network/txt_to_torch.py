@@ -1,5 +1,6 @@
 import os
 from NN import *
+import sys
 L=57
 
 def txt_to_torch(intput_path):
@@ -51,11 +52,13 @@ def txt_to_torch(intput_path):
     torch.save(input1, output_path1)
 
 # List the datafiles
-path = '../gp-mood-code/'
-paths = []
-for file_name in os.listdir(path):
-    if "trimmed" in file_name:
-        paths.append(path+file_name)
+# path = '../gp-mood-code/'
+# paths = ['../gp-mood-code/trimmed_TD_DMACH___CFL_0.8.txt']
+# # for file_name in os.listdir(path):
+# #     if "trimmed" in file_name:
+# #         paths.append(path+file_name)
 
-for path in paths:
-     txt_to_torch(path)
+#for path in paths:
+#     txt_to_torch(path)
+
+txt_to_torch(sys.argv[1])
