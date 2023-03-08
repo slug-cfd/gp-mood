@@ -1,54 +1,61 @@
 import os
-import NN
+from NN import *
+L=57
 
-class data_point():
+def txt_to_torch(intput_path):
+    output_path0 = path[0:-4]+'_0_torch.pt'
+    output_path1 = path[0:-4]+'_1_torch.pt'
 
-    def __init__(self, line):
+    print("saving ", intput_path, "to", output_path0)
 
-        columns = line.split()
-        line = [float(column) for column in columns]
-        L=len(line)
-        self.FV_data=line[0:L-3]
-        self.R=line[-1]
-        self.CFL=line[-2]
+    N0=0
+    N1=0
+
+    with open(path, 'r') as file:
+        for line in file:
+
+            columns = line.split()
+            columns_float = [float(column) for column in columns]
+
+            if (columns_float[-1]==0):
+                N0+=1
+            else:
+                N1+=1
 
 
-# Define the path to the text file
+    input0=torch.zeros((N0,L))
+    input1=torch.zeros((N1,L))
 
+    print(N0,"R=0", N1, "R=1", intput_path)
+
+    with open(path, 'r') as file:
+            
+            iline0=0
+            iline1=0
+
+            for line in file:
+                
+                columns = line.split()
+                columns_float = [float(column) for column in columns]
+
+                if (columns_float[-1]==0):
+                    for k in range(L):
+                        input0[iline0,k]=columns_float[k]
+                    iline0+=1
+                else:
+                    for k in range(L):
+                        input1[iline1,k]=columns_float[k]
+                    iline1+=1
+
+    torch.save(input0, output_path0)
+    torch.save(input1, output_path1)
+
+# List the datafiles
 path = '../gp-mood-code/'
 paths = []
-
 for file_name in os.listdir(path):
     if "trimmed" in file_name:
         paths.append(path+file_name)
 
-
-# Initialize an empty list to store the data
-data0 = []
-data1 = []
-
-N0=0
-N1=0
-
 for path in paths:
-    with open(path, 'r') as file:
-
-        # Loop through each line of the file
-        for line in file:
-            data=data_point(line)
-
-            if (data.R==0):
-                N0+=1
-                data0.append(data)
-            else:
-                N1+=1
-                data1.append(data)
-        print(path)
-        print((100*N0)/(N0+N1), (100*N1)/(N0+N1))
-
-print(len(data0), len(data1))
-    
-
-
-
-NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[58,58], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+     txt_to_torch(path)
