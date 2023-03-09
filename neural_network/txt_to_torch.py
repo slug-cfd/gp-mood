@@ -1,18 +1,28 @@
 import os
 from NN import *
 import sys
-L=57
+from utils import *
+#Takes a txt file from gp mood and output two torch arrays correspond to R=1 an R=0
+#for file in ../gp-mood-code/*.txt ; do python3.9 txt_to_torch.py "$file" ;  done
+def txt_to_torch(file_name):
 
-def txt_to_torch(intput_path):
-    output_path0 = path[0:-4]+'_0_torch.pt'
-    output_path1 = path[0:-4]+'_1_torch.pt'
+    print(colors.HEADER+"Converting ", file_name, " to torch arrays"+colors.ENDC)
+    print("trimming the txt file ...")
+    trimmed_path=dir+'trimmed_'+file_name[len(dir):]
+    os.system('sort '+file_name+'| uniq > "'+trimmed_path+'"')
+    print("done")
 
-    print("saving ", intput_path, "to", output_path0)
+    output_path0 = 'data/'+file_name[len(dir):-4]+'_0_torch.pt'
+    output_path1 = 'data/'+file_name[len(dir):-4]+'_1_torch.pt'
+
+    print(colors.yellow+"will save data to",output_path0,"and",output_path1+colors.ENDC)
+
+    print("enumerating ...")
 
     N0=0
     N1=0
 
-    with open(path, 'r') as file:
+    with open(trimmed_path, 'r') as file:
         for line in file:
 
             columns = line.split()
@@ -27,9 +37,10 @@ def txt_to_torch(intput_path):
     input0=torch.zeros((N0,L))
     input1=torch.zeros((N1,L))
 
-    print(N0,"R=0", N1, "R=1", intput_path)
+    print(N0,"entry with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
+    print(colors.yellow+"gathering and writing ..."+colors.ENDC)
 
-    with open(path, 'r') as file:
+    with open(trimmed_path, 'r') as file:
             
             iline0=0
             iline1=0
@@ -50,15 +61,10 @@ def txt_to_torch(intput_path):
 
     torch.save(input0, output_path0)
     torch.save(input1, output_path1)
+    print("end")
 
-# List the datafiles
-# path = '../gp-mood-code/'
-# paths = ['../gp-mood-code/trimmed_TD_DMACH___CFL_0.8.txt']
-# # for file_name in os.listdir(path):
-# #     if "trimmed" in file_name:
-# #         paths.append(path+file_name)
-
-#for path in paths:
-#     txt_to_torch(path)
+if (len(sys.argv)<2):
+    print("error, usage: python3 txt_to_torch.py file.txt")
+    sys.exit()
 
 txt_to_torch(sys.argv[1])
