@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import sys
-from colors import *
+from utils import *
 
-torch.set_default_dtype(torch.float32) #single precision
+torch.set_default_dtype(torch.float32) 
 
 #input types
 raw_VF_data=0
@@ -79,8 +79,8 @@ class radius_picker(nn.Module):
             x=self.layers[k_layer](x) #layer evaluation
 
             if (k_layer<self.nb_layers-1): #RELU except for last layer
-                x = torch.relu(x)
-
+              #  x = torch.relu(x)
+                x=torch.sigmoid(x)
         #return F.softmax(x,dim=1) #Softmax for last layer to output probability
         return x
     
@@ -123,5 +123,3 @@ def unitary_check_NN_class():
     out2=NN2.forward(data)
     print("NN2 output after loading NN1 = ",out2, "should be the same as NN1")
     print("difference is", torch.max(out1-out2).item())
-
-#unitary_check_NN_class()
