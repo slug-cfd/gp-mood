@@ -38,3 +38,32 @@ class MyDataset(Dataset):
 
     def __getitem__(self, index):
         return self.inputs[index], self.labels[index]
+
+def format(x):
+    """Format a double with one digit after the comma"""
+    return f"{x:.5f}"
+
+def plot_loss(epoch, lr, tr_loss, te_loss, lenght):
+    fig, ax1 = plt.subplots()
+
+    # plot the loss on the left y-axis
+    ax1.plot(epoch, tr_loss, color='blue', linestyle='dotted',label='Training')
+    ax1.plot(epoch, te_loss, color='blue',label='Testing')
+    ax1.set_xlabel('Epochs')
+    ax1.set_ylabel('Losses', color='blue')
+    plt.legend()
+    ax1.legend()
+    # create a second y-axis on the right
+    ax2 = ax1.twinx()
+
+    # plot the learning rate on the right y-axis
+    ax2.plot(epoch, lr, color='red')
+    ax2.set_ylabel('Learning Rate', color='red')
+    plt.title('L = '+str(lenght))
+    plt.savefig('losses_epoch_L_'+str(lenght)+'.png')
+    plt.clf()
+    ax1.cla()
+    ax2.cla()
+    plt.close(fig)
+
+

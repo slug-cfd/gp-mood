@@ -2,8 +2,8 @@ from NN import *
 import os
 
 #Load the NN
-NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[int(L/2),int(L/2)], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
-NN.load('model.pt')
+NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[80,80], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+NN.load('model_80.pt')
 
 #Gets all the data from data/ and test each dataset separately
 

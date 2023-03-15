@@ -60,14 +60,14 @@ class radius_picker(nn.Module):
 
         num_params = sum(p.numel() for p in self.parameters())
 
-        print('\n'+colors.HEADER+" --- Initialized a radius picker neural network ---"+colors.ENDC)
-        print("max radius =", max_radius)
-        print("stencil size =", self.stencil_size)
-        print("input size =", self.input_size, "i.e. looking at", n_var_used, "var per cells")
-        print("output size =", self.output_size, "i.e choosing between radiuses", *range(0, max_radius+1))
-        print("Initialized", nb_layers,"layers")
-        print(colors.yellow+f"Number of parameters: {num_params}"+colors.ENDC)
-        print(colors.HEADER+" ---------------------- End -----------------------\n"+colors.ENDC)
+        #print('\n'+colors.HEADER+" --- Initialized a radius picker neural network ---"+colors.ENDC)
+        #print("max radius =", max_radius)
+        #print("stencil size =", self.stencil_size)
+        #print("input size =", self.input_size, "i.e. looking at", n_var_used, "var per cells")
+        #print("output size =", self.output_size, "i.e choosing between radiuses", *range(0, max_radius+1))
+        #print("Initialized", nb_layers,"layers")
+        #print(colors.yellow+f"Number of parameters: {num_params}"+colors.ENDC)
+        #print(colors.HEADER+" ---------------------- End -----------------------\n"+colors.ENDC)
 
     def forward(self, x): #Feed forward function
 
@@ -90,14 +90,14 @@ class radius_picker(nn.Module):
         return R.item(), p.item()
     
     def save(self, file='NN.pt'):
-        print(colors.yellow+"... Saving the NN in file ...", file)
+       # print(colors.yellow+"... Saving the NN in file ...", file)
         torch.save(self.state_dict(), file)
-        print(colors.green+"Saved the NN in file", file, colors.ENDC)
+       # print(colors.green+"Saved the NN in file", file, colors.ENDC)
 
     def load(self, file):
-        print(colors.yellow+"... Loading the NN from file ...", file)
+       # print(colors.yellow+"... Loading the NN from file ...", file)
         self.load_state_dict(torch.load(file))
-        print(colors.green+"Loaded the NN from file", file, colors.ENDC)
+       # print(colors.green+"Loaded the NN from file", file, colors.ENDC)
 
 def unitary_check_NN_class():
 
