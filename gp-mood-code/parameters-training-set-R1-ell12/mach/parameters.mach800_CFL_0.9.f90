@@ -8,9 +8,10 @@ module parameters
   ! Output files parameter
   character(100) :: file='./output_R1ell12/Mach800'
   character(100) :: file_slice_x = './slice_x.dat'
+  logical :: write_NN_dataset=.true.
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.8
+  real(PR), parameter :: CFL  =  0.9
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
@@ -48,12 +49,13 @@ module parameters
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
 
+  integer , dimension(7), parameter :: szs_sphere = (/1,0,5,0,13,0,25/)
+  
+  integer , parameter :: sz_sphere = szs_sphere(Mord)
+  integer , parameter :: sz_sphere_p1 = szs_sphere(Mord+2)
 
   integer , parameter :: radius = (Mord -1)/2
-  integer , parameter :: sz_sphere = min( (2*Mord - 1 + 4*(radius - 1)**2), 25)
   integer , parameter :: sz_cross = 2*Mord-1
-
-
 
   ! MOOD Parameters, leave to true
   logical, save :: DMP

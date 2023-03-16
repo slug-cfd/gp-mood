@@ -6,7 +6,7 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell12/2DRPC6'
+  character(100) :: file='./output_R1ell12/2DRPC6_'
 
   logical :: write_NN_dataset=.true.
 
