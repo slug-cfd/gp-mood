@@ -6,11 +6,13 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell12/implosion'
+  character(100) :: file='./output_R1ell12/implosi'
+  logical :: write_NN_dataset=.true.
+
   character(100) :: file_slice_x = './slice_x.dat'
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.8
+  real(PR), parameter :: CFL  =  0.9
   integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
@@ -42,18 +44,17 @@ module parameters
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = implosion
   real(PR), parameter :: tmax = 2.5
-  integer, parameter  :: nmax = 1000000000 ! put a large number if want to finish based on tmax only
+  integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 0.3 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 0.3 !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = reflective! Boundary conditions
-
+  integer , dimension(7), parameter :: szs_sphere = (/1,0,5,0,13,0,25/)
+  
+  integer , parameter :: sz_sphere = szs_sphere(Mord)
+  integer , parameter :: sz_sphere_p1 = szs_sphere(Mord+2)
 
   integer , parameter :: radius = (Mord -1)/2
-  integer , parameter :: sz_sphere = min( (2*Mord - 1 + 4*(radius - 1)**2), 25)
   integer , parameter :: sz_cross = 2*Mord-1
-
-
-
   ! MOOD Parameters, leave to true; don't change 
   logical, save :: DMP
   logical , parameter :: U2         = .true.

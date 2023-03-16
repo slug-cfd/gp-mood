@@ -10,7 +10,7 @@ module parameters
 
   logical :: write_NN_dataset=.true.
 
-  real(PR), parameter :: CFL  =  0.9
+  real(PR), parameter :: CFL  =  0.3
   integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
@@ -43,7 +43,7 @@ module parameters
   integer, parameter  :: IC_type = RP_2D_17
   real(PR), parameter :: tmax = 0.3
   integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
+s  real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Neumann ! Boundary conditions
 

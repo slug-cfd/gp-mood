@@ -10,7 +10,7 @@ module parameters
 
   logical :: write_NN_dataset=.true.
 
-  real(PR), parameter :: CFL  =  0.9
+  real(PR), parameter :: CFL  =  0.6
   integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 

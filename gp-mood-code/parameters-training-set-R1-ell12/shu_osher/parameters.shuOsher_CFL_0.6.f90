@@ -6,19 +6,23 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell12/2DRPC17'
+  character(100) :: file='./output_R1ell12/ShuOshe'
 
+  character(100) :: file_slice_x = './slice_x.dat'
   logical :: write_NN_dataset=.true.
 
-  real(PR), parameter :: CFL  =  0.9
-  integer , parameter :: time_method    = SSP_RK3
+  ! Time integration
+  real(PR), parameter :: CFL  =  0.6
+  integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
+  ! Space integration
   integer, parameter :: space_method   = GP_MOOD
   logical, parameter :: cross_stencil  = .false.
   logical, parameter :: sphere_stencil = .true.
   integer, parameter :: Mord= 3  ! Order
   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+
 
   ! flux method
   integer, parameter :: numFlux = HLLC
@@ -27,7 +31,9 @@ module parameters
   integer, parameter :: IO_freqStep = -10    ! (put a positive number to use, e.g., 500)
   real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
+
   integer :: dim = 2
+
 
   ! Mesh parameter
   integer , parameter :: ngc = 4 ! Number of ghost cells
@@ -35,19 +41,19 @@ module parameters
   integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
   ! Set the baseline lf0 and nf0 for the dt reduction
-  integer,  parameter :: lf0 = 400 ! Number of cell in the x direction
-  integer,  parameter :: nf0 = 400 !
+  integer,  parameter :: lf0 = 1024 ! Number of cell in the x direction
+  integer,  parameter :: nf0 = 1024 ! Number of cell in the y direction
 
-  
+
+
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = RP_2D_17
-  real(PR), parameter :: tmax = 0.3
+  integer, parameter  :: IC_type = Shu_Osher_rotated
+  real(PR), parameter :: tmax = 1.8
   integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Neumann ! Boundary conditions
-
-
+  real(16), parameter :: Lx_16 = 28.2842712474619!Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 28.2842712474619!Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = Periodic! Boundary conditions
+  
   integer , dimension(7), parameter :: szs_sphere = (/1,0,5,0,13,0,25/)
   
   integer , parameter :: sz_sphere = szs_sphere(Mord)
@@ -57,7 +63,7 @@ module parameters
   integer , parameter :: sz_cross = 2*Mord-1
 
 
- ! MOOD Parameters, leave to true; don't change 
+  ! MOOD Parameters, leave to true; don't change 
   logical, save :: DMP
   logical , parameter :: U2         = .true.
   logical , parameter :: U2_tol     = .true.
