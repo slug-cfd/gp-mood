@@ -3,8 +3,8 @@ from utils import *
 
 #Takes the data in the data/ generate NN-ready files 
 
-max_N0_per_problem=11500
-ratio=1 #N1/N0 ratio
+max_N0_per_problem=999999
+ratio=4 #N1/N0 ratio
 
 def format_dataset():
     
@@ -15,8 +15,9 @@ def format_dataset():
 
     #First we count the data
     for file_name in os.listdir('data/'):
-        paths.append('data/'+file_name)
-        file_names.append(file_name)
+            if ('pt' in file_name):
+                paths.append('data/'+file_name)
+                file_names.append(file_name)
 
     #and we compute N0, the number of entry with radius 0
     N0=0
@@ -51,11 +52,11 @@ def format_dataset():
     #Count is over, some stats
     print(colors.green+"Data repartition per problem"+colors.ENDC)
     for key in N0_per_problem:
-        print(key, N0_per_problem[key]*100/N0, "%",N0_per_problem[key])
+        print(key, format(N0_per_problem[key]*100/N0), "%",N0_per_problem[key])
 
     print(colors.green+"Data repartition per CFL"+colors.ENDC)
     for key in N0_per_CFL:
-        print(key, N0_per_CFL[key]*100/N0, "%")
+        print(key, format(N0_per_CFL[key]*100/N0), "%")
         
     #Allocate the torch arrays
     print(N0,"entries with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
@@ -69,7 +70,7 @@ def format_dataset():
     #We shuffle to have data from all time steps, not just from the beginning when Nreal!=N
     for path in paths:
         with open(path, 'r') as file:
-                    
+                
                 data = torch.load(path)
 
                 N=data.shape[0]
@@ -78,14 +79,16 @@ def format_dataset():
                 if (path[-10]=='0'):   
 
                     #if its R=0 data, I limit the amount of input
-                    N=min(int(max_N0_per_problem/3),N)
+                    #N=min(int(max_N0_per_problem/3),N)
                     indexes = random.sample(range(0, Nreal), N)
 
+                    #input0[k0:k0+N,:]=data[indexes,:]
                     input0[k0:k0+N,:]=data[indexes,:]
                     k0+=N
 
                 else:
                     indexes = random.sample(range(0, Nreal), N)
+                    #input1[k1:k1+N,:]=data[indexes,:]
                     input1[k1:k1+N,:]=data[indexes,:]
                     k1+=N
     
@@ -97,21 +100,20 @@ def format_dataset():
     indexes = random.sample(range(0, N1), N1)
     input1[:,:]=input1[indexes,:]
 
-
-    # pick the training size as two times the amount of N0 entries          
+    # pick the training size as 1+ratio times the amount of N0 entries          
     data_size=int(N0*(1+ratio))
 
     inputs=torch.zeros((data_size,L))
     labels=torch.zeros((data_size,2))
 
-    #Get all the N0 data and N0 N1 data
+    #Get all the N0, R=0 data and N0*(1+ratio)R=1 data
     for i in range(int(data_size/(ratio+1))):
         inputs[i,:]=input0[i,:]
         labels[i,0]=1.0
         labels[i,1]=0.0
     print('i=',i, 'data size',data_size)
     for i in range(int(data_size/(ratio+1)), data_size):
-        inputs[i,:]=input1[i,:]
+        inputs[i,:]=input1[i-int(data_size/(ratio+1)),:]
         labels[i,0]=0.0
         labels[i,1]=1.0
     print('i=',i, 'data size',data_size)
