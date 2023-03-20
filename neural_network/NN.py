@@ -50,13 +50,11 @@ class radius_picker(nn.Module):
         self.nb_layers=nb_layers
         
         self.layers.append(  nn.Linear(self.input_size, layer_sizes[0])  )
-        k_layer=0
         for k_layer in range(1,nb_layers-1):
             
             self.layers.append(  nn.Linear(layer_sizes[k_layer-1], layer_sizes[k_layer])  )
 
         self.layers.append(  nn.Linear(layer_sizes[nb_layers-2], self.output_size)  )
-        k_layer=nb_layers-1
 
         num_params = sum(p.numel() for p in self.parameters())
 
