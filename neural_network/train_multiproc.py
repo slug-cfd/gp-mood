@@ -5,18 +5,18 @@ from psutil import cpu_count
 
 def train(lenght):
     #Training / Testing percentage ratio
-    train_ratio=0.85
+    train_ratio=0.50
     #Batch size for training
-    batch_size=512
+    batch_size=1024
     #Initial learning
-    lr0=0.1
+    lr0=0.01
     #Final learning rate
-    lrend=0.00001
+    lrend=0.0001
     #Amout of lr reduction
-    max_reduction=200
-    max_epoch=1000
+    max_reduction=100
+    max_epoch=99999
     #Stall criterion when the lr decreases
-    stall_criterion=10
+    stall_criterion=3
     #Geometrical progression of the learning rate
     k=np.power(lrend/lr0,1.0/max_reduction) 
 
@@ -39,8 +39,10 @@ def train(lenght):
     testing_loader  =  DataLoader(dataset=testing_set , batch_size=testing_size, shuffle=False)
 
     #Define the NN, loss function and optimize
+    #NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
     NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
-    loss_func = nn.CrossEntropyLoss()  
+
+    loss_func = nn.MSELoss()  
     optimizer = optim.Adam(NN.parameters(), lr = lr0)
 
     training_loss_list=[]
@@ -63,6 +65,7 @@ def train(lenght):
         #Backpropagation
         for batch_idx, (data, labels) in enumerate(batched_training_loader):
             
+            #print(batch_idx, data.shape, labels.shape, len(batched_training_loader), len(batched_training_loader)*batch_size,training_size)
             optimizer.zero_grad()
 
             outputs=NN.forward(data)
@@ -141,7 +144,7 @@ def train(lenght):
     
     if (epoch>=max_epoch):
         reason=colors.yellow+'max epoch reached'+colors.ENDC
-    elif (lr<lrend):
+    elif (nreduction>=max_reduction):
         reason=colors.yellow+'stalled at the minimal value of lr'+colors.ENDC
     else:
         reason=colors.red+'ERROR, unknown'+colors.ENDC
@@ -157,8 +160,8 @@ if __name__ == '__main__':
     ncores=8
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    lenght_list=range(10,80+1,10)
-    print("List of hyperparameters to be shared: ", [i for i in lenght_list], "i.e"+colors.green, len(lenght_list),colors.ENDC,'elementss')
+    lenght_list=range(2,4,1)
+    print("List of hyperparameters to be shared: ", [i for i in lenght_list], "i.e"+colors.green, len(lenght_list),colors.ENDC,'elements')
 
     # create a pool of processes
     pool = multiprocessing.Pool(ncores)
