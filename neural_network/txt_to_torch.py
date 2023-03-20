@@ -33,19 +33,22 @@ def txt_to_torch(file_name):
 
             columns = line.split()
             columns_float = [float(column) for column in columns]
-
             #If the last digit is 0, we are doing R=0
             if (columns_float[-1]==0):
                 N0+=1
-            else:
+            elif (columns_float[-1]==1):
                 N1+=1
+            else:
+                print(colors.red+"ERROR NOT 0 NOR 1")
+                sys.exit()
+
 
 
     #Now that the sizes are known, we declare the torch arrays
     input0=torch.zeros((N0,L))
     input1=torch.zeros((N1,L))
 
-    print(N0,"entry with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
+    print(N0,"entries with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
     print(colors.yellow+"gathering and writing ..."+colors.ENDC)
 
     #We now distribute the txt data into the torch files
@@ -63,10 +66,15 @@ def txt_to_torch(file_name):
                     for k in range(L):
                         input0[iline0,k]=columns_float[k]
                     iline0+=1
-                else:
+                elif (columns_float[-1]==1):
                     for k in range(L):
                         input1[iline1,k]=columns_float[k]
                     iline1+=1
+                else:
+                    print(colors.red+"ERROR NOT 0 NOR 1")
+                    sys.exit()
+    print("end of distributing, iline0=",iline0, "N0=",N0)
+    print("end of distributing, iline1=",iline1, "N0=",N1)
 
     #save
     torch.save(input0, output_path0)
