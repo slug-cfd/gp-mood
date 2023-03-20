@@ -12,6 +12,8 @@ import random
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 import pickle
+import matplotlib.ticker as ticker
+
 
 dir='../gp-mood-code/'
 L=57
@@ -43,27 +45,37 @@ def format(x):
     """Format a double with one digit after the comma"""
     return f"{x:.5f}"
 
-def plot_loss(epoch, lr, tr_loss, te_loss, lenght):
+
+def plot_loss(epoch, lr, tr_loss, te_loss, length):
     fig, ax1 = plt.subplots()
 
     # plot the loss on the left y-axis
-    ax1.plot(epoch, tr_loss, color='blue', linestyle='dotted',label='Training')
-    ax1.plot(epoch, te_loss, color='blue',label='Testing')
+    ax1.plot(epoch, tr_loss, color='blue', linestyle='dotted', label='Training')
+    ax1.plot(epoch, te_loss, color='blue', label='Testing')
     ax1.set_xlabel('Epochs')
     ax1.set_ylabel('Losses', color='blue')
-    plt.legend()
-    ax1.legend()
+    ax1.tick_params(axis='y', labelcolor='blue')
+    ax1.set_yscale('log')
+    ax1.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:.16g}'.format(y)))
+
     # create a second y-axis on the right
     ax2 = ax1.twinx()
 
     # plot the learning rate on the right y-axis
     ax2.plot(epoch, lr, color='red')
     ax2.set_ylabel('Learning Rate', color='red')
-    plt.title('L = '+str(lenght))
-    plt.savefig('losses_epoch_L_'+str(lenght)+'.png')
+    ax2.tick_params(axis='y', labelcolor='red')
+    ax2.set_yscale('log')
+    ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:.16g}'.format(y)))
+
+    plt.title('L = ' + str(length))
+    plt.legend(loc='upper left')
+
+    plt.savefig('losses_epoch_L_' + str(length) + '.png', dpi=300)
     plt.clf()
     ax1.cla()
     ax2.cla()
     plt.close(fig)
+
 
 
