@@ -7,11 +7,12 @@ module parameters
 
   ! Output files parameter
   character(100) :: file='./output_R1ell12/Mach800'
+
   character(100) :: file_slice_x = './slice_x.dat'
   logical :: write_NN_dataset=.true.
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.6
+  real(PR), parameter :: CFL  =  0.2
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 

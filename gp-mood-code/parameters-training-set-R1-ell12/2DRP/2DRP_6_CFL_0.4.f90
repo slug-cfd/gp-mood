@@ -6,11 +6,11 @@ module parameters
   implicit none
 
   ! Output files parameter
-  character(100) :: file='./output_R1ell12/2DRPC12'
+  character(100) :: file='./output_R1ell12/2DRPC6_'
 
   logical :: write_NN_dataset=.true.
 
-  real(PR), parameter :: CFL  =  0.9
+  real(PR), parameter :: CFL  =  0.4
   integer , parameter :: time_method    = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
@@ -40,8 +40,8 @@ module parameters
 
   
   ! IC, BC and domain setup
-  integer, parameter  :: IC_type = RP_2D_12
-  real(PR), parameter :: tmax = 0.25
+  integer, parameter  :: IC_type = RP_2D_6
+  real(PR), parameter :: tmax = 0.3
   integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction

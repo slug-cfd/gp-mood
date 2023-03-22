@@ -12,7 +12,7 @@ module parameters
   logical :: write_NN_dataset=.true.
 
   ! Time integration
-  real(PR), parameter :: CFL  =  0.3
+  real(PR), parameter :: CFL  =  0.8
   integer , parameter :: time_method  = SSP_RK3
   logical , parameter :: dt_reduction = .false.
 
