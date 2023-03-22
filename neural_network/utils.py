@@ -46,7 +46,7 @@ def format(x):
     return f"{x:.5f}"
 
 
-def plot_loss(epoch, lr, tr_loss, te_loss, length):
+def plot_loss(epoch, lr, tr_loss, te_loss, length, model_name):
     fig, ax1 = plt.subplots()
 
     # plot the loss on the left y-axis
@@ -57,6 +57,7 @@ def plot_loss(epoch, lr, tr_loss, te_loss, length):
     ax1.tick_params(axis='y', labelcolor='blue')
     ax1.set_yscale('log')
     ax1.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:.16g}'.format(y)))
+    ax1.legend(loc='upper left')
 
     # create a second y-axis on the right
     ax2 = ax1.twinx()
@@ -69,9 +70,8 @@ def plot_loss(epoch, lr, tr_loss, te_loss, length):
     ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:.16g}'.format(y)))
 
     plt.title('L = ' + str(length))
-    plt.legend(loc='upper left')
 
-    plt.savefig('losses_epoch_L_' + str(length) + '.png', dpi=300)
+    plt.savefig('losses_'+model_name+'_epoch_L_' + str(length) + '.png', dpi=300)
     plt.clf()
     ax1.cla()
     ax2.cla()

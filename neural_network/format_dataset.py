@@ -1,10 +1,11 @@
 from NN import *
 from utils import *
-
+from symmetries import *
 #Takes the data in the data/ generate NN-ready files 
 
-max_N0_per_problem=999999
-ratio=4 #N1/N0 ratio
+max_N0_per_problem=3000
+ratio=2 #N1/N0 ratio
+rotation = True
 
 def format_dataset():
     
@@ -59,7 +60,7 @@ def format_dataset():
         print(key, format(N0_per_CFL[key]*100/N0), "%")
         
     #Allocate the torch arrays
-    print(N0,"entries with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
+    print("Total is ", N0,"entries with R=0 and", N1, " with R=1", (100*N0)/(N1+N0), "%")
     input0=torch.zeros((N0,L))
     input1=torch.zeros((N1,L))
 
@@ -73,26 +74,30 @@ def format_dataset():
                 
                 data = torch.load(path)
 
-                N=data.shape[0]
-                Nreal=data.shape[0]
+                #if its R=0 data, I limit the amount of input
 
                 if (path[-10]=='0'):   
+                    N=min(int(max_N0_per_problem/3),data.shape[0])
+                else:
+                    N=data.shape[0]
 
-                    #if its R=0 data, I limit the amount of input
-                    #N=min(int(max_N0_per_problem/3),N)
-                    indexes = random.sample(range(0, Nreal), N)
+                Nreal=data.shape[0]
 
-                    #input0[k0:k0+N,:]=data[indexes,:]
+                indexes = random.sample(range(0, Nreal), N)
+
+                if (path[-10]=='0'):   
                     input0[k0:k0+N,:]=data[indexes,:]
+                    #unit_resting_rotation(data[0,:])
                     k0+=N
 
-                else:
-                    indexes = random.sample(range(0, Nreal), N)
-                    #input1[k1:k1+N,:]=data[indexes,:]
+                elif (path[-10]=='1'):
                     input1[k1:k1+N,:]=data[indexes,:]
                     k1+=N
+                else:
+                    print("problem")
+                    sys.exit()
     
-    print("k1",k1, "N1",N1, "k0",k0, "N0",N0)
+    print("should be 0",k1-N1,k0-N0)
     
     #We re-shuffle to mix problems
     indexes = random.sample(range(0, N0), N0)
@@ -103,6 +108,8 @@ def format_dataset():
     # pick the training size as 1+ratio times the amount of N0 entries          
     data_size=int(N0*(1+ratio))
 
+    print("Dataset has", data_size, "entries with", N0, "R=0 inputs")
+
     inputs=torch.zeros((data_size,L))
     labels=torch.zeros((data_size,2))
 
@@ -111,13 +118,28 @@ def format_dataset():
         inputs[i,:]=input0[i,:]
         labels[i,0]=1.0
         labels[i,1]=0.0
-    print('i=',i, 'data size',data_size)
+    #print('i=',i, 'data size',data_size)
     for i in range(int(data_size/(ratio+1)), data_size):
         inputs[i,:]=input1[i-int(data_size/(ratio+1)),:]
         labels[i,0]=0.0
         labels[i,1]=1.0
-    print('i=',i, 'data size',data_size)
+    #print('i=',i, 'data size',data_size)
 
     torch.save({'inputs': inputs, 'labels': labels}, 'dataset.pt')
+    print('done')
+    #rotated datset
+
+    if (rotation):
+        print("Rotated dataset  has", 4*data_size, "entries with", 4*N0, "R=0 inputs")
+        inputs_rot=torch.zeros((data_size*4,L))
+        labels_rot=torch.zeros((data_size*4,2))
+
+        for i in range(data_size):
+            data_rotated=rotate(inputs[i,:])
+            for nrot in range(4):
+                inputs_rot[4*i + nrot,:]=data_rotated[nrot]
+                labels_rot[4*i + nrot,:]=labels[i,:]
+
+        torch.save({'inputs': inputs_rot, 'labels': labels_rot}, 'dataset_rot.pt')
 
 format_dataset()

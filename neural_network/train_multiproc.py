@@ -3,9 +3,9 @@ from multiprocessing import current_process
 from NN import *
 from psutil import cpu_count
 
-def train(lenght):
+def train(lenght, dataset_file, model_name):
     #Training / Testing percentage ratio
-    train_ratio=0.50
+    train_ratio=0.5
     #Batch size for training
     batch_size=1024
     #Initial learning
@@ -21,12 +21,21 @@ def train(lenght):
     k=np.power(lrend/lr0,1.0/max_reduction) 
 
     #Load the dataset
-    data_dict = torch.load('dataset.pt')
+    data_dict = torch.load(dataset_file)
     dataset = MyDataset(data_dict)
 
     #define training and testing sizes
     training_size = int(len(dataset) * train_ratio)
     testing_size = len(dataset) - training_size
+    
+    print('DATASET FILE=', dataset_file)
+    print('model_name=', model_name)
+    print('DATASET SIZE=', len(dataset))
+    print('TRAINING SIZE=', training_size)
+    print('TESTING SIZE=', testing_size)
+    print('Batch size=',batch_size)
+    print('training size/batch_size=',training_size/batch_size)
+
 
     #define training and testing datasets
     training_set, testing_set = torch.utils.data.random_split(dataset, [training_size, testing_size])
@@ -35,11 +44,10 @@ def train(lenght):
     batched_training_loader = DataLoader(dataset=training_set, batch_size=batch_size, shuffle=True)
 
     #Ordered datasets for evaluation
-    training_loader =  DataLoader(dataset=training_set, batch_size=training_size, shuffle=False)
+    #training_loader =  DataLoader(dataset=training_set, batch_size=training_size, shuffle=False)
     testing_loader  =  DataLoader(dataset=testing_set , batch_size=testing_size, shuffle=False)
 
     #Define the NN, loss function and optimize
-    #NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
     NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
     loss_func = nn.MSELoss()  
@@ -97,7 +105,7 @@ def train(lenght):
             
             #if progress, save !
             if (training_loss.item()<training_min_loss):
-                NN.save('model_'+str(lenght)+'.pt')
+                NN.save('model_'+model_name+'_'+str(lenght)+'.pt')
                 training_min_loss=training_loss.item()
                 testing_min_loss=testing_loss.item()
 
@@ -114,26 +122,26 @@ def train(lenght):
             epoch_list.append(epoch)
             lr_list.append(lr)
         
-        #Every 10 epoch, dump and plot  the losses and epoch lists
-        if ((epoch%10==0)and(epoch>1)):
+            #Every 10 epoch, dump and plot  the losses and epoch lists
+            if ((epoch%10==0)and(epoch>1)):
 
-            with open('losses_epoch_L_'+str(lenght)+'.pkl', 'wb') as f:
-                pickle.dump((epoch_list, training_loss_list, testing_loss_list), f)
-            
-            plot_loss(epoch_list, lr_list, training_loss_list, testing_loss_list, lenght)
+                with open('losses_'+model_name+'_epoch_L_'+str(lenght)+'.pkl', 'wb') as f:
+                    pickle.dump((epoch_list, training_loss_list, testing_loss_list), f)
+                
+                plot_loss(epoch_list, lr_list, training_loss_list, testing_loss_list, lenght, model_name)
 
-        #If its stalling, reduce lr
-        if (nstall == stall_criterion):
-            print("Lenght = ",colors.green+str(lenght)+colors.ENDC,'stalling, reducing lr from', format(lr), 'to', format(lr*k), "epoch=",str(epoch)+'/'+str(max_epoch), "nreduction=",str(nreduction+1)+'/'+str(max_reduction+1))
-            print("Last training error =", format(training_loss_list[-1]))
-            print("Last testing error =", format(testing_loss_list[-1]))
+            #If its stalling, reduce lr
+            if (nstall == stall_criterion):
+                print("Lenght = ",colors.green+str(lenght)+colors.ENDC,'stalling, reducing lr from', format(lr), 'to', format(lr*k), "epoch=",str(epoch)+'/'+str(max_epoch), "nreduction=",str(nreduction+1)+'/'+str(max_reduction+1))
+                print("Last training error =", format(training_loss_list[-1]))
+                print("Last testing error =", format(testing_loss_list[-1]))
 
-            #Update the learning rate
-            lr=lr*k
-            for g in optimizer.param_groups:
-                g['lr'] = lr
-            nstall=0
-            nreduction+=1
+                #Update the learning rate
+                lr=lr*k
+                for g in optimizer.param_groups:
+                    g['lr'] = lr
+                nstall=0
+                nreduction+=1
         
         epoch+=1
     
@@ -151,23 +159,24 @@ def train(lenght):
 
     print("Reason:", reason)
 
-    return lenght, training_loss_list[-1], testing_loss_list[-1]
+    return model_name, lenght, training_loss_list[-1], testing_loss_list[-1]
 
 if __name__ == '__main__':
 
     #Amount of core to share the training
-    #ncore=cpu_count(logical=True)
-    ncores=8
+    ncores=cpu_count(logical=False)
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    lenght_list=range(2,4,1)
-    print("List of hyperparameters to be shared: ", [i for i in lenght_list], "i.e"+colors.green, len(lenght_list),colors.ENDC,'elements')
+    #param_list=[(90, 'dataset.pt', 'norot'),(100, 'dataset.pt', 'norot'),(110, 'dataset.pt', 'norot'),(90, 'dataset_rot.pt', 'rot'),(100, 'dataset_rot.pt', 'rot'),(110, 'dataset_rot.pt', 'rot')]
+    param_list=[(50, 'dataset_rot.pt', 'rot'),(60, 'dataset_rot.pt', 'rot'),(70, 'dataset_rot.pt', 'rot'),(80, 'dataset_rot.pt', 'rot'),(90, 'dataset_rot.pt', 'rot'),(100, 'dataset_rot.pt', 'rot'),(110, 'dataset_rot.pt', 'rot')]
+
+    print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
     # create a pool of processes
     pool = multiprocessing.Pool(ncores)
     
     # apply the function to the list of numbers using multiple processes
-    results = pool.map(train, lenght_list)
+    results = pool.starmap(train, param_list)
 
     # close the pool
     pool.close()
@@ -184,8 +193,8 @@ if __name__ == '__main__':
             hide=''
         else:
             hide='_'
-        plt.scatter(result[0], result[1], color='red' , label=hide+'training_loss')
-        plt.scatter(result[0], result[2], color='blue', label=hide+'testing_loss')
+        plt.scatter(result[1], result[2], color='red' , label=hide+'training_loss')
+        plt.scatter(result[1], result[3], color='blue', label=hide+'testing_loss')
 
     plt.xlabel("lenght")
     plt.ylabel("losses")
