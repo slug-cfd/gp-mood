@@ -12,9 +12,7 @@ subroutine write_NN_datatset(Uin, CellGPO)
     real(PR),  intent(in), dimension(4,lb:le, nb:ne) :: Uin
     integer ,  intent(in), dimension(lb:le, nb:ne)   :: CellGPO
     real(PR), dimension(4,sz_sphere_p1) :: q_sp
-    real(4) , dimension(57) :: formatted_input
-
-    real(kind=4) :: real_numbers(25)
+    real(4) , dimension(57) :: formatted_input=-66666666
 
     integer :: n,l,i,j
     character(len=7) :: test_case
@@ -63,7 +61,7 @@ subroutine format_input(q_sp, cst, formatted_input)
 
     real(PR), intent(inout), dimension(4,sz_sphere_p1) :: q_sp
     logical, intent(inout) :: cst
-    real(4), intent(out), dimension(57) :: formatted_input
+    real(4), intent(inout), dimension(57) :: formatted_input
     real(PR) :: max, min
     integer :: j, var
     real(PR), dimension(4) :: F
@@ -76,7 +74,7 @@ subroutine format_input(q_sp, cst, formatted_input)
         if (max-min < 1e-10) then 
             F(var) = sign(1.0,min)
             do j = 1, sz_sphere_p1
-                q_sp(var,j)= 1.0
+                q_sp(var,j) = 1.0
             end do
         else 
             cst=.false.
