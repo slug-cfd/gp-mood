@@ -33,8 +33,8 @@ imy=2
 iE=3
 nbvar=4
 
-index_all_mx=range(imx, L-4-1, nbvar)
-index_all_my=range(imy, L-4-1, nbvar)
+index_all_mx=range(imx, L-nbvar-1, nbvar)
+index_all_my=range(imy, L-nbvar-1, nbvar)
 
 #print( [i for i in index_all_mx] )
 #print( [i for i in index_all_my] )
