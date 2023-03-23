@@ -18,9 +18,7 @@ contains
     if (space_method == GP_MOOD)  call GP_MOOD_(Uin)
     if (space_method == POL_MOOD) call POL_MOOD_(Uin)
     if (space_method == Unlim_POL)call Unlim_POL_(Uin)
-
-
-
+    if (space_method == NN_GP_MOOD)  call GP_MOOD_(Uin)
 
   end subroutine
 

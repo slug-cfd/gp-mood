@@ -14,7 +14,7 @@ module constants
 
 
   !Time Methods indices
-  integer, parameter :: FOG     = 1, GP_MOOD = 2, POL_MOOD = 200, Unlim_POL = 201, GP_SE = 202
+  integer, parameter :: FOG     = 1, GP_MOOD = 2, POL_MOOD = 200, Unlim_POL = 201, GP_SE = 202, NN_GP_MOOD=203
   !Space Methods indices
   integer, parameter :: FE      = 8, SSP_RK2 = 9, SSP_RK3 =10, SSP_RK4 =12
   !Flux methods
@@ -59,6 +59,9 @@ module constants
   integer :: kM=1, kCloseNrm=2, kCloseTrans=3, kFarTrans = 4, kFarNrm = 5, kCloseNrm2 = 6, kCloseTrans2=7, kFarTrans2=8, kFarNrm2=9
 
   real(PR), dimension(5) :: o3_coef   = (/15./18, 1./3, 1./(4*sqrt(3.)), -1./(4*sqrt(3.)), -1./6 /)
+
+  character(100) :: NN_filename='./model_rot_70_fortran.txt'
+
 
 
 end module

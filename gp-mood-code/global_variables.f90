@@ -63,5 +63,32 @@ module global_variables
   integer, save  :: niter,count_detectio
   Real(PR), save :: count_FE, count_RK
 
+  ! NN variables
+
+  integer, parameter :: L=57
+  integer, parameter :: lenght=70
+
+  real(4), dimension(lenght, L     ) :: weight0=-6666666
+  real(4), dimension(lenght, lenght) :: weight1=-6666666
+  real(4), dimension(2     , lenght) :: weight2=-6666666
+
+  real(4), dimension(lenght, 1) :: bias0=-6666666
+  real(4), dimension(lenght, 1) :: bias1=-6666666
+  real(4), dimension(2     , 1) :: bias2=-6666666
+
+  integer, parameter :: size_weight0 = lenght*L
+  integer, parameter :: size_weight1 = lenght*lenght 
+  integer, parameter :: size_weight2 = 2*lenght 
+
+  integer, parameter :: size_bias0 = lenght
+  integer, parameter :: size_bias1 = lenght
+  integer, parameter :: size_bias2 = 2
+
+  integer, parameter :: up0 = size_weight0
+  integer, parameter :: up1 = up0 + size_bias0
+  integer, parameter :: up2 = up1 + size_weight1
+  integer, parameter :: up3 = up2 + size_bias1
+  integer, parameter :: up4 = up3 + size_weight2
+  integer, parameter :: up5 = up4 + size_bias2
 
 end module

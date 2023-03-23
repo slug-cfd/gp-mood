@@ -7,6 +7,7 @@ program main
   use global_variables
   use output
   use GP_init
+  use NN
 
 
   implicit none
@@ -151,6 +152,20 @@ program main
         print*, ' no stencil picked'
         stop
      end if
+   else if(space_method == NN_GP_MOOD) then
+      print*, 'Space method         = ', 'NN GP MOOD - Squared exponential kernel'
+      print*, 'Radius =', (Mord-1)/2
+      print*, '\ell =', real(l_16,8)
+      if ( cross_stencil ) then
+         print*, 'stencil shape      =', 'cross'
+      else if ( sphere_stencil) then
+         print*, 'stencil shape      =', 'sphere'
+      else
+         print*, ' no stencil picked'
+         stop
+      end if
+      print*, '\ell/dx              =', real(l_16/dx_16,4)
+      print*, 'NN filename =', NN_filename
   else
      print*, 'space method not programmed'
      stop
@@ -177,7 +192,7 @@ program main
 
   print*, 'output directory:', file
 
-
+  if (space_method==NN_GP_MOOD) call load_NN(NN_filename)
   call init_mesh()
   if (cross_stencil) call GP_presim()
   if (sphere_stencil)call GP_presim_sphere()
@@ -198,8 +213,10 @@ program main
 
   !dt_sim = min(1.e-10,dt)
   dt_sim = dt
-  
+
   do while ((t .lt. tmax) .and. (niter .le. nmax) )
+
+  !do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
 
      niter = niter + 1
 

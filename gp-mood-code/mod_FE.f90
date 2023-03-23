@@ -125,7 +125,7 @@ contains
 
     end do
 
-    criterion_iter=( ((niter>=0).and.(niter<=5)) .or. ((niter>=100).and.(niter<=100)) )
+    !criterion_iter=(niter<=200)
     if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
       call write_NN_datatset(Uin, CellGPO)
     end if

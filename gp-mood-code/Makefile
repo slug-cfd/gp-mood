@@ -72,6 +72,7 @@ $(EXEC):  constants.o \
 	mod_SSP_RK4.o \
 	time_stepper.o \
 	output.o  \
+	mod_NN.o \
 	main.o ## Liste des modules puis programmes à compiler ##
 	$(FC) -o  $(EXEC) $^
 	time ./$(EXEC) #> $(OUTPUTLOG) & ## Commande exécutant automatiquement le programme ##
