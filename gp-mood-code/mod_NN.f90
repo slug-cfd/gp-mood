@@ -1,20 +1,50 @@
-module NN
+module mod_NN
 
     use global_variables
     use mod_write_NN_dataset
+    use constants
+    use parameters
+    use GP_init
+
     implicit none
 
 contains
 
     subroutine compute_CellGPO_with_NN(Uin)
-        real(PR), dimension(4,lb:le, nb:ne ),intent(in   ) :: Uin
-        integer :: l, n
+
+        real(PR), dimension(4,lb:le, nb:ne ),intent(in) :: Uin
+        real(4) , dimension(57) :: x
+        real(4) , dimension(4,sz_sphere_p1) :: U_loc_flattened
+
+        integer :: l, n,j
+        logical :: cst
+
+        real(4), dimension(2) :: r
 
         do n = 1, nf
             do l = 1, lf
 
+                do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
+                    U_loc_flattened(:,j) = real( Uin(: ,l+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ), kind=4)
+                end do
+    
+                cst=.true.
+    
+                call format_input(U_loc_flattened, cst, x)
+
+                r=forward(x)
+
+                if (cst) then 
+                    CellGPO(l,n)=3
+                else if (r(1)>r(2)) then 
+                    CellGPO(l,n)=1
+                else 
+                    CellGPO(l,n)=3
+                end if
+
             end do 
         end do 
+
     end subroutine
 
     subroutine load_NN(filename)
@@ -92,7 +122,6 @@ contains
        
     end subroutine sigmoid
 
-
     subroutine update_ij(i, j, array)
 
         integer, intent(inout) :: i,j 
@@ -114,7 +143,6 @@ contains
 
     end subroutine update_ij
 
-
     function forward(x)result(r)
 
         real(4), dimension(L),intent(in) :: x
@@ -132,4 +160,4 @@ contains
         
     end function forward
 
-end module NN
+end module mod_NN

@@ -2,8 +2,9 @@ from utils import *
 from NN import *
 
 file=sys.argv[1]
+lenght = int(sys.argv[2])
 
-NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[70,70], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
 NN.load(file)
 

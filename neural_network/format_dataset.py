@@ -3,9 +3,10 @@ from utils import *
 from symmetries import *
 #Takes the data in the data/ generate NN-ready files 
 
-max_N0_per_problem=3000
+max_N0_per_problem=5000
 ratio=2 #N1/N0 ratio
 rotation = True
+ncfl=4
 
 def format_dataset():
     
@@ -32,8 +33,9 @@ def format_dataset():
         #as the files are already sorted by radius 0 or 1, we now to which number N0, N1 to add N
       
         if (path[-10]=='0'):
+
             #if its R=0 data, I limit the amount of input
-            N=min(int(max_N0_per_problem/3), N)
+            N=min(int(max_N0_per_problem/ncfl), N)
             N0+=N
 
             problem=path[8:16]
@@ -77,7 +79,7 @@ def format_dataset():
                 #if its R=0 data, I limit the amount of input
 
                 if (path[-10]=='0'):   
-                    N=min(int(max_N0_per_problem/3),data.shape[0])
+                    N=min(int(max_N0_per_problem/ncfl),data.shape[0])
                 else:
                     N=data.shape[0]
 
@@ -87,7 +89,6 @@ def format_dataset():
 
                 if (path[-10]=='0'):   
                     input0[k0:k0+N,:]=data[indexes,:]
-                    #unit_resting_rotation(data[0,:])
                     k0+=N
 
                 elif (path[-10]=='1'):
@@ -119,8 +120,9 @@ def format_dataset():
         labels[i,0]=1.0
         labels[i,1]=0.0
     #print('i=',i, 'data size',data_size)
-    for i in range(int(data_size/(ratio+1)), data_size):
-        inputs[i,:]=input1[i-int(data_size/(ratio+1)),:]
+    i0=i
+    for i in range(i0+1, data_size):
+        inputs[i,:]=input1[i-i0,:]
         labels[i,0]=0.0
         labels[i,1]=1.0
     #print('i=',i, 'data size',data_size)

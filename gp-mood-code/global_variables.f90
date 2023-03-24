@@ -8,7 +8,6 @@ module global_variables
   ! High Riemann order states
   real(PR), dimension(4, iL:iB, ngp, lb:le, nb:ne), save :: Uh = 0.
 
-
   ! Time and time steps
   real(PR), save :: t = 0., dt = 1e30, dtfinal = 1e30
   real(PR), save     :: res_time, t_rk= 0.
@@ -19,7 +18,6 @@ module global_variables
   real(PR), dimension(lb:le), save         :: mesh_x = 0.
   real(PR), dimension(nb:ne), save         :: mesh_y = 0.
 
-
   !cross GP coefficients
   real(PR),dimension(Mord, sz_cross,iL:iB,ngp), save :: zT
   real(PR),dimension(Mord, sz_cross), save           :: GP_d2x, GP_d2y
@@ -28,11 +26,9 @@ module global_variables
   real(PR),dimension(Mord, sz_sphere,iL:iB,ngp), save :: zT_sp
   real(PR),dimension(Mord, sz_sphere), save           :: GP_d2x_sp, GP_d2y_sp
 
-
   ! Pol Mood coefficients
   real(PR),dimension(2*3-1,iL:iB,2), save :: Pol_zT_o3
   real(PR),dimension(2*5-1,iL:iB,2), save :: Pol_zT_o5
-
 
   !pol coefficients
   real(PR),dimension(Mord, sz_cross,iL:iB,ngp), save :: Pol_zT
@@ -41,8 +37,6 @@ module global_variables
   integer, dimension(Mord, sz_cross,2), save   :: ixiy
   integer, dimension(Mord, sz_sphere,2), save  :: ixiy_sp
   integer, dimension(Mord+2, sz_sphere_p1,2), save  :: ixiy_sp1
-
-
 
   !MOOD variables
   logical, save                                :: MOOD_finished
@@ -56,8 +50,6 @@ module global_variables
   logical, dimension(-1:lf+1,  0:nf+1  ), save :: DetFace_x
   logical, dimension( 0:lf+1  , -1:nf+1), save :: DetFace_y
 
-
-
   real(PR)   , dimension(ngp,ngp), save :: gauss_weight
 
   integer, save  :: niter,count_detectio
@@ -66,7 +58,7 @@ module global_variables
   ! NN variables
 
   integer, parameter :: L=57
-  integer, parameter :: lenght=70
+  integer, parameter :: lenght=50
 
   real(4), dimension(lenght, L     ) :: weight0=-6666666
   real(4), dimension(lenght, lenght) :: weight1=-6666666
@@ -90,5 +82,7 @@ module global_variables
   integer, parameter :: up3 = up2 + size_bias1
   integer, parameter :: up4 = up3 + size_weight2
   integer, parameter :: up5 = up4 + size_bias2
+
+  character(100) :: NN_filename='./output_R1ell12/2DRPC15'
 
 end module

@@ -22,8 +22,6 @@ contains
     if (time_method == SSP_RK3) call SSP_RK3_  (Uin, Uout)
     if (time_method == SSP_RK4) call SSP_RK4_  (Uin, Uout)
 
-
-
   end subroutine
 
 end module

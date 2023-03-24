@@ -3,7 +3,7 @@ import os
 
 #Load the NN
 
-lenght_list=[90,100,110]
+lenght_list=range(20,301,20)
 
 for lenght in lenght_list:
     NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)

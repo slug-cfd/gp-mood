@@ -9,6 +9,7 @@ module mod_FE
   use mod_LLF
   use mod_HLL
   use mod_write_NN_dataset
+  use mod_NN
 
   implicit none
 
@@ -34,6 +35,11 @@ contains
 
     count_FE = 0
     CellGPO   =  Mord;
+    
+    if (space_method == NN_GP_MOOD) then 
+      call compute_CellGPO_with_NN(Uin)
+    end if
+
     DetCell   = .true.
     DetFace_x = .true.
     DetFace_y = .true.
@@ -125,7 +131,7 @@ contains
 
     end do
 
-    !criterion_iter=(niter<=200)
+    criterion_iter=(niter<=200)
     if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
       call write_NN_datatset(Uin, CellGPO)
     end if

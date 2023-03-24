@@ -7,7 +7,7 @@ program main
   use global_variables
   use output
   use GP_init
-  use NN
+  use mod_NN
 
 
   implicit none
@@ -214,9 +214,9 @@ program main
   !dt_sim = min(1.e-10,dt)
   dt_sim = dt
 
-  do while ((t .lt. tmax) .and. (niter .le. nmax) )
+  !do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
-  !do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
+  do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
 
      niter = niter + 1
 

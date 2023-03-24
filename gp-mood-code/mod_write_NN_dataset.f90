@@ -11,15 +11,15 @@ subroutine write_NN_datatset(Uin, CellGPO)
 
     real(PR),  intent(in), dimension(4,lb:le, nb:ne) :: Uin
     integer ,  intent(in), dimension(lb:le, nb:ne)   :: CellGPO
-    real(PR), dimension(4,sz_sphere_p1) :: q_sp
-    real(4) , dimension(57) :: formatted_input=-66666666
 
-    integer :: n,l,i,j
+    real(4), dimension(4,sz_sphere_p1) :: U_loc_flattened
+    real(4) , dimension(57) :: formatted_input
+
     character(len=7) :: test_case
+    character(len=3) :: CFL_string
 
     logical :: cst, exist
-
-    character(len=3) :: CFL_string
+    integer :: n,l,i,j
 
     test_case = file(18:18+7)
     write(CFL_string, '(f3.1)') CFL
@@ -35,12 +35,10 @@ subroutine write_NN_datatset(Uin, CellGPO)
         do l = lb+ngc,le-ngc
 
             do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
-                q_sp(:,j) = Uin(:,l+ixiy_sp1(mord+2,j,1),n+ixiy_sp1(mord+2,j,2))
+                U_loc_flattened(:,j) = real( Uin(: ,l+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ), kind=4)
             end do
 
-            cst=.true.
-
-            call format_input(q_sp, cst, formatted_input)
+            call format_input(U_loc_flattened, cst, formatted_input)
 
             if ((cst .eqv. .true.).and.(CellGPO(l,n)==1)) then 
                 print*, 'weird'
@@ -56,40 +54,46 @@ subroutine write_NN_datatset(Uin, CellGPO)
     close(10)
 end subroutine write_NN_datatset
 
+subroutine format_input(U_loc_flattened, cst, formatted_input)
 
-subroutine format_input(q_sp, cst, formatted_input)
-
-    real(PR), intent(inout), dimension(4,sz_sphere_p1) :: q_sp
-    logical, intent(inout) :: cst
+    real(4), intent(inout), dimension(4,sz_sphere_p1) :: U_loc_flattened
     real(4), intent(inout), dimension(57) :: formatted_input
-    real(PR) :: max, min
-    integer :: j, var
-    real(PR), dimension(4) :: F
+    logical, intent(out) :: cst
 
-    do var =1, 4
+    real(4), dimension(4) :: F
+
+    real(4) :: max, min
+    integer :: j, var
+
+    formatted_input = -6665666
+
+    cst=.true.
+
+    do var =1, nbvar
             
-        max = maxval(q_sp(var,:))
-        min = minval(q_sp(var,:))
+        max = maxval(U_loc_flattened(var,:))
+        min = minval(U_loc_flattened(var,:))
 
         if (max-min < 1e-10) then 
-            F(var) = sign(1.0,min)
+            F(var) = sign(real(0.0,kind=4),min)
             do j = 1, sz_sphere_p1
-                q_sp(var,j) = 1.0
+                U_loc_flattened(var,j) = 1.0
             end do
         else 
             cst=.false.
-            F(var) = sign(1.0,min)*(max-min)
+            F(var) = sign(real(1.0,kind=4),min)*(max-min)
             do j = 1, sz_sphere_p1
-                q_sp(var,j)= (q_sp(var,j)- 0.5*(min+max))*(2/(max-min))
+                U_loc_flattened(var,j) = (U_loc_flattened(var,j)-0.5*(max+min))*(2.0/(max-min))
             end do
         end if
 
     end do
 
     do j = 1, sz_sphere_p1
-        formatted_input(4*(j-1)+1:4*j) = real(q_sp(:,j),kind=4)
+        formatted_input(nbvar*(j-1)+1:nbvar*j) = U_loc_flattened(:,j)
     end do
-    formatted_input(53:56) = real(F(:),kind=4)
+
+    formatted_input(sz_sphere_p1*nbvar+1 : sz_sphere_p1*nbvar+nbvar) = F(:)
     formatted_input(57) = real(CFL,kind=4)
     
 end subroutine format_input

@@ -36,12 +36,14 @@ nbvar=4
 index_all_mx=range(imx, L-nbvar-1, nbvar)
 index_all_my=range(imy, L-nbvar-1, nbvar)
 
-#print( [i for i in index_all_mx] )
-#print( [i for i in index_all_my] )
+print( "all imx", [i for i in index_all_mx] )
+print( "all imy", [i for i in index_all_my] )
 
 def rotate(data):
+
     rotated_data=[torch.ones(L)*-666,torch.ones(L)*-666,torch.ones(L)*-666,torch.ones(L)*-666]
     nrot=0
+
     for rotation in rotations:
         
         #Rotate the FV data
@@ -57,7 +59,7 @@ def rotate(data):
         rotated_data[nrot][index_all_my]*=rotation[1]
         #Get the CFL
         rotated_data[nrot][-1]=data[-1]
-        #Get the normalisaiton factors (they dont flip, see test_norm.py)
+        #Get the normalisaiton factors (they dont flip, see test_norm)
         rotated_data[nrot][-nbvar-1:-1]=data[-nbvar-1:-1]
         #rotated_data[nrot]-=data
         nrot=nrot+1

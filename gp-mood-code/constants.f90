@@ -3,7 +3,7 @@ module constants
 
 
   integer  , parameter :: PR = 8 ! Precision
-
+  integer , parameter :: nbvar=4
   !Maths constants
   real(16) , parameter :: pi_16 = 4*atan(1._16)
   real(PR) , parameter :: pi    = 4*atan(1.   )    , y     = 1.4,  eps     = 1.0e-31, sixth = 1./6, quarter = 0.25, thirtwe = 13./12
@@ -59,9 +59,5 @@ module constants
   integer :: kM=1, kCloseNrm=2, kCloseTrans=3, kFarTrans = 4, kFarNrm = 5, kCloseNrm2 = 6, kCloseTrans2=7, kFarTrans2=8, kFarNrm2=9
 
   real(PR), dimension(5) :: o3_coef   = (/15./18, 1./3, 1./(4*sqrt(3.)), -1./(4*sqrt(3.)), -1./6 /)
-
-  character(100) :: NN_filename='./model_rot_70_fortran.txt'
-
-
 
 end module
