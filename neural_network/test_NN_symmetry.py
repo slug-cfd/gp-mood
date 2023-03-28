@@ -3,15 +3,13 @@ import os
 
 #Load the NN
 
-lenght_list=[90,100,110]
+lenght_list=range(20,301,20)
+PI_layer=True
 
 for lenght in lenght_list:
-    NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
-    #NN=radius_picker(max_radius=1, nb_layers=2, layer_sizes=[lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
-    #NN=radius_picker(max_radius=1, nb_layers=4, layer_sizes=[lenght,lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
-    NN.load('model_norot_'+str(lenght)+'.pt')
-
+    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], PI_layer=PI_layer)
+    NN.load('model_PI_'+str(int(lenght))+'.pt')
     #Gets all the data from data/ and test each dataset separately
 
     data_dict = torch.load('dataset_rot.pt')

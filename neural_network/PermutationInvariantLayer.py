@@ -50,7 +50,8 @@ class PermutationInvariantLinear(nn.Module):
                 for i in range(self.in_features):
                     index=self.permutation_table[i]
                     if (index==self.code_zero):
-                        self.weight[line,i]=0.0
+                        #self.weight[line,i]=0.0
+                        self.weight[line,i]=self.weight[line,i]
                     else:
                         self.weight[line,i]=self.sign_table[i]*self.weight[line,index]
 
@@ -88,7 +89,8 @@ class PermutationInvariantLinear(nn.Module):
             for line in range(self.out_features):
                 DOF=0
                 for k in range(self.in_features):
-                        if (k in self.permutation_table):
+                        #if (k in self.permutation_table):
+                        if (k in self.permutation_table or self.permutation_table[k]==self.code_zero):
                             self.weight[line, k].requires_grad_(True)
                             DOF+=1
                             #print(k, True)

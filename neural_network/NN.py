@@ -2,69 +2,55 @@ import sys
 from utils import *
 
 torch.set_default_dtype(torch.float32) 
-
-#input types
-raw_VF_data=0
-MUSCL_slope=1
-GP_coefficients=2
-
-#Nb of variables for hydro simulation
-n_var_hydro_2D=4
-
 class radius_picker(nn.Module):
 
-    def __init__(self, max_radius, nb_layers, layer_sizes, input_type=raw_VF_data, n_var_used=n_var_hydro_2D):
-        self.init_parameters = max_radius, nb_layers, layer_sizes, input_type, n_var_used
+    def __init__(self, max_radius, nb_layers, hidden_layer_sizes, PI_layer=False):
+        self.init_parameters = max_radius, nb_layers, hidden_layer_sizes, PI_layer
 
         super(radius_picker, self).__init__()
 
         self.max_radius=max_radius
 
-        if (input_type==raw_VF_data):
-            if (max_radius == 1 ):
-                self.stencil_size = 13 #3rd order
-            elif (max_radius == 2 ):
-                self.stencil_size = 25 #5th order
-            elif (max_radius == 3 ):
-                self.stencil_size = -1000 #7th order
-            else:
-                print(colors.red+"not implemented yet #0")
-                sys.exit()
-        elif(input_type==MUSCL_slope):
-            print(colors.red+"not implemented yet #1")
+        if (max_radius == 1 ):
+            self.stencil_size = 13 #3rd order
+        elif (max_radius == 2 ):
+            self.stencil_size = 25 #5th order
+        elif (max_radius == 3 ):
+            self.stencil_size = -1000 #7th order
+        else:
             sys.exit()
-
-        elif(input_type==GP_coefficients):
-            print(colors.red+"not implemented yet #2")
-            sys.exit()
-
-        self.input_size=self.stencil_size*n_var_used + n_var_used + 1 #(variables + normalisation factors) #+ CFL )
+        
+        self.input_size=self.stencil_size*nbvar + nbvar + 1 #(variables + normalisation factors) #+ CFL )
                 
         self.output_size=max_radius+1 #R=2, output_size = 2+1=3 = {0,1,2}
 
-        if (len(layer_sizes)!=nb_layers-1):
-            print(colors.red+"Error, expected", nb_layers-1, "layer sizes, got", len(layer_sizes))
+        if (len(hidden_layer_sizes)!=nb_layers-2):
+            print(colors.red+"Error, expected", nb_layers-2, "layer sizes, got", len(hidden_layer_sizes))
             sys.exit()
 
         self.layers=nn.ModuleList()
         self.nb_layers=nb_layers
         
-        #self.layers.append(  nn.Linear(self.input_size, layer_sizes[0])  )
-        p_table=compute_permutation_table_90_rot()
-        self.layers.append( PermutationInvariantLinear(self.input_size, layer_sizes[0], p_table)  )
-
-        for k_layer in range(1,nb_layers-1):
+        if (PI_layer):
+            p_table=compute_permutation_table_90_rot()
+            self.layers.append( PermutationInvariantLinear(self.input_size, hidden_layer_sizes[0], p_table)  )
+        else:
+            self.layers.append(  nn.Linear(self.input_size, hidden_layer_sizes[0])  )
+        #print("0",self.input_size, hidden_layer_sizes[0])
+        for k_layer in range(1,nb_layers-2):
             
-            self.layers.append(  nn.Linear(layer_sizes[k_layer-1], layer_sizes[k_layer])  )
+            self.layers.append(  nn.Linear(hidden_layer_sizes[k_layer-1], hidden_layer_sizes[k_layer])  )
+         #   print("1",hidden_layer_sizes[k_layer-1], hidden_layer_sizes[k_layer])
 
-        self.layers.append(  nn.Linear(layer_sizes[nb_layers-2], self.output_size)  )
+        #print(nb_layers-1,hidden_layer_sizes[-1], self.output_size)
+
+        self.layers.append(  nn.Linear(hidden_layer_sizes[-1], self.output_size)  )
 
         num_params = sum(p.numel() for p in self.parameters())
 
         #print('\n'+colors.HEADER+" --- Initialized a radius picker neural network ---"+colors.ENDC)
         #print("max radius =", max_radius)
         #print("stencil size =", self.stencil_size)
-        #print("input size =", self.input_size, "i.e. looking at", n_var_used, "var per cells")
         #print("output size =", self.output_size, "i.e choosing between radiuses", *range(0, max_radius+1))
         #print("Initialized", nb_layers,"layers")
         #print(colors.yellow+f"Number of parameters: {num_params}"+colors.ENDC)
@@ -72,13 +58,14 @@ class radius_picker(nn.Module):
 
     def forward(self, x): #Feed forward function
 
-        for k_layer in range(0, self.nb_layers):
-            x=self.layers[k_layer](x) #layer evaluation
-
-            if (k_layer<self.nb_layers-1): #RELU except for last layer
-              #  x = torch.relu(x)
+        for k_layer,layer in enumerate(self.layers):
+            
+            x=layer(x) #layer evaluation
+        
+            if (k_layer<self.nb_layers-2): #Sigmoid except for last layer
                 x=torch.sigmoid(x)
-        #return F.softmax(x,dim=1) #Softmax for last layer to output probability
+                #print(k_layer,'sigmoid')
+
         return x
     
     def pick_radius(self, x, index): #Pick a radius from data
@@ -102,7 +89,7 @@ class radius_picker(nn.Module):
 
 def unitary_check_NN_class():
 
-    NN1=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[58,58], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+    NN1=radius_picker(max_radius=1, nb_layers=3, hidden_layer_sizes=[58,58])
 
     batch_size=2
     data=torch.rand((batch_size, NN1.input_size)) #some random data

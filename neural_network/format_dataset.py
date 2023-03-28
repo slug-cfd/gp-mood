@@ -136,11 +136,28 @@ def format_dataset():
         inputs_rot=torch.zeros((data_size*4,L))
         labels_rot=torch.zeros((data_size*4,2))
 
+
+
+        # for i in range(data_size):
+        #     data_rotated=rotate(inputs[i,:])
+        #     for nrot in range(4):
+        #         inputs_rot[4*i + nrot,:]=data_rotated[nrot]
+        #         labels_rot[4*i + nrot,:]=labels[i,:]
+
+        p_table=compute_permutation_table_90_rot()
+        data_rotated=[torch.ones(L)*-666,torch.ones(L)*-666,torch.ones(L)*-666,torch.ones(L)*-666]
+
         for i in range(data_size):
-            data_rotated=rotate(inputs[i,:])
+
+            data_rotated[0]=inputs[i,:]
+
+            for nrot in range(1,4):
+                data_rotated[nrot]=rotate_90(data_rotated[nrot-1], p_table)
             for nrot in range(4):
                 inputs_rot[4*i + nrot,:]=data_rotated[nrot]
                 labels_rot[4*i + nrot,:]=labels[i,:]
+            
+            print(i, data_size)
 
         torch.save({'inputs': inputs_rot, 'labels': labels_rot}, 'dataset_rot.pt')
 

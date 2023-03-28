@@ -3,7 +3,7 @@ from multiprocessing import current_process
 from NN import *
 from psutil import cpu_count
 
-def train(lenght, dataset_file, model_name):
+def train(lenght, dataset_file, model_name, PI_layer):
     #Training / Testing percentage ratio
     train_ratio=0.85
     #Batch size for training
@@ -30,6 +30,7 @@ def train(lenght, dataset_file, model_name):
     
     print('DATASET FILE=', dataset_file)
     print('model_name=', model_name)
+    print('PI_layer=', PI_layer)
     print('DATASET SIZE=', len(dataset))
     print('TRAINING SIZE=', training_size)
     print('TESTING SIZE=', testing_size)
@@ -47,7 +48,7 @@ def train(lenght, dataset_file, model_name):
     testing_loader  =  DataLoader(dataset=testing_set , batch_size=testing_size, shuffle=False)
 
     #Define the NN, loss function and optimize
-    NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
+    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], PI_layer=PI_layer)
 
     loss_func = nn.MSELoss()  
     optimizer = optim.Adam(NN.parameters(), lr = lr0)
@@ -155,11 +156,12 @@ def train(lenght, dataset_file, model_name):
 if __name__ == '__main__':
 
     #Amount of core to share the training
-    ncores=cpu_count(logical=False)-1
+    ncores=cpu_count(logical=False)
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
     #param_list=[(90, 'dataset.pt', 'norot'),(100, 'dataset.pt', 'norot'),(110, 'dataset.pt', 'norot'),(90, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(110, 'dataset.pt', 'PI')]
-    param_list=[(20, 'dataset.pt', 'PI'),(40, 'dataset.pt', 'PI'),(60, 'dataset.pt', 'PI'),(80, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(120, 'dataset.pt', 'PI'),(140, 'dataset.pt', 'PI'),(160, 'dataset.pt', 'PI'),(180, 'dataset.pt', 'PI'),(200, 'dataset.pt', 'PI'),(220, 'dataset.pt', 'PI'),(240, 'dataset.pt', 'PI'),(260, 'dataset.pt', 'PI'),(280, 'dataset.pt', 'PI'),(300, 'dataset.pt', 'PI')]
+    #param_list=[(20, 'dataset.pt', 'PI'),(40, 'dataset.pt', 'PI'),(60, 'dataset.pt', 'PI'),(80, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(120, 'dataset.pt', 'PI'),(140, 'dataset.pt', 'PI'),(160, 'dataset.pt', 'PI'),(180, 'dataset.pt', 'PI'),(200, 'dataset.pt', 'PI'),(220, 'dataset.pt', 'PI'),(240, 'dataset.pt', 'PI'),(260, 'dataset.pt', 'PI'),(280, 'dataset.pt', 'PI'),(300, 'dataset.pt', 'PI')]
+    param_list=[(20, 'dataset.pt', 'PI', True),(40, 'dataset.pt', 'PI',True),(60, 'dataset.pt', 'PI',True),(80, 'dataset.pt', 'PI',True),(20, 'dataset.pt', 'no_PI', False),(40, 'dataset.pt', 'no_PI',False),(60, 'dataset.pt', 'no_PI',False),(80, 'dataset.pt', 'no_PI',False) ]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 

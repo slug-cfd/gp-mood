@@ -23,9 +23,6 @@ for rotation in rotations:
         rotated_indexes[nrot].append(base_indexes[(key[0]*rotation[0], key[1]*rotation[1])])
     nrot=nrot+1
 
-#for rotated_index in rotated_indexes:
-#    print(rotated_index)
-
 id=0
 imx=1
 imy=2
@@ -137,13 +134,13 @@ def compute_permutation_table_90_rot():
 
     return p_table
 
-def rotate_90(input, p_index):
+def rotate_90(input, p_table):
 
     premutted_input = torch.zeros(L)
 
     for i in range(L):
-        signe=sign(p_index[i])
-        premutted_input[i]=signe*input[int(abs(p_index[i]))]
+        signe=sign(p_table[i])
+        premutted_input[i]=signe*input[int(abs(p_table[i]))]
     
     return premutted_input
 

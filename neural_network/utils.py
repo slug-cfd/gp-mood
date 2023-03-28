@@ -16,6 +16,7 @@ import matplotlib.ticker as ticker
 import math 
 
 L=57
+nbvar=4
 
 from PermutationInvariantLayer import *
 from symmetries import *
