@@ -5,15 +5,15 @@ from psutil import cpu_count
 
 def train(lenght, dataset_file, model_name):
     #Training / Testing percentage ratio
-    train_ratio=0.50
+    train_ratio=0.85
     #Batch size for training
     batch_size=1024
     #Initial learning
     lr0=0.01
     #Final learning rate
-    lrend=0.00001
+    lrend=0.0001
     #Amout of lr reduction
-    max_reduction=150
+    max_reduction=100
     max_epoch=99999
     #Stall criterion when the lr decreases
     stall_criterion=3
@@ -50,7 +50,7 @@ def train(lenght, dataset_file, model_name):
     NN=radius_picker(max_radius=1, nb_layers=3, layer_sizes=[lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
     loss_func = nn.MSELoss()  
-    optimizer = optim.SGD(NN.parameters(), lr = lr0)
+    optimizer = optim.Adam(NN.parameters(), lr = lr0)
 
     training_loss_list=[]
     testing_loss_list=[]
@@ -158,8 +158,8 @@ if __name__ == '__main__':
     ncores=cpu_count(logical=False)-1
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    #param_list=[(90, 'dataset.pt', 'norot'),(100, 'dataset.pt', 'norot'),(110, 'dataset.pt', 'norot'),(90, 'dataset_rot.pt', 'rot'),(100, 'dataset_rot.pt', 'rot'),(110, 'dataset_rot.pt', 'rot')]
-    param_list=[(20, 'dataset_rot.pt', 'rot'),(40, 'dataset_rot.pt', 'rot'),(60, 'dataset_rot.pt', 'rot'),(80, 'dataset_rot.pt', 'rot'),(100, 'dataset_rot.pt', 'rot'),(120, 'dataset_rot.pt', 'rot'),(140, 'dataset_rot.pt', 'rot'),(160, 'dataset_rot.pt', 'rot'),(180, 'dataset_rot.pt', 'rot'),(200, 'dataset_rot.pt', 'rot'),(220, 'dataset_rot.pt', 'rot'),(240, 'dataset_rot.pt', 'rot'),(260, 'dataset_rot.pt', 'rot'),(280, 'dataset_rot.pt', 'rot'),(300, 'dataset_rot.pt', 'rot')]
+    #param_list=[(90, 'dataset.pt', 'norot'),(100, 'dataset.pt', 'norot'),(110, 'dataset.pt', 'norot'),(90, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(110, 'dataset.pt', 'PI')]
+    param_list=[(20, 'dataset.pt', 'PI'),(40, 'dataset.pt', 'PI'),(60, 'dataset.pt', 'PI'),(80, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(120, 'dataset.pt', 'PI'),(140, 'dataset.pt', 'PI'),(160, 'dataset.pt', 'PI'),(180, 'dataset.pt', 'PI'),(200, 'dataset.pt', 'PI'),(220, 'dataset.pt', 'PI'),(240, 'dataset.pt', 'PI'),(260, 'dataset.pt', 'PI'),(280, 'dataset.pt', 'PI'),(300, 'dataset.pt', 'PI')]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
@@ -178,8 +178,7 @@ if __name__ == '__main__':
     with open('study_L.pkl', 'wb') as f:
         pickle.dump(results, f)
     
-    for i in range(len(results)):
-        result=results[i]
+    for i, result in enumerate(results):
         if (i==0):
             hide=''
         else:

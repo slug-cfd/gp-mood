@@ -49,7 +49,10 @@ class radius_picker(nn.Module):
         self.layers=nn.ModuleList()
         self.nb_layers=nb_layers
         
-        self.layers.append(  nn.Linear(self.input_size, layer_sizes[0])  )
+        #self.layers.append(  nn.Linear(self.input_size, layer_sizes[0])  )
+        p_table=compute_permutation_table_90_rot()
+        self.layers.append( PermutationInvariantLinear(self.input_size, layer_sizes[0], p_table)  )
+
         for k_layer in range(1,nb_layers-1):
             
             self.layers.append(  nn.Linear(layer_sizes[k_layer-1], layer_sizes[k_layer])  )

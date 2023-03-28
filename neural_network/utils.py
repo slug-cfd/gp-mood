@@ -13,10 +13,18 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 import pickle
 import matplotlib.ticker as ticker
+import math 
 
+L=57
+
+from PermutationInvariantLayer import *
+from symmetries import *
+from PermutationInvariantLayer import *
+
+def sign(x):
+    return int(math.copysign(1,x))
 
 dir='../gp-mood-code/'
-L=57
 
 class colors:
     HEADER = '\033[95m'

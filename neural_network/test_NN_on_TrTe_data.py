@@ -10,8 +10,8 @@ for lenght in lenght_list:
     #NN=radius_picker(max_radius=1, nb_layers=2, layer_sizes=[lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
     #NN=radius_picker(max_radius=1, nb_layers=4, layer_sizes=[lenght,lenght,lenght], input_type=raw_VF_data, n_var_used=n_var_hydro_2D)
 
-    NN.load('model_rot_'+str(lenght)+'.pt')
-
+    NN.load('model_PI_'+str(lenght)+'.pt')
+    #NN.load('wrong_norm/test_rot_50_300_2_layers_85%/model_rot_100.pt')
     #Gets all the data from data/ and test each dataset separately
 
     data_dict = torch.load('dataset.pt')

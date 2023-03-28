@@ -153,6 +153,13 @@ def reflexion():
 
     input=torch.randn((L))
     p_input=rotate_90(input,p_table)
+    p_input=rotate_90(p_input,p_table)
+    p_input=rotate_90(p_input,p_table)
+    p_input=rotate_90(p_input,p_table)
+
+    print(p_input-input)
+    
+    p_input=rotate_90(p_input,p_table)
 
     Layer = PermutationInvariantLinear(L,1, p_table)
     #Layer = RotationalInvariantLinear(L,0, p_table)
@@ -160,6 +167,5 @@ def reflexion():
     print(Layer(input))
     print(Layer(p_input))
 
-reflexion()
 
-
+#reflexion()

@@ -78,18 +78,21 @@ class PermutationInvariantLinear(nn.Module):
                     if (item==k):
                         self.permutation_table[k2] = self.code_zero
 
-        print(done, niter)
+        #print(done, niter)
         print([k for k in self.permutation_table])
-        print([k for k in self.sign_table])
+        #print([k for k in self.sign_table])
 
         with torch.no_grad():
             self.bias.requires_grad_(True)
 
             for line in range(self.out_features):
+                DOF=0
                 for k in range(self.in_features):
                         if (k in self.permutation_table):
                             self.weight[line, k].requires_grad_(True)
+                            DOF+=1
                             #print(k, True)
                         else:
                             self.weight[line, k].requires_grad_(False)
                             #print(k, False)
+            print("DOF:", DOF, "/",self.in_features)
