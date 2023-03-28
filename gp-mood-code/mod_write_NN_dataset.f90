@@ -75,7 +75,7 @@ subroutine format_input(U_loc_flattened, cst, formatted_input)
         min = minval(U_loc_flattened(var,:))
 
         if (max-min < 1e-10) then 
-            F(var) = sign(real(0.0,kind=4),min)
+            F(var) = 0.0
             do j = 1, sz_sphere_p1
                 U_loc_flattened(var,j) = 1.0
             end do
