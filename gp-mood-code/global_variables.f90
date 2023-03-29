@@ -53,12 +53,12 @@ module global_variables
   real(PR)   , dimension(ngp,ngp), save :: gauss_weight
 
   integer, save  :: niter,count_detectio
-  Real(PR), save :: count_FE, count_RK
+  Real(PR), save :: count_FE, count_RK, count_NN_PAD, count_NN_PAD_RK, wrong_iter_NN
 
   ! NN variables
 
   integer, parameter :: L=57
-  integer, parameter :: lenght=50
+  integer, parameter :: lenght=20
 
   real(4), dimension(lenght, L     ) :: weight0=-6666666
   real(4), dimension(lenght, lenght) :: weight1=-6666666
@@ -83,6 +83,7 @@ module global_variables
   integer, parameter :: up4 = up3 + size_weight2
   integer, parameter :: up5 = up4 + size_bias2
 
-  character(100) :: NN_filename='./output_R1ell12/2DRPC15'
+  !character(100) :: NN_filename='./model_2DRP3_20_fortran.txt'
+  character(100) :: NN_filename='./model_no_PI_20_fortran.txt'
 
 end module

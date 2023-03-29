@@ -5,6 +5,7 @@ module mod_FE
   use reconstruction
   use BC
   use mod_subroutine_MOOD
+  use mod_subroutine_NN_MOOD
   use mod_HLLC
   use mod_LLF
   use mod_HLL
@@ -32,8 +33,9 @@ contains
 
     logical :: criterion_iter
 
-
     count_FE = 0
+    count_NN_PAD = 0
+    
     CellGPO   =  Mord;
     
     if (space_method == NN_GP_MOOD) then 
@@ -124,6 +126,14 @@ contains
        if ((space_method == GP_MOOD).or.(space_method == POL_MOOD)) then
 
           call DETECTION(Uin,Uout)
+
+       else if (space_method == NN_GP_MOOD) then 
+
+          call NN_DETECTION(Uin,Uout)
+
+          if (MOOD_finished .eqv. .false.) then 
+            wrong_iter_NN=wrong_iter_NN+1
+          end if
 
        else
           MOOD_finished = .true.

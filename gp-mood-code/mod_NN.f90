@@ -16,10 +16,12 @@ contains
         real(4) , dimension(57) :: x
         real(4) , dimension(4,sz_sphere_p1) :: U_loc_flattened
 
-        integer :: l, n,j
+        integer :: l, n,j, count
         logical :: cst
 
         real(4), dimension(2) :: r
+
+        count=0
 
         do n = 1, nf
             do l = 1, lf
@@ -32,19 +34,22 @@ contains
     
                 call format_input(U_loc_flattened, cst, x)
 
-                r=forward(x)
-
                 if (cst) then 
                     CellGPO(l,n)=3
-                else if (r(1)>r(2)) then 
-                    CellGPO(l,n)=1
                 else 
-                    CellGPO(l,n)=3
+                    r=forward(x)
+                    if (r(1)>r(2)) then 
+                        CellGPO(l,n)=1
+                        count=count+1
+                    else 
+                        CellGPO(l,n)=3
+                    end if
                 end if
 
             end do 
         end do 
 
+        count_FE=count_FE+count
     end subroutine
 
     subroutine load_NN(filename)

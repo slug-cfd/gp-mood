@@ -214,9 +214,9 @@ program main
   !dt_sim = min(1.e-10,dt)
   dt_sim = dt
 
-  !do while ((t .lt. tmax) .and. (niter .le. nmax) )
+  do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
-  do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
+  !do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
 
      niter = niter + 1
 
@@ -247,7 +247,9 @@ program main
         else
            print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
         endif
-        print*,' % of detected cell at the last iteration = ', real(count_FE*100/(nf*lf),4)
+        print*,' % of detected cell at the last iteration = ', real(count_RK*100/(nf*lf),4)
+        print*,' % of unphyiscal states produced by NN = ', real(count_NN_PAD_RK*100/(nf*lf),4)
+        print*,' Steps where we had to go back and correct NN', wrong_iter_NN
         !! DL -- dump outputs regularly, say, every 100 step
      end if
 
