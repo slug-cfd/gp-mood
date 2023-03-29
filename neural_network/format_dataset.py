@@ -135,7 +135,7 @@ def format_dataset():
                 sys.exit()
             # do something with the current element
     
-    print('should be 0',i-data_size)
+    print('should be 0',i-(data_size-1))
 
     torch.save({'inputs': inputs, 'labels': labels}, 'dataset.pt')
     print('done')
