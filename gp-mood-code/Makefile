@@ -13,7 +13,8 @@ FC = gfortran
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized  -Wall
 
 #FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3 -Wall -Wextra -fbacktrace -fcheck=all -Wuninitialized
-FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized -Wall -Wextra -pg
+#FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O3 -fbacktrace -fcheck=all -Wuninitialized -Wall -Wextra -pg
+FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3
 ## Ensemble des fichiers à supprimer lors du make clean ##
 OBJS = *.o *.mod *~
 .PHONY: clean
@@ -55,6 +56,7 @@ $(EXEC):  constants.o \
 	physics.o random.o \
 	IC.o  \
 	mod_write_NN_dataset.o  \
+	mod_NN.o \
 	mod_HLLC.o \
 	mod_HLL.o \
 	mod_LLF.o \
@@ -65,14 +67,14 @@ $(EXEC):  constants.o \
 	mod_Unlim_Pol.o \
 	mod_Reconstruction.o \
 	BC.o \
+	mod_subroutine_NN_MOOD.o \
 	mod_subroutine_MOOD.o \
 	mod_FE.o \
 	mod_SSP_RK2.o \
 	mod_SSP_RK3.o \
 	mod_SSP_RK4.o \
 	time_stepper.o \
-	output.o  \
-	mod_NN.o \
+	output.o  \ \
 	main.o ## Liste des modules puis programmes à compiler ##
 	$(FC) -o  $(EXEC) $^
 	time ./$(EXEC) #> $(OUTPUTLOG) & ## Commande exécutant automatiquement le programme ##
