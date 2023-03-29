@@ -3,9 +3,9 @@ from utils import *
 from symmetries import *
 #Takes the data in the data/ generate NN-ready files 
 
-max_N0_per_problem=5000
+max_N0_per_problem=3000
 ratio=2 #N1/N0 ratio
-rotation = True
+rotation = False
 ncfl=4
 
 def format_dataset():
@@ -111,21 +111,31 @@ def format_dataset():
 
     print("Dataset has", data_size, "entries with", N0, "R=0 inputs")
 
-    inputs=torch.zeros((data_size,L))
-    labels=torch.zeros((data_size,2))
+    inputs=torch.ones((data_size,L))*-666
+    labels=torch.ones((data_size,2))*-666
 
     #Get all the N0, R=0 data and N0*(1+ratio)R=1 data
-    for i in range(int(data_size/(ratio+1))):
+    for i in range(N0):
         inputs[i,:]=input0[i,:]
         labels[i,0]=1.0
         labels[i,1]=0.0
-    #print('i=',i, 'data size',data_size)
+    print('i=',i,"N0=",N0, 'data size',data_size)
     i0=i
     for i in range(i0+1, data_size):
         inputs[i,:]=input1[i-i0,:]
         labels[i,0]=0.0
         labels[i,1]=1.0
-    #print('i=',i, 'data size',data_size)
+    
+    for i in range(inputs.shape[0]):  # iterate over rows
+        for j in range(inputs.shape[1]):  # iterate over columns
+            # access the current element
+            element = inputs[i, j].item()
+            if (element==-666):
+                print("problem")
+                sys.exit()
+            # do something with the current element
+    
+    print('should be 0',i-data_size)
 
     torch.save({'inputs': inputs, 'labels': labels}, 'dataset.pt')
     print('done')
@@ -135,8 +145,6 @@ def format_dataset():
         print("Rotated dataset  has", 4*data_size, "entries with", 4*N0, "R=0 inputs")
         inputs_rot=torch.zeros((data_size*4,L))
         labels_rot=torch.zeros((data_size*4,2))
-
-
 
         # for i in range(data_size):
         #     data_rotated=rotate(inputs[i,:])

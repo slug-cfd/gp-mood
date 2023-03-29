@@ -161,7 +161,8 @@ if __name__ == '__main__':
     #List if NN lenght we want to study
     #param_list=[(90, 'dataset.pt', 'norot'),(100, 'dataset.pt', 'norot'),(110, 'dataset.pt', 'norot'),(90, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(110, 'dataset.pt', 'PI')]
     #param_list=[(20, 'dataset.pt', 'PI'),(40, 'dataset.pt', 'PI'),(60, 'dataset.pt', 'PI'),(80, 'dataset.pt', 'PI'),(100, 'dataset.pt', 'PI'),(120, 'dataset.pt', 'PI'),(140, 'dataset.pt', 'PI'),(160, 'dataset.pt', 'PI'),(180, 'dataset.pt', 'PI'),(200, 'dataset.pt', 'PI'),(220, 'dataset.pt', 'PI'),(240, 'dataset.pt', 'PI'),(260, 'dataset.pt', 'PI'),(280, 'dataset.pt', 'PI'),(300, 'dataset.pt', 'PI')]
-    param_list=[(20, 'dataset.pt', 'PI', True),(40, 'dataset.pt', 'PI',True),(60, 'dataset.pt', 'PI',True),(80, 'dataset.pt', 'PI',True),(20, 'dataset.pt', 'no_PI', False),(40, 'dataset.pt', 'no_PI',False),(60, 'dataset.pt', 'no_PI',False),(80, 'dataset.pt', 'no_PI',False) ]
+    #param_list=[(20, 'dataset.pt', 'PI', True),(40, 'dataset.pt', 'PI',True),(60, 'dataset.pt', 'PI',True),(80, 'dataset.pt', 'PI',True),(20, 'dataset.pt', 'PI', False),(40, 'dataset.pt', 'PI',False),(60, 'dataset.pt', 'PI',False),(80, 'dataset.pt', 'PI',False) ]
+    param_list=[(k, 'dataset.pt', 'no_PI', False) for k in range(20,200,20)]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
