@@ -216,7 +216,7 @@ program main
 
   do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
-  !do while ((t .lt. tmax) .and. (niter .le. 50) )!! 
+  !do while ((t .lt. tmax) .and. (niter .le. 999999) )!! 
 
      niter = niter + 1
 

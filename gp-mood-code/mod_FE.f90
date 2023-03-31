@@ -140,8 +140,9 @@ contains
        end if
 
     end do
-
-    criterion_iter=(niter<=200)
+    
+    criterion_iter=criterion_niter_f()
+    
     if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
       call write_NN_datatset(Uin, CellGPO)
     end if
@@ -149,8 +150,5 @@ contains
     if ((time_method == SSP_RK4)) Uout = Uout - Uin
 
   end subroutine Forward_Euler
-
-
-
 
 end module mod_FE

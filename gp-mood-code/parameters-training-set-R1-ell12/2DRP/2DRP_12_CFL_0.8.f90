@@ -42,7 +42,7 @@ module parameters
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = RP_2D_12
   real(PR), parameter :: tmax = 0.25
-  integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
+  integer, parameter  :: nmax = 999999 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Neumann ! Boundary conditions

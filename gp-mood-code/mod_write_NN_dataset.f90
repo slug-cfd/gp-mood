@@ -98,4 +98,43 @@ subroutine format_input(U_loc_flattened, cst, formatted_input)
     
 end subroutine format_input
 
+
+function criterion_niter_f()result(criterion_iter)
+
+    integer :: nstep_at_max_CFL, nstep, freq
+    integer :: noutput = 50
+    logical :: criterion_iter 
+    
+    if (IC_type==RP_2D_3) then 
+        nstep_at_max_CFL = 215
+    else if (IC_type==RP_2D_4) then 
+        nstep_at_max_CFL = 201
+    else if (IC_type==RP_2D_6) then 
+        nstep_at_max_CFL = 225
+    else if (IC_type==RP_2D_12) then 
+        nstep_at_max_CFL = 170
+    else if (IC_type==RP_2D_15) then 
+        nstep_at_max_CFL = 128
+    else if (IC_type==RP_2D_17) then 
+        nstep_at_max_CFL = 195
+    else if (IC_type==DMR) then 
+        nstep_at_max_CFL = 828
+    else if (IC_type==implosion) then 
+        nstep_at_max_CFL = 5460
+    else if (IC_type==sedov) then 
+        nstep_at_max_CFL = 373
+    else if (IC_type==Shu_Osher_rotated) then 
+        nstep_at_max_CFL = 81
+    else
+        nstep_at_max_CFL=1000
+    end if    
+
+    nstep = nstep_at_max_CFL * int(0.8/CFL)
+    freq = nstep/noutput
+
+    !print*, freq
+    criterion_iter=(mod(niter, freq)==0)
+
+end function
+
 end module mod_write_NN_dataset

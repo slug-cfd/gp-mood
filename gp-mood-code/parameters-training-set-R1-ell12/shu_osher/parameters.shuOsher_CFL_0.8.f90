@@ -49,7 +49,7 @@ module parameters
   ! IC, BC and domain setup
   integer, parameter  :: IC_type = Shu_Osher_rotated
   real(PR), parameter :: tmax = 1.8
-  integer, parameter  :: nmax = 200 ! put a large number if want to finish based on tmax only
+  integer, parameter  :: nmax = 999999 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 28.2842712474619!Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 28.2842712474619!Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Periodic! Boundary conditions
