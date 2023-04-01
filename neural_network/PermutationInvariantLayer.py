@@ -16,6 +16,8 @@ class PermutationInvariantLinear(nn.Module):
         #out_fetures: dimension of the output of the NN (1D)
         self.out_features=out_features
 
+        print([int(k.item()) for k in permutation_table])
+
         #permutation_table: torch array of the same dimension than an input array that describres the permutation
         self.permutation_table=[int(abs(i.item())) for i in permutation_table]
         self.sign_table=[sign(i.item()) for i in permutation_table]
@@ -35,9 +37,6 @@ class PermutationInvariantLinear(nn.Module):
 
     def forward(self, x):
         
-        # Enforce the condition symmetry condition the weight
-        self.enforce_symmetric_weights()
-        
         # Compute the output using the weights and biases
         output = torch.matmul(x, self.weight.t()) + self.bias
 
@@ -46,17 +45,23 @@ class PermutationInvariantLinear(nn.Module):
     def enforce_symmetric_weights(self):
 
         with torch.no_grad():
-            for line in range(self.out_features):
-                for i in range(self.in_features):
-                    index=self.permutation_table[i]
-                    if (index==self.code_zero):
-                        self.weight[line,i]=0.0
-                        #self.weight[line,i]=self.weight[line,i]
-                    else:
-                        self.weight[line,i]=self.sign_table[i]*self.weight[line,index]
+            for i in range(self.in_features):
+                index=self.permutation_table[i]
+                if (index==self.code_zero):
+                    self.weight[:,i]=0.0
+                else:
+                    self.weight[:,i]=self.sign_table[i]*self.weight[:,index]
+
+    def enforce_symmetric_grad(self):
+
+        for i in range(self.in_features):
+            index=self.permutation_table[i]
+            if (index==self.code_zero):
+                self.weight.grad[:,i]=0.0
+            else:
+                self.weight.grad[:,i]=self.sign_table[i]*self.weight.grad[:,index]
 
     def enfore_requires_grad(self):
-
         done=False
         niter=0
         while (not done):
@@ -79,22 +84,15 @@ class PermutationInvariantLinear(nn.Module):
                     if (item==k):
                         self.permutation_table[k2] = self.code_zero
 
-        #print(done, niter)
         print([k for k in self.permutation_table])
-        #print([k for k in self.sign_table])
 
-        with torch.no_grad():
-            self.bias.requires_grad_(True)
+        # self.bias.requires_grad_(True)
 
-            for line in range(self.out_features):
-                DOF=0
-                for k in range(self.in_features):
-                        if (k in self.permutation_table):
-                        #if (k in self.permutation_table or self.permutation_table[k]==self.code_zero):
-                            self.weight[line, k].requires_grad_(True)
-                            DOF+=1
-                            #print(k, True)
-                        else:
-                            self.weight[line, k].requires_grad_(False)
-                            #print(k, False)
-            print("DOF:", DOF, "/",self.in_features)
+        # with torch.no_grad():
+        #     for k in range(self.in_features):
+        #             if (k in self.permutation_table):
+        #                 self.weight[:, k].requires_grad=True
+        #                 print(self.weight[:, k])
+        #             else:
+        #                 self.weight[:, k].requires_grad=False
+        #                 print(self.weight[:, k])
