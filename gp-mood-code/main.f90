@@ -166,6 +166,21 @@ program main
       end if
       print*, '\ell/dx              =', real(l_16/dx_16,4)
       print*, 'NN filename =', NN_filename
+
+   else if(space_method == eval_NN_GP_MOOD) then
+      print*, 'Space method         = ', 'eval_NN GP MOOD - Squared exponential kernel'
+      print*, 'Radius =', (Mord-1)/2
+      print*, '\ell =', real(l_16,8)
+      if ( cross_stencil ) then
+         print*, 'stencil shape      =', 'cross'
+      else if ( sphere_stencil) then
+         print*, 'stencil shape      =', 'sphere'
+      else
+         print*, ' no stencil picked'
+         stop
+      end if
+      print*, '\ell/dx              =', real(l_16/dx_16,4)
+      print*, 'NN filename =', NN_filename
   else
      print*, 'space method not programmed'
      stop
@@ -192,7 +207,7 @@ program main
 
   print*, 'output directory:', file
 
-  if (space_method==NN_GP_MOOD) call load_NN(NN_filename)
+  if ((space_method==NN_GP_MOOD).or.(space_method==eval_NN_GP_MOOD)) call load_NN(NN_filename)
   call init_mesh()
   if (cross_stencil) call GP_presim()
   if (sphere_stencil)call GP_presim_sphere()
@@ -247,9 +262,9 @@ program main
         else
            print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
         endif
-        print*,' % of detected cell at the last iteration = ', real(count_RK*100/(nf*lf),4)
+        print*,' % of detected cell at the last iteration = ', real(count_detected_cell_RK*100/(nf*lf),4)
         print*,' % of unphyiscal states produced by NN = ', real(count_NN_PAD_RK*100/(nf*lf),4)
-        print*,' Steps where we had to go back and correct NN', wrong_iter_NN
+        print*,' Steps where we had to go back and correct NN', count_NN_need_posteriori_correction
         !! DL -- dump outputs regularly, say, every 100 step
      end if
 

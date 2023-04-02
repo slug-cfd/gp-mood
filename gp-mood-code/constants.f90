@@ -14,7 +14,7 @@ module constants
 
 
   !Time Methods indices
-  integer, parameter :: FOG     = 1, GP_MOOD = 2, POL_MOOD = 200, Unlim_POL = 201, GP_SE = 202, NN_GP_MOOD=203
+  integer, parameter :: FOG     = 1, GP_MOOD = 2, POL_MOOD = 200, Unlim_POL = 201, GP_SE = 202, NN_GP_MOOD=203, eval_NN_GP_MOOD=204
   !Space Methods indices
   integer, parameter :: FE      = 8, SSP_RK2 = 9, SSP_RK3 =10, SSP_RK4 =12
   !Flux methods

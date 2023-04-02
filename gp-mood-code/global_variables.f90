@@ -41,7 +41,7 @@ module global_variables
   !MOOD variables
   logical, save                                :: MOOD_finished
 
-  integer, dimension(lb:le, nb:ne), save       :: CellGPO
+  integer, dimension(lb:le, nb:ne), save       :: CellGPO, CellGPO_MOOD
   logical, dimension(lb:le, nb:ne), save       :: DetCell
 
   integer, dimension(-1:lf+1,  1:nf  ), save   :: FaceGPO_x
@@ -53,12 +53,12 @@ module global_variables
   real(PR)   , dimension(ngp,ngp), save :: gauss_weight
 
   integer, save  :: niter,count_detectio
-  Real(PR), save :: count_FE, count_RK, count_NN_PAD, count_NN_PAD_RK, wrong_iter_NN
+  Real(PR), save :: count_detected_cell, count_detected_cell_RK, count_NN_PAD, count_NN_PAD_RK, count_NN_need_posteriori_correction
 
   ! NN variables
 
   integer, parameter :: L=57
-  integer, parameter :: lenght=20
+  integer, parameter :: lenght=40
 
   real(4), dimension(lenght, L     ) :: weight0=-6666666
   real(4), dimension(lenght, lenght) :: weight1=-6666666
@@ -83,7 +83,7 @@ module global_variables
   integer, parameter :: up4 = up3 + size_weight2
   integer, parameter :: up5 = up4 + size_bias2
 
-  !character(100) :: NN_filename='./model_2DRP3_20_fortran.txt'
-  character(100) :: NN_filename='./model_no_PI_20_fortran.txt'
+  !character(100) :: NN_filename='./model_expert_ShuOsher_40_fortran.txt'
+  character(100) :: NN_filename='./model_expert_sedov_40_fortran.txt'
 
 end module

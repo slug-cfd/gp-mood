@@ -49,7 +49,7 @@ contains
             end do 
         end do 
 
-        count_FE=count_FE+count
+        count_detected_cell=count_detected_cell+count
     end subroutine
 
     subroutine load_NN(filename)
