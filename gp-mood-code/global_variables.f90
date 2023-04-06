@@ -58,7 +58,7 @@ module global_variables
   ! NN variables
 
   integer, parameter :: L=57
-  integer, parameter :: lenght=40
+  integer, parameter :: lenght=60
 
   real(4), dimension(lenght, L     ) :: weight0=-6666666
   real(4), dimension(lenght, lenght) :: weight1=-6666666
@@ -83,7 +83,12 @@ module global_variables
   integer, parameter :: up4 = up3 + size_weight2
   integer, parameter :: up5 = up4 + size_bias2
 
-  !character(100) :: NN_filename='./model_expert_ShuOsher_40_fortran.txt'
-  character(100) :: NN_filename='./model_expert_sedov_40_fortran.txt'
+  !character(100) :: NN_filename='./model_global_full_60_fortran.txt'
+  !character(100) :: NN_filename='./model_global_40_fortran.txt'
+  character(100) :: NN_filename='./model_expert_2DRPC3_60_fortran.txt'
+
+  logical :: last_RK_stage
+
+  integer :: NWRONG, N_R0_instead_of_R1, N_R1_instead_of_R0, NR0_according_to_MOOD, NR1_according_to_MOOD
 
 end module

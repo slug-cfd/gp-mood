@@ -29,7 +29,7 @@ contains
     real(PR)   , dimension(4, -1:lf+1,  0:nf+1  ) :: L_Flux_x
     real(PR)   , dimension(4,  0:lf+1  , -1:nf+1) :: L_Flux_y
 
-    integer :: l, n, j, k, NWRONG, NSMOOTH, NSHARP
+    integer :: l, n, j, k
 
     logical :: criterion_iter
 
@@ -137,6 +137,9 @@ contains
       end do
     else
       !Compute MOOD order
+      count_detected_cell = 0
+      count_NN_PAD = 0
+      CellGPO   =  Mord
       DetCell   = .true.
       DetFace_x = .true.
       DetFace_y = .true.
@@ -218,122 +221,108 @@ contains
          call DETECTION(Uin,Uout)
 
       end do
-      !Save the order
-      CellGPO_MOOD=CellGPO
-      !Reset and compute solution with NN_GP_MOOD
-      count_detected_cell = 0
-      count_NN_PAD = 0
-      CellGPO   =  Mord
-      call compute_CellGPO_with_NN(Uin)
-      DetCell   = .true.
-      DetFace_x = .true.
-      DetFace_y = .true.
-      MOOD_finished = .false.
-      call Boundary_C(Uin)
-      Uout = Uin
-      do while (MOOD_finished .eqv. .false.)
 
-         call Recons(Uin)
+      if (niter>50) then
+         !Save the order
+         CellGPO_MOOD=CellGPO
+         !Reset and compute solution with NN_GP_MOOD
+         count_detected_cell = 0
+         count_NN_PAD = 0
+         CellGPO   =  Mord
+         call compute_CellGPO_with_NN(Uin)
+         DetCell   = .true.
+         DetFace_x = .true.
+         DetFace_y = .true.
+         MOOD_finished = .false.
+         call Boundary_C(Uin)
+         Uout = Uin
+         do while (MOOD_finished .eqv. .false.)
 
-         do n = 0, nf
-            do l = 0, lf
+            call Recons(Uin)
 
-               if (DetFace_x(l,n)) then
+            do n = 0, nf
+               do l = 0, lf
 
-                  do j = 1, ngp
-                     uL =  Uh(: ,iR,j,l  ,n)
-                     uR =  Uh(: ,iL,j,l+1,n)
+                  if (DetFace_x(l,n)) then
 
-                     if (numFlux == HLLC) then
-                        Flux_gauss(rho:ener,j) =  HLLC_Flux(ul,ur,dir_x)
-                     elseif (numFlux == LLF) then
-                        Flux_gauss(rho:ener,j) =  LLF_Flux(ul,ur,dir_x)
-                     elseif (numFlux == HLL) then
-                        Flux_gauss(rho:ener,j) =  HLL_Flux(ul,ur,dir_x)
-                     endif
+                     do j = 1, ngp
+                        uL =  Uh(: ,iR,j,l  ,n)
+                        uR =  Uh(: ,iL,j,l+1,n)
 
-                  end do
+                        if (numFlux == HLLC) then
+                           Flux_gauss(rho:ener,j) =  HLLC_Flux(ul,ur,dir_x)
+                        elseif (numFlux == LLF) then
+                           Flux_gauss(rho:ener,j) =  LLF_Flux(ul,ur,dir_x)
+                        elseif (numFlux == HLL) then
+                           Flux_gauss(rho:ener,j) =  HLL_Flux(ul,ur,dir_x)
+                        endif
 
-                  do k = rho, ener
-                     L_Flux_x(k,l,n) = dot_product(Flux_gauss(k,1:ngp),gauss_weight(ngp,1:ngp))
-                  end do
+                     end do
 
-                  Uout(:,l  ,n) = Uout(:,l  ,n) - dt/dx * L_Flux_x(:,l,n)
-                  Uout(:,l+1,n) = Uout(:,l+1,n) + dt/dx * L_Flux_x(:,l,n)
-               else
+                     do k = rho, ener
+                        L_Flux_x(k,l,n) = dot_product(Flux_gauss(k,1:ngp),gauss_weight(ngp,1:ngp))
+                     end do
 
-                  if (DetCell(l  ,n)) Uout(:,l  ,n) = Uout(:,l  ,n) - dt/dx * L_Flux_x(:,l,n)
-                  if (DetCell(l+1,n)) Uout(:,l+1,n) = Uout(:,l+1,n) + dt/dx * L_Flux_x(:,l,n)
-               end if
+                     Uout(:,l  ,n) = Uout(:,l  ,n) - dt/dx * L_Flux_x(:,l,n)
+                     Uout(:,l+1,n) = Uout(:,l+1,n) + dt/dx * L_Flux_x(:,l,n)
+                  else
 
-
-               if (DetFace_y(l,n)) then
-
-
-                  do j = 1, ngp
-                     uB =  Uh(: ,iT,j,l,n  )
-                     uT =  Uh(: ,iB,j,l,n+1)
-
-                     if (numFlux == HLLC) then
-                        Flux_gauss(rho:ener,j) =  HLLC_Flux(ub,ut,dir_y)
-                     elseif (numFlux == LLF) then
-                        Flux_gauss(rho:ener,j) =  LLF_Flux(ub,ut,dir_y)
-                     elseif (numFlux == HLL) then
-                        Flux_gauss(rho:ener,j) =  HLL_Flux(ub,ut,dir_y)
-                     endif
-
-                  end do
-
-                  do k = rho, ener
-                     L_Flux_y(k,l,n) = dot_product(Flux_gauss(k,1:ngp),gauss_weight(ngp,1:ngp))
-                  end do
+                     if (DetCell(l  ,n)) Uout(:,l  ,n) = Uout(:,l  ,n) - dt/dx * L_Flux_x(:,l,n)
+                     if (DetCell(l+1,n)) Uout(:,l+1,n) = Uout(:,l+1,n) + dt/dx * L_Flux_x(:,l,n)
+                  end if
 
 
-
-                  Uout(:,l,n  ) = Uout(:,l,n  ) - dt/dy * L_Flux_y(:,l,n)
-                  Uout(:,l,n+1) = Uout(:,l,n+1) + dt/dy * L_Flux_y(:,l,n)
-               else
+                  if (DetFace_y(l,n)) then
 
 
-                  if (DetCell(l,n  )) Uout(:,l,n)   =  Uout(:,l,n  ) - dt/dy * L_Flux_y(:,l,n)
-                  if (DetCell(l,n+1)) Uout(:,l,n+1) =  Uout(:,l,n+1) + dt/dy * L_Flux_y(:,l,n)
+                     do j = 1, ngp
+                        uB =  Uh(: ,iT,j,l,n  )
+                        uT =  Uh(: ,iB,j,l,n+1)
 
-               end if
+                        if (numFlux == HLLC) then
+                           Flux_gauss(rho:ener,j) =  HLLC_Flux(ub,ut,dir_y)
+                        elseif (numFlux == LLF) then
+                           Flux_gauss(rho:ener,j) =  LLF_Flux(ub,ut,dir_y)
+                        elseif (numFlux == HLL) then
+                           Flux_gauss(rho:ener,j) =  HLL_Flux(ub,ut,dir_y)
+                        endif
 
+                     end do
+
+                     do k = rho, ener
+                        L_Flux_y(k,l,n) = dot_product(Flux_gauss(k,1:ngp),gauss_weight(ngp,1:ngp))
+                     end do
+
+
+
+                     Uout(:,l,n  ) = Uout(:,l,n  ) - dt/dy * L_Flux_y(:,l,n)
+                     Uout(:,l,n+1) = Uout(:,l,n+1) + dt/dy * L_Flux_y(:,l,n)
+                  else
+
+
+                     if (DetCell(l,n  )) Uout(:,l,n)   =  Uout(:,l,n  ) - dt/dy * L_Flux_y(:,l,n)
+                     if (DetCell(l,n+1)) Uout(:,l,n+1) =  Uout(:,l,n+1) + dt/dy * L_Flux_y(:,l,n)
+
+                  end if
+
+               end do
             end do
-         end do
 
-         call NN_DETECTION(Uin,Uout)
-         
-         if (MOOD_finished .eqv. .false.) then 
-            count_NN_need_posteriori_correction=count_NN_need_posteriori_correction+1
-         end if
-         
-      end do
-
-
-      NWRONG=0
-      NSMOOTH=0
-      NSHARP=0
-      do n = 1, nf
-         do l = 1, lf
-            if (CellGPO(l,n)>CellGPO_MOOD(l,n)) then 
-               NSHARP=NSHARP+1
-               NWRONG=NWRONG+1
-            else if  (CellGPO(l,n)<CellGPO_MOOD(l,n)) then 
-               NSMOOTH=NSMOOTH+1
-               NWRONG=NWRONG+1
+            call NN_DETECTION(Uin,Uout)
+            
+            if (MOOD_finished .eqv. .false.) then 
+               count_NN_need_posteriori_correction=count_NN_need_posteriori_correction+1
             end if
-         end do 
-      end do
-
-     print*, NWRONG*100.0/(lf*nf), NSMOOTH*100.0/NWRONG, NSHARP*100.0/NWRONG
+            
+         end do
+         call eval_NN(first)
+      end if
 
     end if
 
+    criterion_iter=criterion_niter_f()
 
     if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
-      criterion_iter=criterion_niter_f()
       call write_NN_datatset(Uin, CellGPO)
     end if
 

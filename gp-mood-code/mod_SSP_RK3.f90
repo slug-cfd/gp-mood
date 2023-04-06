@@ -17,6 +17,8 @@ contains
     real(PR),              dimension(4,lb:le, nb:ne) :: U1
     real(PR),              dimension(4,lb:le, nb:ne) :: U2
 
+    last_RK_stage=.false.
+
     t_rk = t
     count_detected_cell_RK = 0
     count_NN_PAD_RK = 0
@@ -34,6 +36,7 @@ contains
     U2 = (0.75)*Uin + 0.25*U2
     t_rk = t + 0.5*dt
 
+    last_RK_stage=.true.
     call Forward_Euler(U2 ,Uout, .false.)
     count_detected_cell_RK = count_detected_cell_RK + count_detected_cell
     count_NN_PAD_RK = count_NN_PAD_RK + count_NN_PAD

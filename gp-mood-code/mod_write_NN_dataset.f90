@@ -107,6 +107,7 @@ function criterion_niter_f()result(criterion_iter)
     
     if (IC_type==RP_2D_3) then 
         nstep_at_max_CFL = 215
+        !nstep_at_max_CFL = 100
     else if (IC_type==RP_2D_4) then 
         nstep_at_max_CFL = 201
     else if (IC_type==RP_2D_6) then 
