@@ -43,7 +43,7 @@ contains
 
     Uout = (1./3)*Uin + (2./3)*Uout
 
-    count_detected_cell = count_detected_cell_RK /3
+    count_detected_cell_RK = count_detected_cell_RK /3
     count_NN_PAD_RK = count_NN_PAD_RK/3
 
 
