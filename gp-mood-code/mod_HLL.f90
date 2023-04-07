@@ -1,118 +1,118 @@
 module mod_HLL
 
-  use parameters
-  use constants
-  use physics
+   use parameters
+   use secondary_parameters
+   use constants
+   use physics
 
-  implicit none
+   implicit none
 
 contains
 
-  function HLL_Flux(ul,ur,dir)result(F)
-    !=========== HLL Flux ===========!
+   function HLL_Flux(ul,ur,dir)result(F)
+      !=========== HLL Flux ===========!
 
-    !  Eleuterio F. Toro-Riemann Solvers and Numerical Methods for Fluid Dynamics_ A Practical Introduction, Third Edition (2009)
-    ! Chap 10.4
+      !  Eleuterio F. Toro-Riemann Solvers and Numerical Methods for Fluid Dynamics_ A Practical Introduction, Third Edition (2009)
+      ! Chap 10.4
 
-    !============= Input(s) ==============!
-    real(PR)   , dimension(4), intent(in) :: ul, ur
-    integer              , intent(in)     :: dir
-    !============= Output(s) =============!
-    real(PR), dimension(4)                :: F
+      !============= Input(s) ==============!
+      real(PR)   , dimension(4), intent(in) :: ul, ur
+      integer              , intent(in)     :: dir
+      !============= Output(s) =============!
+      real(PR), dimension(4)                :: F
 
-    !========== Local variables ==========!
-    real(PR), dimension(4)                :: Fl, Fr
-    real(PR), dimension(4)                :: UstarL, UstarR
+      !========== Local variables ==========!
+      real(PR), dimension(4)                :: Fl, Fr
 
-    real(PR):: vmcl, vpcl, vmcr, vpcr, SL, SR
-    real(PR):: uStar,  vvR, vvL, presL, presR, numerL,numerR,denomL,denomR, pstarL, pstarR, dstarl, dstarR
-
-
-    real(PR)::  vx, vy, vx2, vy2, pres, c, other_velL, other_velR
-
-    logical :: adm
-    integer :: momdir, othermom
+      real(PR):: vmcl, vpcl, vmcr, vpcr, SL, SR
+      real(PR):: vvR, vvL, presL, presR
 
 
-    ! !=========== = Instructions(l) ===========!
+      real(PR)::  vx, vy, vx2, vy2, pres, c, other_velL, other_velR
+
+      logical :: adm
+      integer :: momdir, othermom
 
 
-    !We compute the eingenvalues
-    !Select the biggest and the smallest one
-
-    adm = .true.
-
-    if (dir == dir_x) then
-
-       momdir   = momx
-       othermom = momy
-
-       call c2p_local(ul, vx, vy, vx2, vy2, pres, c, adm)
-       vmcl = vx - c
-       vpcl = vx + c
-       vvL  = vx
-
-       presL = pres
-       other_velL = vy
+      ! !=========== = Instructions(l) ===========!
 
 
-       Fl   = Flux(ul,dir, vx, vy, vx2, vy2, pres, adm)
+      !We compute the eingenvalues
+      !Select the biggest and the smallest one
 
-       call c2p_local(ur, vx, vy, vx2, vy2, pres, c, adm)
-       vmcr = vx - c
-       vpcr = vx + c
-       vvR  = vx
+      adm = .true.
 
-       presR = pres
-       other_velR = vy
+      if (dir == dir_x) then
 
+         momdir   = momx
+         othermom = momy
 
-       Fr   = Flux(ur,dir, vx, vy, vx2, vy2, pres, adm)
+         call c2p_local(ul, vx, vy, vx2, vy2, pres, c, adm)
+         vmcl = vx - c
+         vpcl = vx + c
+         vvL  = vx
 
-       SL = min(vmcl, vmcr)
-       SR = max(vpcl, vpcr)
-
-
-    else if (dir == dir_y) then
-
-       momdir   = momy
-       othermom = momx
-
-       call c2p_local(ul, vx, vy, vx2, vy2, pres, c, adm)
-       vmcl = vy - c
-       vpcl = vy + c
-       vvL  = vy
-
-       presL = pres
-       other_velL = vx
+         presL = pres
+         other_velL = vy
 
 
+         Fl   = Flux(ul,dir, vx, vy, vx2, vy2, pres, adm)
 
-       Fl   = Flux(ul,dir, vx, vy, vx2, vy2, pres, adm)
+         call c2p_local(ur, vx, vy, vx2, vy2, pres, c, adm)
+         vmcr = vx - c
+         vpcr = vx + c
+         vvR  = vx
 
-       call c2p_local(ur, vx, vy, vx2, vy2, pres, c, adm)
-       vmcr = vy - c
-       vpcr = vy + c
-       vvR  = vy
-
-       presR = pres
-       other_velR = vx
+         presR = pres
+         other_velR = vy
 
 
-       Fr   = Flux(ur,dir, vx, vy, vx2, vy2, pres, adm)
+         Fr   = Flux(ur,dir, vx, vy, vx2, vy2, pres, adm)
 
-       SL = min(vmcl, vmcr)
-       SR = max(vpcl, vpcr)
+         SL = min(vmcl, vmcr)
+         SR = max(vpcl, vpcr)
+
+
+      else if (dir == dir_y) then
+
+         momdir   = momy
+         othermom = momx
+
+         call c2p_local(ul, vx, vy, vx2, vy2, pres, c, adm)
+         vmcl = vy - c
+         vpcl = vy + c
+         vvL  = vy
+
+         presL = pres
+         other_velL = vx
 
 
 
-    else
-       print*, 'dir =/ x or y'
-       stop
-    end if
+         Fl   = Flux(ul,dir, vx, vy, vx2, vy2, pres, adm)
 
-    if (adm) then
-       ! Convenient parameters
+         call c2p_local(ur, vx, vy, vx2, vy2, pres, c, adm)
+         vmcr = vy - c
+         vpcr = vy + c
+         vvR  = vy
+
+         presR = pres
+         other_velR = vx
+
+
+         Fr   = Flux(ur,dir, vx, vy, vx2, vy2, pres, adm)
+
+         SL = min(vmcl, vmcr)
+         SR = max(vpcl, vpcr)
+
+
+
+      else
+         print*, 'dir =/ x or y'
+         stop
+      end if
+
+      if (adm) then
+         ! Convenient parameters
 !!$       numerL = sL-vvL
 !!$       numerR = sR-vvR
 !!$
@@ -151,20 +151,20 @@ contains
 !!$
 !!$       UstarR = UstarR * dStarR
 
-       ! numerical flux
-       if (sL > 0.) then
-          F(:) = FL(:)
-       elseif (sR < 0.) then
-          F(:) = FR(:)
-       else
-          F(:) = (sR*FL(:) - sL*FR(:) + sR*sL*(uR(:) - uL(:)))/(sR - sL)
-       endif
+         ! numerical flux
+         if (sL > 0.) then
+            F(:) = FL(:)
+         elseif (sR < 0.) then
+            F(:) = FR(:)
+         else
+            F(:) = (sR*FL(:) - sL*FR(:) + sR*sL*(uR(:) - uL(:)))/(sR - sL)
+         endif
 
-    else
-       F(:) = 1./(vx-vx)
-    end if
+      else
+         F(:) = 1./(vx-vx)
+      end if
 
-  end function HLL_Flux
+   end function HLL_Flux
 
 
 end module mod_HLL
