@@ -3,6 +3,12 @@ module global_variables
 
    implicit none
 
+
+   ! Set the baseline lf0 and nf0 for the dt reduction
+   integer,  parameter :: lf0 = 400 ! Number of cell in the x direction
+   integer,  parameter :: nf0 = 400 !
+   integer , parameter :: ngc = 4 ! Number of ghost cells
+
    integer , dimension(7), parameter :: szs_sphere = (/1,0,5,0,13,0,25/)
  
    integer , parameter :: sz_sphere = szs_sphere(Mord)
@@ -14,8 +20,7 @@ module global_variables
    real(16), parameter :: dx_16 = Lx_16/lf, dy_16 = Ly_16/nf
    integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
    real(PR), parameter :: dx = real(dx_16,PR), dy = real(dy_16,PR), Lx = real(Lx_16,PR), Ly = real(Ly_16,PR)
-
-   real(16), parameter :: l_16 = 12.*min(dx_16,dy_16) !/ell
+   real(16), parameter :: l_16 = ell_o_dx*min(dx_16,dy_16) !/ell
 
    ! Solution
    real(PR), dimension(4,lb:le, nb:ne ), save :: U = 0., Ur = 0.
