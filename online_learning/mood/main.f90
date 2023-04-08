@@ -160,6 +160,7 @@ program main
          print*,'======================================================================'
          print*,''
          call write_output(niter)
+
       endif
 
       ! dump output files based on the output frequency time interval

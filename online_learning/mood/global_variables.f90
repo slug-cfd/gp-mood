@@ -10,10 +10,6 @@ module global_variables
 
    integer , parameter :: radius = (Mord -1)/2
 
-   logical , parameter :: DMP        = .true.
-   logical , parameter :: U2         = .true.
-   logical , parameter :: U2_tol     = .true.
-
    ! Secondary variables , don't change
    real(16), parameter :: dx_16 = Lx_16/lf, dy_16 = Ly_16/nf
    integer , parameter :: lb = 1-ngc, le = lf + ngc, nb = 1-ngc, ne = nf + ngc
