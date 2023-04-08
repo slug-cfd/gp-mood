@@ -6,7 +6,7 @@ module parameters
    implicit none
 
    ! Output files parameter
-   character(100) :: file='SEDOV_GP_MOOD_256_CFL_0.8_'
+   character(100) :: file='IMPLOSION_GP_MOOD_256_CFL_0.8_'
 
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: time_method    = SSP_RK3
@@ -38,12 +38,12 @@ module parameters
    integer,  parameter :: lf = 256 ! Number of cell in the x direction
    integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
-   ! IC, BC and domain setup
-   integer, parameter  :: IC_type = sedov
-   real(PR), parameter :: tmax = 0.05
-   integer, parameter  :: nmax = 999999 ! put a large number if want to finish based on tmax only
-   real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
-   real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
-   integer, parameter  :: BC_type = Neumann ! Boundary conditions
+   !IC, BC and domain setup
+   integer, parameter  :: IC_type = implosion
+   real(PR), parameter :: tmax = 2.5
+   integer, parameter  :: nmax = 9999999 ! put a large number if want to finish based on tmax only
+   real(16), parameter :: Lx_16 = 0.3 !Lenght of the domain in the x-direction
+   real(16), parameter :: Ly_16 = 0.3 !Lenght of the domain in the y-direction
+   integer, parameter  :: BC_type = reflective! Boundary conditions
    
 end module

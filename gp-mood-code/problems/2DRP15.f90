@@ -6,7 +6,7 @@ module parameters
    implicit none
 
    ! Output files parameter
-   character(100) :: file='SEDOV_GP_MOOD_256_CFL_0.8_'
+   character(100) :: file='2DRP15_GP_MOOD_256_CFL_0.8_'
 
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: time_method    = SSP_RK3
@@ -39,8 +39,8 @@ module parameters
    integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
    ! IC, BC and domain setup
-   integer, parameter  :: IC_type = sedov
-   real(PR), parameter :: tmax = 0.05
+   integer, parameter  :: IC_type = RP_2D_15
+   real(PR), parameter :: tmax = 0.2
    integer, parameter  :: nmax = 999999 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
