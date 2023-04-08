@@ -72,9 +72,6 @@ module global_variables
 
    ! NN variables
 
-   integer, parameter :: L=57
-   integer, parameter :: lenght=60
-
    real(4), dimension(lenght, L     ) :: weight0=-6666666
    real(4), dimension(lenght, lenght) :: weight1=-6666666
    real(4), dimension(2     , lenght) :: weight2=-6666666
@@ -97,10 +94,6 @@ module global_variables
    integer, parameter :: up3 = up2 + size_bias1
    integer, parameter :: up4 = up3 + size_weight2
    integer, parameter :: up5 = up4 + size_bias2
-
-   !character(100) :: NN_filename='./model_global_full_60_fortran.txt'
-   !character(100) :: NN_filename='./model_global_40_fortran.txt'
-   character(100) :: NN_filename='./model_expert_2DRPC3_60_fortran.txt'
 
    logical :: last_RK_stage
 

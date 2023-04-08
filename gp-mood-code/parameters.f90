@@ -8,8 +8,6 @@ module parameters
    ! Output files parameter
    character(100) :: file='SEDOV_GP_MOOD_256_CFL_0.8_'
 
-   logical :: write_NN_dataset=.false.
-
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: time_method    = SSP_RK3
    logical , parameter :: dt_reduction = .false.
@@ -22,6 +20,12 @@ module parameters
    logical , parameter :: DMP        = .true.
    logical , parameter :: U2         = .true.
    logical , parameter :: U2_tol     = .true.
+
+   ! NN variables
+   logical :: write_NN_dataset=.false.
+   integer, parameter :: L=57
+   integer, parameter :: lenght=60
+   character(100) :: NN_filename='./model_expert_2DRPC3_60_fortran.txt'
 
    ! flux method
    integer, parameter :: numFlux = HLLC
