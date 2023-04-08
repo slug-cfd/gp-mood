@@ -1,216 +1,111 @@
 module Output
-  use global_variables
-  use constants
-  use parameters
-  use physics
-  use IC
-  implicit none
+   use global_variables
+   use constants
+   use parameters
+   use physics
+   use IC
+   use hdf5
+   implicit none
 
 
 contains
 
-  subroutine write_slice(dir)
+   subroutine write_output_no(fileNumb)
 
-    integer, intent(in) :: dir
+      integer :: l,n
 
-    integer             :: l, n
+      real(PR), dimension(4,1:lf,1:nf) :: Uprim
+      integer, intent(IN) :: fileNumb
+      character(len=50) :: fileID
 
-    real(PR), dimension(4) :: uprim
+      write(fileID,910) fileNumb + 100000
 
+      910   format(i6)
 
-    if (dir == dir_x) then
-!!$       open(50, file = trim(adjustl(file_slice_x)), form ='formatted')
-       open(50, file = trim(adjustl(file))//'slice_x.dat', form ='formatted')
-       do l = 1, lf
-          uprim = conservative_to_primitive(U(1:4,l,nf/2))
-
-          write(50,*)mesh_x(l),U(1:4,l,nf/2), uprim(4)/(uprim(1)*(y-1.))
-
-          !write(50,*)mesh_x(l)-0.5,uprim, uprim(4)/(uprim(1)*(y-1.))
-          !wri!te(50,*)mesh_x(l),U(:,l,1)
-
-       end do
-       close(50)
-    else if (dir == dir_y) then
-       open(50, file = trim(adjustl(file))//'slice_y.dat', form ='formatted')
-       do n = 1, nf
-          write(50,*)mesh_y(n),U(1,lf/2,n)
-       end do
-       close(50)
-
-    else if (dir == dir_xy) then
-       open(50, file = trim(adjustl(file))//'slice_xy.dat', form ='formatted')
-       do l = 1, min(lf,nf)
-          write(50,*)mesh_x(l)*cos(Pi/4)+mesh_y(l)*sin(Pi/4),U(rho,l,l)
-       end do
-       close(50)
-
-    else if (dir == dir_yx) then
-       open(50, file = trim(adjustl(file))//'slice_yx.dat', form ='formatted')
-       do l = 1, min(lf,nf)
-          write(50,*)(mesh_x(l)-0.5)*sqrt(2.),U(rho,l,nf-l+1)
-       end do
-       close(50)
-    else
-       print*, 'dir /= x or y'
-       stop
-    end if
-  end subroutine write_slice
-
-  subroutine write_output(fileNumb)
-
-    integer :: l,n
-
-    real(PR), dimension(4,1:lf,1:nf) :: Uprim
-    real(PR),dimension(4) :: v, vt
-    integer, intent(IN) :: fileNumb
-    character(len=50) :: fileID
-
-    !DL -- convert file number to character
-    write(fileID,910) fileNumb + 100000
-
-910 format(i6)
-
-    do n = 1, nf
-       do l = 1,lf
-          Uprim(:,l,n) = conservative_to_primitive(U(1:4,l,n))
-       end do
-    end do
+      do n = 1, nf
+         do l = 1,lf
+            Uprim(:,l,n) = conservative_to_primitive(U(1:4,l,n))
+         end do
+      end do
 
 
-    open(50, file = trim(adjustl(file))//'_'//trim(fileID)//'.dat', form='formatted')
-    write(50,*) 'x','y','rho','ux','uy','p','ordr'
-    do n = 1, nf
-       do l = 1, lf
-          write(50,*) mesh_x(l), mesh_y(n), Uprim(:,l,n), CellGPO(l,n)
-       end do
-    end do
-    close(50)
-    
-!!$    open(50, file = trim(adjustl(file))//'rho_'//trim(fileID)//'.dat', form='formatted')
-!!$    do n = 1, nf
-!!$
-!!$       write(50,*) Uprim(rho,1:lf,n)
-!!$
-!!$    end do
-!!$    close(50)
-!!$
-!!$    open(49, file = trim(adjustl(file))//'pres_'//trim(fileID)//'.dat', form='formatted')
-!!$    do n = 1, nf
-!!$       write(49,*) Uprim(4,1:lf,n)
-!!$
-!!$    end do
-!!$    close(49)
-!!$
-!!$    open(50, file = trim(adjustl(file))//'final_sym_'//trim(fileID)//'.dat', form='formatted')
-!!$    write(50,*) 'x','y','rho','ux','uy','p'
-!!$
-!!$    if (nf==lf) then
-!!$       do n = 1, nf
-!!$          do l = 1, lf
-!!$
-!!$             v = conservative_to_primitive(U(1:4,l,n))
-!!$             vt=conservative_to_primitive(U(1:4,n,l))
-!!$             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
-!!$
-!!$          end do
-!!$       end do
-!!$    end if
-!!$    close(50)
-!!$
-!!$    open(50, file = trim(adjustl(file))//'final_sym_2_'//trim(fileID)//'.dat', form='formatted')
-!!$    write(50,*) 'x','y','rho','ux','uy','p'
-!!$
-!!$    if (nf==lf) then
-!!$       do n = 1, nf
-!!$          do l = 1, lf
-!!$
-!!$             v = conservative_to_primitive(U(1:4,l,n))
-!!$             vt =conservative_to_primitive(U(1:4,nf-l+1,lf-n+1))
-!!$             write(50,*) mesh_x(l), mesh_y(n), abs(v(:)-vt)
-!!$
-!!$          end do
-!!$       end do
-!!$    end if
-!!$    close(50)
+      open(50, file = trim(adjustl(file))//'_'//trim(fileID)//'.dat', form='formatted')
+      write(50,*) 'x','y','rho','ux','uy','p','ordr'
+      do n = 1, nf
+         do l = 1, lf
+            write(50,*) mesh_x(l), mesh_y(n), Uprim(:,l,n), CellGPO(l,n)
+         end do
+      end do
+      close(50)
 
-  end subroutine write_output
+      print*,''
+      print*,'======================================================================'
+      print*,'   A new output has been written, file number=',niter
+      print*,'   Output directory:', file
+      print*,'======================================================================'
+      print*,''
+   end subroutine 
 
+   subroutine write_output(fileNumb)
 
-  subroutine error()
+      integer :: l,n
 
-    real(PR) :: error_1, error_2, int,xx,yy
-    real(PR), dimension(4) :: sol
-    integer :: l,n
+      real(PR), dimension(4,1:lf,1:nf) :: Uprim
+      integer, intent(IN) :: fileNumb
+      character(len=50) :: fileID
 
-    error_1 = 0. !L_1 error
-    error_2 = 0. !L_2 error (newly added for a revision)
+      integer(hid_t) :: file_id, dataspace_id, dataset_id
+      integer(hsize_t), dimension(2) :: dims
 
+      integer :: status
 
-    do n = 1, nf
-       do l = 1, lf
+      write(fileID,910) fileNumb + 100000
 
+      910   format(i6)
 
-          xx = mesh_x(l)
-          yy = mesh_y(n)
+      do n = 1, nf
+         do l = 1,lf
+            Uprim(:,l,n) = conservative_to_primitive(U(1:4,l,n))
+         end do
+      end do
 
-          if( IC_type == isentropic_vortex) then
-             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,0.5*Lx, 0.5*Ly, 0.))
-!!$             sol = primitive_to_conservative((1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2,10.,10.,20.))
-             
-          else if(IC_type == Lin_Gauss_xy) then
-             int =     (-0.0886227*erf(-5*dx - 10*xx +5.) + 0.0886227*erf(5*dx - 10*xx + 5.))
-             int = int*(-0.0886227*erf(-5*dy - 10*yy +5.) + 0.0886227*erf(5*dy - 10*yy + 5.))
-             int  = (int + dx*dy)/(dx*dy)
-             sol(1) = int
+      ! Create a new HDF5 file
+      call h5open_f(status)
+      
+      call h5fcreate_f(trim(adjustl(file))//'_'//trim(fileID)//'.h5', H5F_ACC_TRUNC_F, file_id, status)
+      ! Create dataspace for datasets
+      dims = [lf, nf]
+      call h5screate_simple_f(2, dims, dataspace_id, status)
 
-          else if (IC_type == Lin_Gauss_x) then
+      ! Create first dataset with key "rho"
+      call h5dcreate_f(file_id, "rho", H5T_NATIVE_DOUBLE, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_DOUBLE, Uprim(1,1:lf,1:nf), dims, status)
 
-             int  = -0.0886227*erf(5. - 10.*(xx+dx/2)) + 0.0886227*erf(5. - 10.*(xx-dx/2))
+      call h5dcreate_f(file_id, "ux", H5T_NATIVE_DOUBLE, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_DOUBLE, Uprim(2,1:lf,1:nf), dims, status)
 
-             int  = (int + dx)/(dx)
-             sol(1) = int
+      call h5dcreate_f(file_id, "uy", H5T_NATIVE_DOUBLE, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_DOUBLE, Uprim(3,1:lf,1:nf), dims, status)
 
+      call h5dcreate_f(file_id, "p", H5T_NATIVE_DOUBLE, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_DOUBLE, Uprim(4,1:lf,1:nf), dims, status)
 
-          else
-             sol(1) = U(rho,l,n)
-          end if
+      call h5dcreate_f(file_id, "ordr", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, CellGPO(1:lf, 1:nf), dims, status)
 
+      ! Close resources
+      call h5dclose_f(dataset_id, status)
+      call h5sclose_f(dataspace_id, status)
+      call h5fclose_f(file_id, status)
+      
+      call h5close_f(status)
 
-          if( dim ==2) then
-             error_1 = error_1 + abs(sol(1) - U(rho,l,n))*dx*dy ! L_1 error
-             !error_2 = error_2 + sqrt( ( dx*dy*(sol(1) - U(rho,l,n))**2 ) ) ! L_2 error -- this is wrong
-             error_2 = error_2 + (sol(1) - U(rho,l,n))**2
-          endif
-          
-          if( (dim ==1) .and. (n==1)) then
-             error_1 = error_1 + abs(sol(1) - U(rho,l,n))*dx
-          endif
-
-
-       end do
-    end do
-
-    if ( (IC_type == isentropic_vortex) .or.  ( (IC_type == Lin_Gauss_xy) .or.(IC_type == Lin_Gauss_x) )) then
-
-       print*, 'L1 error = ', error_1
-       open (50, file = trim(adjustl(file))//'error_L1.dat', form='formatted',position='append')
-       write(50,*)lf,nf,error_1, error_inversion
-       close(50)
-
-       if (dim == 2) then
-          error_2 = dx*dy*error_2
-          error_2 = sqrt(error_2)
-       endif
-       
-       print*, 'L2 error = ', error_2
-       open (60, file = trim(adjustl(file))//'error_L2.dat', form='formatted',position='append')
-       write(60,*)lf,nf,error_2, error_inversion
-       close(60)
-
-    end if
-  end subroutine error
-
-
+      print*,''
+      print*,'======================================================================'
+      print*,'   A new output has been written, file number=',niter
+      print*,'   Output directory:', file
+      print*,'======================================================================'
+      print*,''
+   end subroutine 
 
 end module Output
