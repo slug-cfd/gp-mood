@@ -31,7 +31,7 @@ module parameters
    integer, parameter :: numFlux = HLLC
 
    ! IO parameter
-   integer, parameter :: IO_freqStep = 1   ! (put a positive number to use, e.g., 500)
+   integer, parameter :: IO_freqStep = 10   ! (put a positive number to use, e.g., 500)
    real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
    ! Mesh parameter

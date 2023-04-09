@@ -95,8 +95,8 @@ module global_variables
    integer, parameter :: up4 = up3 + size_weight2
    integer, parameter :: up5 = up4 + size_bias2
 
-   logical :: last_RK_stage
-
-   integer :: NWRONG, N_R0_instead_of_R1, N_R1_instead_of_R0, NR0_according_to_MOOD, NR1_according_to_MOOD
+   !  Diagnostic
+   Real(4), dimension(nmax) :: time = -666
+   Real(4), dimension(nmax) :: pct_detected_cell = -666
 
 end module

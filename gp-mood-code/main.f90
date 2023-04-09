@@ -130,23 +130,28 @@ program main
 
 
       call Setdt(U)
-      !print*,'CFL dt =', dt
+
       cfl_dt = dt
 
       call time_stepping(U, Ur)
+
       call Boundary_C(U)
 
       ! update clock
       t =  t + dt
 
       U = Ur
+
+      time(niter) = real(t)
+      pct_detected_cell(niter) = real(count_detected_cell_RK*100/(nf*lf),4)
+
       if ((mod(niter,1) == 0) .or.(niter == 1)) then
          if (abs(cfl_dt - dt) > 0.) then
             print*,'nstep = ', niter, '|time = ',t,'|(dt, cfl_dt)=', dt,cfl_dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          else
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
-         print*,' % of detected cell at the last iteration = ', real(count_detected_cell_RK*100/(nf*lf),4)
+         print*,' % of detected cell at the last iteration = ', pct_detected_cell(niter)
          if (space_method==NN_GP_MOOD) then 
             print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
          end if
@@ -184,6 +189,7 @@ program main
    print*,'Res time = ', tac - tic
 
    call write_output(niter)
+   call write_diagnostic()
 
 
 
