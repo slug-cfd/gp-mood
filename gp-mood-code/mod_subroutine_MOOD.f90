@@ -25,14 +25,12 @@ contains
 
       real, dimension(sz_sphere) :: q
 
-      integer :: l, n, i, j, count, k, ord_derr
+      integer :: l, n, i, j, k, ord_derr
 
       logical :: shock
 
       MOOD_finished = .true.
       decrease      = .false.
-
-      count = 0
 
       call Boundary_C(Uout)
 
@@ -152,7 +150,7 @@ contains
 
             if (decrease(l,n)) then
 
-               count = count + 1
+               count_detected_cell_RK = count_detected_cell_RK + 1
 
                MOOD_finished = .false.
 
@@ -183,8 +181,6 @@ contains
 
          end do
       end do
-
-      count_detected_cell = count_detected_cell + count
 
 
 

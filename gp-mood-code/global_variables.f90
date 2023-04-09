@@ -67,8 +67,8 @@ module global_variables
 
    real(PR)   , dimension(5,5), save :: gauss_weight
 
-   integer, save  :: niter,count_detectio
-   Real(PR), save :: count_detected_cell, count_detected_cell_RK, count_NN_PAD, count_NN_PAD_RK, count_NN_need_posteriori_correction
+   integer, save  :: niter, count_steps_NN_produced_NAN
+   Real(PR), save :: count_detected_cell_RK, count_NN_PAD_RK
 
    ! NN variables
 

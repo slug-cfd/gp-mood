@@ -16,12 +16,12 @@ module mod_FE
 
 contains
 
-   subroutine Forward_Euler(Uin, Uout, first)
+   subroutine Forward_Euler(Uin, Uout, first_RK_stage)
 
       real(PR), intent(inout)    , dimension(4,lb:le, nb:ne) :: Uin
       real(PR), intent(out)      , dimension(4,lb:le, nb:ne) :: Uout
 
-      logical, intent(in) :: first
+      logical, intent(in) :: first_RK_stage
 
       real(PR), dimension(4)                                 :: ul, ur, ut, ub
       real(PR), dimension(4,ngp)                             :: Flux_gauss
@@ -33,18 +33,27 @@ contains
 
       logical :: criterion_iter
 
-      count_detected_cell = 0
-      count_NN_PAD = 0
+      if (first_RK_stage) then 
+         count_detected_cell_RK = 0
+         count_NN_PAD_RK = 0
+      end if
+
       CellGPO   =  Mord
+
       if (space_method == NN_GP_MOOD) then
          call compute_CellGPO_with_NN(Uin)
       end if
+
       DetCell   = .true.
       DetFace_x = .true.
       DetFace_y = .true.
+
       MOOD_finished = .false.
+
       call Boundary_C(Uin)
+
       Uout = Uin
+
       do while (MOOD_finished .eqv. .false.)
 
             call Recons(Uin)
@@ -126,7 +135,7 @@ contains
                call NN_DETECTION(Uin,Uout)
 
                if (MOOD_finished .eqv. .false.) then
-                  count_NN_need_posteriori_correction=count_NN_need_posteriori_correction+1
+                  count_steps_NN_produced_NAN=count_steps_NN_produced_NAN+1
                end if
 
             else
@@ -137,7 +146,7 @@ contains
       
       criterion_iter=criterion_niter_f()
 
-      if ((first).and.(write_NN_dataset).and.(criterion_iter)) then
+      if ((first_RK_stage).and.(write_NN_dataset).and.(criterion_iter)) then
          call write_NN_datatset(Uin, CellGPO)
       end if
 

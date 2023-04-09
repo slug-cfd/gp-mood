@@ -114,6 +114,7 @@ program main
    call cpu_time (tic)
 
    niter = 0
+   count_steps_NN_produced_NAN = 0
 
    ! dump outout at t=0
    call write_output(niter)
@@ -146,11 +147,12 @@ program main
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
          print*,' % of detected cell at the last iteration = ', real(count_detected_cell_RK*100/(nf*lf),4)
-         !! DL -- dump outputs regularly, say, every 100 step
+         if (space_method==NN_GP_MOOD) then 
+            print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
+         end if
       end if
 
 
-      !print*,niter, mod(niter,100)
       ! dump output files based on the output frequency step
       if ((IO_freqStep > 0) .and. (mod(niter,IO_freqStep) == 0)) then
          print*,''

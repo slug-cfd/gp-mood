@@ -19,17 +19,13 @@ contains
 
       real(PR)                                        :: p
 
-      integer :: l, n, count, count_PAD
+      integer :: l, n
 
 
       MOOD_finished = .true.
       decrease      = .false.
 
-      count = 0
-      count_PAD = 0
-
       call Boundary_C(Uout)
-
 
       do n = 1, nf
          do l = 1, lf
@@ -68,8 +64,7 @@ contains
       do n = 1, nf
          do l = 1, lf
             if (decrease(l,n)) then
-               count = count + 1
-               count_PAD = count_PAD+1
+               count_NN_PAD_RK = count_NN_PAD_RK+1
 
                MOOD_finished = .false.
 
@@ -99,9 +94,6 @@ contains
             end IF
          end do
       end do
-
-      count_detected_cell = count_detected_cell + count
-      count_NN_PAD= count_NN_PAD + count_PAD
 
    end subroutine NN_DETECTION
 
