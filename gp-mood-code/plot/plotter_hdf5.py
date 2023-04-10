@@ -13,7 +13,12 @@ colmap='inferno'
 qqt   = np.array(f[var])
 
 fig, (axAR) = plt.subplots(1, 1)
-img = axAR.imshow(qqt, interpolation='none',cmap=colmap, extent=[0.5, -0.5, -0.5, 0.5])
+
+nx= qqt.shape[0]
+ny= qqt.shape[1]
+
+ratio = nx/ny
+img = axAR.imshow(qqt, interpolation='none',cmap=colmap, extent=[0.5, -0.5, -0.5*ratio, 0.5*ratio])
 axAR.set_title(var)
 ticks = np.linspace(qqt.min(), qqt.max(), 5, endpoint=True)
 axAR.invert_yaxis()

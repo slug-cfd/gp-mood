@@ -32,8 +32,8 @@ module parameters
    real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
    ! Mesh parameter
-   integer,  parameter :: lf = 256 ! Number of cell in the x direction
-   integer,  parameter :: nf = 256  ! Number of cell in the y direction
+   integer,  parameter :: lf = 512 ! Number of cell in the x direction
+   integer,  parameter :: nf = 128  ! Number of cell in the y direction
 
    !IC, BC and domain setup
    integer, parameter  :: problem = DMR
