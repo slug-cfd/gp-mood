@@ -99,4 +99,11 @@ module global_variables
    Real(4), dimension(nmax) :: time = -666
    Real(4), dimension(nmax) :: pct_detected_cell = -666
 
+   ! Metadata 
+
+   character(3)  :: CFL_char
+   character(10) :: problem_char
+   character(10) :: method_char
+   character(100) :: file
+
 end module

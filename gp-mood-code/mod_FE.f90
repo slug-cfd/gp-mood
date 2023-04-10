@@ -40,7 +40,7 @@ contains
 
       CellGPO   =  Mord
 
-      if (space_method == NN_GP_MOOD) then
+      if (method == NN_GP_MOOD) then
          call compute_CellGPO_with_NN(Uin)
       end if
 
@@ -126,11 +126,11 @@ contains
                end do
             end do
 
-            if ((space_method == GP_MOOD).or.(space_method == POL_MOOD)) then
+            if ((method == GP_MOOD).or.(method == POL_MOOD)) then
 
                call DETECTION(Uin,Uout)
 
-            else if (space_method == NN_GP_MOOD) then
+            else if (method == NN_GP_MOOD) then
 
                call NN_DETECTION(Uin,Uout)
 
@@ -150,7 +150,7 @@ contains
          call write_NN_datatset(Uin, CellGPO)
       end if
 
-      if ((time_method == SSP_RK4)) Uout = Uout - Uin
+      if ((integrator == SSP_RK4)) Uout = Uout - Uin
 
    end subroutine Forward_Euler
 

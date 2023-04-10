@@ -27,16 +27,16 @@ contains
       do n = nb, nf
          do l = lb, lf
 
-            if (IC_type == Sodx) then ! Lx = Ly= 1 = 0.2
+            if (problem == Sodx) then ! Lx = Ly= 1 = 0.2
                if (mesh_x(l) <  0.5) U(:,l,n) = primitive_to_conservative((/1.,0.,0.,1./))
                if (mesh_x(l) >= 0.5) U(:,l,n) = primitive_to_conservative((/0.125,0.,0.,0.1/))
 
-            elseif (IC_type == SlowShock) then ! LeVeque page 348
+            elseif (problem == SlowShock) then ! LeVeque page 348
                if (mesh_x(l) <  15.) U(:,l,n) = primitive_to_conservative((/5.6698, -1.4701, 0.0, 100.0/))
 !!$             if (mesh_x(l) >= 15.) U(:,l,n) = primitive_to_conservative((/1.0,    -10.5,   0.0, 1.0  /))
                if (mesh_x(l) >= 15.) U(:,l,n) = primitive_to_conservative((/1.0,    -2.315811,   0.0, 1.0  /))
 
-            else if (IC_type == Sod_rotated) then ! Lx = Ly= 2*sqrt(2) tmax = 0.2
+            else if (problem == Sod_rotated) then ! Lx = Ly= 2*sqrt(2) tmax = 0.2
 
                x_p = mesh_x(l)*cos(Pi/4) + mesh_y(n)*sin(Pi/4)
 
@@ -46,25 +46,25 @@ contains
                   U(:,l,n) = primitive_to_conservative((/0.125,0.,0.,0.1/))
                end if
 
-            else if (IC_type == Sody) then ! Lx = Ly= 1 = 0.2
+            else if (problem == Sody) then ! Lx = Ly= 1 = 0.2
                if (mesh_y(n) <  0.5) U(:,l,n) = primitive_to_conservative((/1.,0.,0.,1./))
                if (mesh_y(n) >= 0.5) U(:,l,n) = primitive_to_conservative((/0.125,0.,0.,0.1/))
 
 
-            else if (IC_type == Lax) then ! Lx = 2, t = 0.26
+            else if (problem == Lax) then ! Lx = 2, t = 0.26
                if (mesh_x(l) <  1.) U(:,l,n) = primitive_to_conservative((/0.445, 0.698, 0.,3.528/))
                if (mesh_x(l) >= 1.) U(:,l,n) = primitive_to_conservative((/0.5  ,     0.,0. , 0.571/))
 
-            else if (IC_type == Sodxy) then
+            else if (problem == Sodxy) then
                if (mesh_y(n) <   -mesh_x(l)+(sqrt(2.)-1)) U(:,l,n) = primitive_to_conservative((/1.,0.,0.,1./))
                if (mesh_y(n) >=  -mesh_x(l)+(sqrt(2.)-1)) U(:,l,n) = primitive_to_conservative((/0.125,0.,0.,0.1/))
 
 
-            else if (IC_type == Shu_Osher) then  !Lc = 9, tmax = 1.8
+            else if (problem == Shu_Osher) then  !Lc = 9, tmax = 1.8
                if (mesh_x(l)<= 0.5) U(:,l,n) = primitive_to_conservative((/3.857143_pr,2.629369_pr,0.,10.33333_pr/))
                if (mesh_x(l)>  0.5 ) U(:,l,n) = primitive_to_conservative((/1. + 0.2*sin(5*(mesh_x(l)-4.5_pr)),0.,0.,1./))
 
-            else if (IC_type == Shu_Osher_rotated) then ! Lx = Ly= 10*2*sqrt(2) tmax = 1.8
+            else if (problem == Shu_Osher_rotated) then ! Lx = Ly= 10*2*sqrt(2) tmax = 1.8
 
                x_p = mesh_x(l)*cos(Pi/4) + mesh_y(n)*sin(Pi/4)
 
@@ -79,19 +79,19 @@ contains
                end if
 
 
-            else if (IC_type == strong_raref) then !L=1 t = 0.15
+            else if (problem == strong_raref) then !L=1 t = 0.15
                if (mesh_x(l)<= 0.5) U(:,l,n) = primitive_to_conservative((/1.,-2.,0.,0.4/))
                if (mesh_x(l)> 0.5) U(:,l,n) = primitive_to_conservative((/1., 2.,0.,0.4/))
 
 
-            else if (IC_type == BLAST) then !L=1, refelxive t =0.038
+            else if (problem == BLAST) then !L=1, refelxive t =0.038
                if (mesh_x(l) >= 0.)  U(:,l,n) = primitive_to_conservative((/1.,0.,0.,1000./))
                if (mesh_x(l) >= 0.1) U(:,l,n) = primitive_to_conservative((/1.,0.,0.,0.1  /))
                if (mesh_x(l) >= 0.9) U(:,l,n) = primitive_to_conservative((/1.,0.,0.,100. /))
 
 
 
-            else if (IC_type == Lin_Gauss_x) then! Lx = Ly= 1
+            else if (problem == Lin_Gauss_x) then! Lx = Ly= 1
 
 
                xx = mesh_x(l)
@@ -105,7 +105,7 @@ contains
 
                U(:,l,n) = primitive_to_conservative((/int ,1.,0.,1./y/))
 
-            else if (IC_type == Lin_Gauss_y) then !Lx = Ly= 1 = tmax
+            else if (problem == Lin_Gauss_y) then !Lx = Ly= 1 = tmax
                r =  (mesh_y(n)-0.5)**2 + (mesh_x(l)-0.5)**2
 
                xx = mesh_x(l)
@@ -120,7 +120,7 @@ contains
                !U(:,l,n) = primitive_to_conservative((/1. + exp(-100*r) ,0.,1.,1./y/))
 
 
-            else if (IC_type == Lin_Gauss_xy) then
+            else if (problem == Lin_Gauss_xy) then
                r =  (mesh_x(l)-0.5)**2 + (mesh_y(n)-0.5)**2
                U(:,l,n) = primitive_to_conservative((/1. + exp(-100*r) ,1.,1.,1./y/))
                xx = mesh_x(l)
@@ -134,45 +134,45 @@ contains
                U(:,l,n) = primitive_to_conservative((/int ,1.,0.,1./y/))
                ! U(:,l,n) = primitive_to_conservative((/1. + exp(-100*r) ,1.,1.,1./y/))
 
-            else if (IC_type == implosion) then !t=2.5 Lx=Ly=0.3 ! reflective
+            else if (problem == implosion) then !t=2.5 Lx=Ly=0.3 ! reflective
                U(:,l,n) = f_implosion(mesh_x(l),mesh_y(n))
                !if (n>=l) U(:,l,n) = f_implosion(mesh_x(n),mesh_y(l))
 
-            else if (IC_type == explosion) then !t=2.5 Lx=Ly=0.3
+            else if (problem == explosion) then !t=2.5 Lx=Ly=0.3
                if (n<l ) U(:,l,n) = f_explosion(mesh_x(l),mesh_y(n))
                if (n>=l) U(:,l,n) = f_explosion(mesh_x(n),mesh_y(l))
 
-            else if (IC_type == RP_2D_3) then !t =0.3 Lx = Ly = 1
+            else if (problem == RP_2D_3) then !t =0.3 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_3(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == RP_2D_4) then !t =0.25 Lx = Ly = 1
+            else if (problem == RP_2D_4) then !t =0.25 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_4(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == RP_2D_6) then !t =0.3 Lx = Ly = 1
+            else if (problem == RP_2D_6) then !t =0.3 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_6(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == RP_2D_12) then !t =0.25 Lx = Ly = 1
+            else if (problem == RP_2D_12) then !t =0.25 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_12(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == RP_2D_15) then !t =0.2 Lx = Ly = 1
+            else if (problem == RP_2D_15) then !t =0.2 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == RP_2D_17) then !t =0.3 Lx = Ly = 1
+            else if (problem == RP_2D_17) then !t =0.3 Lx = Ly = 1
                U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == DMR) then !Lx = 4, Ly = 1 tmax =0.25
+            else if (problem == DMR) then !Lx = 4, Ly = 1 tmax =0.25
                U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == sedov) then !Lx = 1, Ly = 1, tmax = 0.05
+            else if (problem == sedov) then !Lx = 1, Ly = 1, tmax = 0.05
                U(:,l,n) = f_sedov(mesh_x(l),mesh_y(n))
 
-            else if (IC_type == Mach800 .or. IC_type == DoubleMach800) then ! DL -- added the Mach 800 jet problem
+            else if (problem == Mach800 .or. problem == DoubleMach800) then ! DL -- added the Mach 800 jet problem
 
-               if (IC_type == Mach800) then
+               if (problem == Mach800) then
                   !! default setup
                   slope_dens = 0.
                   dens_amb   = 14.
-               elseif (IC_type == DoubleMach800) then
+               elseif (problem == DoubleMach800) then
                   slope_dens = (0.14 - 14.)/Ly
                   dens_amb   = slope_dens * mesh_y(n) + 14.
                endif
@@ -182,13 +182,13 @@ contains
                ! DL -- this is a hack that seems to correct the height of the jet but I am not sure why;
                !    -- initialize the first interior cells with the jet profile
                if ((abs(mesh_x(l) - 0.5*Lx) .le. 0.05).and.(mesh_y(n) < dy)) then
-                  if (IC_type == Mach800) then
+                  if (problem == Mach800) then
                      U(:,l,n) = primitive_to_conservative((/1.4_PR , 0.0_PR, 800.0_PR, 1.0_PR/))
                   endif
                endif
 
 
-            else if (IC_type == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
+            else if (problem == RMI) then !Lx = 6, Ly = 1, tmax = 2.0
 
                sim_xangle = 135.
                sim_xangle = sim_xangle * 0.017453292519943295        ! Convert to radians.
@@ -201,7 +201,7 @@ contains
                U(:,l,n) = f_rmi(mesh_x(l), sim_shockPosn, sim_posn)
 
 
-            else if (IC_TYPE == KH) then
+            else if (problem == KH) then
                !r1 = (random_normal())*0.01
                !r2 = (random_normal())*0.01
 
@@ -213,7 +213,7 @@ contains
                   U(:,l,n) = primitive_to_conservative((/1., -0.5+r1, r2, 2.5/))
                end if
 
-            else  if (IC_type == isentropic_vortex) then
+            else  if (problem == isentropic_vortex) then
 !!$             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
                U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 0.5*Lx, 0.5*Ly, 0.)
             end if

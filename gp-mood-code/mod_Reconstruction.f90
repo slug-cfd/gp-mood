@@ -13,13 +13,13 @@ contains
 
       real(PR), intent(in) , dimension(4,lb:le, nb:ne) :: Uin
 
-      if (space_method == FOG    )  call FOG_    (Uin)
-      if (space_method == GP_SE  )  call GP_SE_  (Uin)
-      if (space_method == GP_MOOD)  call GP_MOOD_(Uin)
-      if (space_method == POL_MOOD) call POL_MOOD_(Uin)
-      if (space_method == Unlim_POL)call Unlim_POL_(Uin)
-      if (space_method == NN_GP_MOOD)  call GP_MOOD_(Uin)
-      if (space_method == eval_NN_GP_MOOD)  call GP_MOOD_(Uin)
+      if (method == FOG    )  call FOG_    (Uin)
+      if (method == GP_SE  )  call GP_SE_  (Uin)
+      if (method == GP_MOOD)  call GP_MOOD_(Uin)
+      if (method == POL_MOOD) call POL_MOOD_(Uin)
+      if (method == Unlim_POL)call Unlim_POL_(Uin)
+      if (method == NN_GP_MOOD)  call GP_MOOD_(Uin)
+      if (method == eval_NN_GP_MOOD)  call GP_MOOD_(Uin)
 
    end subroutine
 

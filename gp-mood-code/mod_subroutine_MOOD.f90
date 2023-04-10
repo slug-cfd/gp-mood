@@ -78,7 +78,7 @@ contains
 
                                        if ((i == 0).or.(j==0)) then
 
-                                          if (space_method == POL_MOOD) then
+                                          if (method == POL_MOOD) then
 
                                              D2x(i,j)  = dot_product(D2O2(:),Uin(rho, l+i-1:l+i+1, n+j))/dx**2
                                              D2y(i,j)  = dot_product(D2O2(:),Uin(rho, l+i, n+j-1:n+j+1))/dy**2

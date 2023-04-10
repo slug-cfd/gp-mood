@@ -37,29 +37,29 @@ program main
       print*, 'Boundary Condition   =','Double Mach reflection'
    end if
 
-   if ( space_method ==  FOG ) then
+   if ( method ==  FOG ) then
       print*, 'Space method         =', 'First order godunov'
-   else if(space_method == GP_SE) then
+   else if(method == GP_SE) then
       print*, 'Space method         =', 'Linear GP - Squared exponential kernel'
       print*, 'Radius               =', (Mord-1)/2
       print*, '\ell                 =', real(l_16,4)
       print*, '\ell/dx              =', real(l_16/dx_16,4)
       print*, 'stencil shape      =', 'sphere'
-   else if(space_method == GP_MOOD) then
+   else if(method == GP_MOOD) then
       print*, 'Space method         = ', 'GP MOOD - Squared exponential kernel'
       print*, 'Radius =', (Mord-1)/2
       print*, '\ell =', real(l_16,8)
       print*, 'stencil shape      =', 'sphere'
       print*, '\ell/dx              =', real(l_16/dx_16,4)
-   else if(space_method == Unlim_pol) then
+   else if(method == Unlim_pol) then
       print*, 'Space method         = ', 'Unlimited polynomial reconstruction'
       print*, 'Radius               =', (Mord-1)/2
       print*, 'stencil shape      =', 'sphere'
-   else if(space_method == POL_MOOD) then
+   else if(method == POL_MOOD) then
       print*, 'Space method         =', 'polynomial MOOD'
       print*, 'Radius =', (Mord-1)/2
       print*, 'stencil shape      =', 'sphere'
-   else if(space_method == NN_GP_MOOD) then
+   else if(method == NN_GP_MOOD) then
       print*, 'Space method         = ', 'NN GP MOOD - Squared exponential kernel'
       print*, 'Radius =', (Mord-1)/2
       print*, '\ell =', real(l_16,8)
@@ -67,7 +67,7 @@ program main
       print*, '\ell/dx              =', real(l_16/dx_16,4)
       print*, 'NN filename =', NN_filename
 
-   else if(space_method == eval_NN_GP_MOOD) then
+   else if(method == eval_NN_GP_MOOD) then
       print*, 'Space method         = ', 'eval_NN GP MOOD - Squared exponential kernel'
       print*, 'Radius =', (Mord-1)/2
       print*, '\ell =', real(l_16,8)
@@ -81,13 +81,13 @@ program main
 
    print*, ' Number au gaussian point per edge =', ngp
 
-   if ( time_method == FE ) then
+   if ( integrator == FE ) then
       print*, 'time method          =', 'Forward_Euler'
-   else if ( time_method == SSP_RK2 ) then
+   else if ( integrator == SSP_RK2 ) then
       print*, 'time method          = ', 'SSP_RK2'
-   else if ( time_method == SSP_RK3 ) then
+   else if ( integrator == SSP_RK3 ) then
       print*, 'time method          = ', 'SSP_RK3'
-   else if ( time_method == SSP_RK4 ) then
+   else if ( integrator == SSP_RK4 ) then
       print*, 'time method          = ', 'SSP_RK4'
    else
       print*, ' ERROR No time integrator detected'
@@ -98,9 +98,10 @@ program main
       print*, ' The time step is reduced to match 5th order'
    end if
 
-   print*, 'output directory:', file
+   call compute_metadata()
+   print*, 'outputs name', file
 
-   if ((space_method==NN_GP_MOOD).or.(space_method==eval_NN_GP_MOOD)) call load_NN(NN_filename)
+   if ((method==NN_GP_MOOD).or.(method==eval_NN_GP_MOOD)) call load_NN(NN_filename)
   
    call init_mesh()
    call GP_presim_sphere()
@@ -152,7 +153,7 @@ program main
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
          print*,' % of detected cell at the last iteration = ', pct_detected_cell(niter)
-         if (space_method==NN_GP_MOOD) then 
+         if (method==NN_GP_MOOD) then 
             print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
          end if
       end if
