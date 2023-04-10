@@ -230,10 +230,10 @@ contains
    function f_RP_2D_3(x,y)result(r)
       real(PR), intent(in) :: x, y
       real(PR),dimension(4):: r
-      if ((x<=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
-      if ((x>=0.5).and.(y<=0.5)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
-      if ((x<=0.5).and.(y>=0.5)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
-      if ((x>=0.5).and.(y>=0.5)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
+      if ((x<=0.8).and.(y<=0.8)) r = primitive_to_conservative((/0.138_PR , 1.206_PR , 1.206_PR  , 0.029_PR/))!BL
+      if ((x>=0.8).and.(y<=0.8)) r = primitive_to_conservative((/0.5323_PR, 0.0_PR   , 1.206_PR  , 0.3_PR/)) !BR
+      if ((x<=0.8).and.(y>=0.8)) r = primitive_to_conservative((/0.5323_PR, 1.206_PR , 0.0_PR    , 0.3_PR/)) !TL
+      if ((x>=0.8).and.(y>=0.8)) r = primitive_to_conservative((/1.5_PR   , 0.0_PR   , 0.0_PR    , 1.5_PR/)) !TR
    end function f_RP_2D_3
 
 

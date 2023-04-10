@@ -10,10 +10,9 @@ time = np.array(f['time'])
 pct_detected_cell = np.array(f['pct_detected_cell'])
 
 running_avg_pct_detected_cell = []
-n_avg=5
+n_avg=10
 for k in range (n_avg, np.size(time)):
-    print(k)
-    running_avg_pct_detected_cell.append(np.mean(pct_detected_cell[k-5:k]))
+    running_avg_pct_detected_cell.append(np.mean(pct_detected_cell[k-n_avg:k]))
 
 plt.plot(time,         pct_detected_cell, color='red', label='all iteration')
 plt.plot(time[n_avg:],running_avg_pct_detected_cell, color='blue', label='running avg')

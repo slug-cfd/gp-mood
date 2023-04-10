@@ -37,7 +37,7 @@ module parameters
 
    ! IC, BC and domain setup
    integer, parameter  :: problem = RP_2D_3
-   real(PR), parameter :: tmax = 0.3
+   real(PR), parameter :: tmax = 0.8
    integer, parameter  :: nmax = 999999 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
