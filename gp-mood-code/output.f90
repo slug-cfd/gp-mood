@@ -66,8 +66,9 @@ contains
       integer, intent(IN) :: fileNumb
       character(len=50) :: fileID
 
-      integer(hid_t) :: file_id, dataspace_id, dataset_id, attr_id
+      integer(hid_t) :: file_id, dataspace_id, dataset_id
       integer(hsize_t), dimension(2) :: dims
+
 
       integer :: status
 
@@ -112,6 +113,29 @@ contains
       call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, CellGPO(1:lf, 1:nf), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      ! Write metadata
+
+      ! CFL
+      dims=[len(trim(adjustl(CFL_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "CFL", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(CFL_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! problem
+      dims=[len(trim(adjustl(problem_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "problem", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(problem_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! method
+      dims=[len(trim(adjustl(method_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "method", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
       ! Close resources
       call h5fclose_f(file_id, status)
       call h5close_f(status)
@@ -154,6 +178,29 @@ contains
 
       call h5dcreate_f(file_id, "pct_detected_cell", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, pct_detected_cell(1:size), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! Write metadata
+
+      ! CFL
+      dims=[len(trim(adjustl(CFL_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "CFL", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(CFL_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! problem
+      dims=[len(trim(adjustl(problem_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "problem", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(problem_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! method
+      dims=[len(trim(adjustl(method_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "method", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
       call h5dclose_f(dataset_id, status)
 
       ! Close resources

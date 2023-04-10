@@ -3,6 +3,12 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
+def sum_char(input):
+    r=''
+    for char in input:
+        r=r+str(char)[-2]
+    return r
+
 file = sys.argv[1]
 var  = sys.argv[2]
 
@@ -11,6 +17,10 @@ f = h5py.File(file)
 colmap='inferno'
 
 qqt   = np.array(f[var])
+
+print(sum_char(f["CFL"][:]))
+print(sum_char(f["method"][:]))
+print(sum_char(f["problem"][:]))
 
 fig, (axAR) = plt.subplots(1, 1)
 
