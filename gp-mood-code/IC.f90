@@ -158,7 +158,7 @@ contains
                U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
 
             else if (problem == RP_2D_17) then !t =0.3 Lx = Ly = 1
-               U(:,l,n) = f_RP_2D_15(mesh_x(l),mesh_y(n))
+               U(:,l,n) = f_RP_2D_17(mesh_x(l),mesh_y(n))
 
             else if (problem == DMR) then !Lx = 4, Ly = 1 tmax =0.25
                U(:,l,n) = f_DMR(mesh_x(l),mesh_y(n))
