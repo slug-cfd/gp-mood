@@ -36,7 +36,7 @@ $(EXEC):  constants.o \
 	mesh_init.o  \
 	physics.o \
 	IC.o  \
-	mod_write_NN_dataset.o  \
+	mod_append_NN_dataset.o  \
 	mod_NN.o \
 	mod_HLLC.o \
 	mod_HLL.o \
