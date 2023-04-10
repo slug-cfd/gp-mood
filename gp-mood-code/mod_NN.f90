@@ -1,7 +1,7 @@
 module mod_NN
 
    use global_variables
-   use mod_write_NN_dataset
+   use mod_append_NN_dataset
    use constants
    use parameters
    use GP_init

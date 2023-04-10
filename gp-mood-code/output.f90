@@ -167,7 +167,7 @@ contains
       call h5open_f(status)
       call h5fcreate_f('diagnostic_'//trim(adjustl(file))//'_'//'.h5', H5F_ACC_TRUNC_F, file_id, status)
       
-      ! Create dataspace for datasets and 
+      ! Create dataspace for datasets
       dims = [size,1]
       call h5screate_simple_f(1, dims, dataspace_id, status)
 
@@ -213,6 +213,78 @@ contains
       print*,'======================================================================'
       print*,'   A new diag file has been written'
       print*,'   Output directory:', 'diagnostic_'//trim(adjustl(file))//'_'//'.h5'
+      print*,'======================================================================'
+      print*,''
+   end subroutine
+
+   subroutine write_NN_dataset_()
+
+
+      integer(hid_t) :: file_id, dataspace_id, dataset_id
+      integer(hsize_t), dimension(2) :: dims
+
+      integer :: status, size
+
+      size=0
+      do while ((labels(size,1) .ne. -666) .and. (size<=dataset_size) )
+         size=size+1
+      end do
+      size=size-1
+
+      print*,size
+
+      ! Create a new HDF5 file
+      call h5open_f(status)
+      call h5fcreate_f('dataset_'//trim(adjustl(file))//'_'//'.h5', H5F_ACC_TRUNC_F, file_id, status)
+
+       ! Create dataspace for labels
+      dims = [2,size]
+      call h5screate_simple_f(2, dims, dataspace_id, status)
+      !write and close labels
+      call h5dcreate_f(file_id, "labels", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, labels(1:size,1:2), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! Create dataspace for inputs
+      dims = [57,size]
+      call h5screate_simple_f(2, dims, dataspace_id, status)
+      !write and close inputs
+      call h5dcreate_f(file_id, "inputs", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, inputs(1:size,1:57), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! Write metadata
+
+      ! CFL
+      dims=[len(trim(adjustl(CFL_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "CFL", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(CFL_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! problem
+      dims=[len(trim(adjustl(problem_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "problem", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(problem_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! method
+      dims=[len(trim(adjustl(method_char))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "method", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! Close resources
+      call h5sclose_f(dataspace_id, status)
+      call h5fclose_f(file_id, status)
+      call h5close_f(status)
+
+      print*,''
+      print*,'======================================================================'
+      print*,'   A new dataset file has been written'
+      print*,'   Output directory:', 'dataset_'//trim(adjustl(file))//'_'//'.h5'
       print*,'======================================================================'
       print*,''
    end subroutine

@@ -1,4 +1,4 @@
-module mod_write_NN_dataset
+module mod_append_NN_dataset
    use constants
    use parameters
    use GP_init
@@ -7,32 +7,22 @@ module mod_write_NN_dataset
 
 contains
 
-   subroutine write_NN_datatset(Uin, CellGPO)
+   subroutine append_to_NN_datatset(Uin)
 
       real(PR),  intent(in), dimension(4,lb:le, nb:ne) :: Uin
-      integer ,  intent(in), dimension(lb:le, nb:ne)   :: CellGPO
 
       real(4), dimension(4,sz_sphere_p1) :: U_loc_flattened
       real(4) , dimension(57) :: formatted_input
 
-      character(len=7) :: test_case
-      character(len=3) :: CFL_string
+      real(4) :: rand_num
 
-      logical :: cst, exist
+
+      logical :: cst, skip_for_balanced_dataset
+
       integer :: n,l,j
 
-      test_case = file(18:18+7)
-      write(CFL_string, '(f3.1)') CFL
-
-      inquire(file="TD_"//test_case//"_CFL_"//CFL_string//".txt", exist=exist)
-      if (exist) then
-         open(10, file="TD_"//test_case//"_CFL_"//CFL_string//".txt", status="old", position="append", action="write")
-      else
-         open(10, file="TD_"//test_case//"_CFL_"//CFL_string//".txt", status="new", action="write")
-      end if
-
-      do n = nb+ngc, ne-ngc
-         do l = lb+ngc,le-ngc
+      do n =  1, nf
+         do l = 1, lf
 
             do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
                U_loc_flattened(:,j) = real( Uin(: ,l+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ), kind=4)
@@ -42,17 +32,50 @@ contains
 
             if ((cst .eqv. .true.).and.(CellGPO(l,n)==1)) then
                print*, 'weird'
+               stop
             end if
 
-            if (cst .eqv. .false.) then
-               write(10,"(57(e12.5,' '), i3)") formatted_input(:), (CellGPO(l,n)-1)/2
+            skip_for_balanced_dataset=.false.
+
+            if (CellGPO(l,n)==3) then 
+               if (freq_R0<freq_R0_target) then 
+                  skip_for_balanced_dataset=.true.
+               end if
+            end if
+
+            if (CellGPO(l,n)==1) then 
+               if (freq_R0>freq_R0_target) then 
+                  skip_for_balanced_dataset=.true.
+               end if
+            end if
+
+            if ((cst .eqv. .false.) .and. (skip_for_balanced_dataset .eqv. .false.)) then
+
+               inputs(index,:)=formatted_input(:)
+
+               if (CellGPO(l,n)==3) then 
+                  labels(index,:)=(/0.0,1.0/)
+                  NR1=NR1+1
+               else
+                  labels(index,:)=(/1.0,0.0/)
+                  NR0=NR0+1
+               end if
+
+               freq_R0=NR0*1.0/(NR0+NR1)
+               
+               index=index+1
+               if (index == dataset_size) then 
+                  index=1
+                  print*,"reached end of memory buffer. Starting overwriting ..."
+               end if
+
             end if
 
          end do
       end do
 
       close(10)
-   end subroutine write_NN_datatset
+   end subroutine append_to_NN_datatset
 
    subroutine format_input(U_loc_flattened, cst, formatted_input)
 
@@ -65,7 +88,7 @@ contains
       real(4) :: max, min
       integer :: j, var
 
-      formatted_input = -6665666
+      formatted_input = -666
 
       cst=.true.
 
@@ -126,8 +149,11 @@ contains
          nstep_at_max_CFL = 373
       else if (problem==Shu_Osher_rotated) then
          nstep_at_max_CFL = 81
+      else if (problem==explosion) then
+         nstep_at_max_CFL = 1000
       else
-         nstep_at_max_CFL=1000
+         print*,"error, add problem to problme list in mod_write_NN_dataset.f90"
+         stop
       end if
 
       nstep = nstep_at_max_CFL * int(0.8/CFL)
@@ -138,4 +164,4 @@ contains
 
    end function
 
-end module mod_write_NN_dataset
+end module mod_append_NN_dataset

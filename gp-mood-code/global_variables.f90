@@ -71,7 +71,6 @@ module global_variables
    Real(PR), save :: count_detected_cell_RK, count_NN_PAD_RK
 
    ! NN variables
-
    real(4), dimension(lenght, L     ) :: weight0=-6666666
    real(4), dimension(lenght, lenght) :: weight1=-6666666
    real(4), dimension(2     , lenght) :: weight2=-6666666
@@ -95,15 +94,22 @@ module global_variables
    integer, parameter :: up4 = up3 + size_weight2
    integer, parameter :: up5 = up4 + size_bias2
 
-   !  Diagnostic
+   !Diagnostic
    Real(4), dimension(nmax) :: time = -666
    Real(4), dimension(nmax) :: pct_detected_cell = -666
 
    ! Metadata 
-
    character(3)  :: CFL_char
    character(10) :: problem_char
    character(10) :: method_char
    character(100) :: file
+
+   !Training dataset
+   integer, parameter :: dataset_size = 50000
+   real(4), dimension(dataset_size, 57) :: inputs=-666
+   real(4), dimension(dataset_size,  2) :: labels=-666
+   real(4) :: NR0=0, NR1=0, freq_R0=0.5, freq_R0_target=0.5
+   integer :: index=1
+
 
 end module

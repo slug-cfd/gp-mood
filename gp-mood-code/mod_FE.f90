@@ -9,7 +9,7 @@ module mod_FE
    use mod_HLLC
    use mod_LLF
    use mod_HLL
-   use mod_write_NN_dataset
+   use mod_append_NN_dataset
    use mod_NN
 
    implicit none
@@ -147,7 +147,8 @@ contains
       criterion_iter=criterion_niter_f()
 
       if ((first_RK_stage).and.(write_NN_dataset).and.(criterion_iter)) then
-         call write_NN_datatset(Uin, CellGPO)
+      !if ((write_NN_dataset).and.(criterion_iter)) then
+         call append_to_NN_datatset(Uin)
       end if
 
       if ((integrator == SSP_RK4)) Uout = Uout - Uin

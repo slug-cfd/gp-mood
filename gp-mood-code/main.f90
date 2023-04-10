@@ -146,7 +146,7 @@ program main
       time(niter) = real(t)
       pct_detected_cell(niter) = real(count_detected_cell_RK*100/(nf*lf),4)
 
-      if ((mod(niter,1) == 0) .or.(niter == 1)) then
+      if ((mod(niter,10) == 0) .or.(niter == 1)) then
          if (abs(cfl_dt - dt) > 0.) then
             print*,'nstep = ', niter, '|time = ',t,'|(dt, cfl_dt)=', dt,cfl_dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          else
@@ -191,6 +191,9 @@ program main
 
    call write_output(niter)
    call write_diagnostic()
+   if (write_NN_dataset) then 
+      call write_NN_dataset_()
+   end if
 
 
 
