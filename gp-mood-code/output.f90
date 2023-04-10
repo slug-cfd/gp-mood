@@ -34,8 +34,11 @@ contains
          problem_char='shu_osher'
       else if(problem == DMR) then 
          problem_char='DMR'
+      else if(problem == explosion) then 
+         problem_char='explosion'
       else 
          print*, "Error, add problem to problem_char list in output.f90"
+         stop
       end if
 
       if (method == GP_MOOD) then 
@@ -48,6 +51,7 @@ contains
          method_char="FOG"
       else 
          print*, "Error, add method to method_char list in output.f90"
+         stop
       end if
 
       file = 'output_'//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))
