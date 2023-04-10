@@ -19,7 +19,7 @@ ny= qqt.shape[1]
 
 ratio = nx/ny
 img = axAR.imshow(qqt, interpolation='none',cmap=colmap, extent=[0.5, -0.5, -0.5*ratio, 0.5*ratio])
-axAR.set_title(var)
+axAR.set_title(file[:-3]+'_'+var)
 ticks = np.linspace(qqt.min(), qqt.max(), 5, endpoint=True)
 axAR.invert_yaxis()
 plt.colorbar(img,ticks=ticks, label=var)
