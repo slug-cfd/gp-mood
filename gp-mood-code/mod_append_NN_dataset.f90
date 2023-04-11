@@ -63,6 +63,7 @@ contains
                if (index == dataset_size) then 
                   index=1
                   print*,"reached end of memory buffer. Starting overwriting ..."
+                  n_overwrite=n_overwrite+1
                else
                   index=index+1
                end if

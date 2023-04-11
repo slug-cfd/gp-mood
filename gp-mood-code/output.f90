@@ -296,6 +296,19 @@ contains
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      !lf and nf
+      dims=[1,1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "lf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, lf, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "nf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, nf, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "n_overwrite", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, n_overwrite, dims, status)
+      call h5dclose_f(dataset_id, status)
+
       ! Close resources
       call h5sclose_f(dataspace_id, status)
       call h5fclose_f(file_id, status)
