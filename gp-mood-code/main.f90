@@ -143,7 +143,7 @@ program main
 
       U = Ur
 
-      time(niter) = real(t)
+      time(niter) = real(t,4)
       pct_detected_cell(niter) = real(count_detected_cell_RK*100/(nf*lf),4)
 
       if ((mod(niter,10) == 0) .or.(niter == 1)) then

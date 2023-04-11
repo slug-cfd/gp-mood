@@ -8,13 +8,9 @@
 FC = gfortran
 
 ## Choix des options de compilation ##
-#FFLAGS = -O0 -march=native
-#FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized -finit-real=snan -ffpe-trap="zero,overflow,invalid" -Wall -Wextra -pg
-#FFLAGS = -fdefault-real-8  -frecursive -ffree-line-length-none -g -O0 -fbacktrace -fcheck=all -Wuninitialized  -Wall
 
-#FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3 -Wall -Wextra -fbacktrace -fcheck=all -Wuninitialized
-#FFLAGS = -fdefault-real-8  -ffree-line-length-none -g -O3 -fbacktrace -fcheck=all -Wuninitialized -Wall -Wextra -pg
-FFLAGS = -fdefault-real-8  -ffree-line-length-none -O3 
+#FFLAGS = -fdefault-real-8  -frecursive -ffree-line-length-none -g -O3 -fbacktrace -fcheck=all -Wuninitialized -Wall -Wextra -pg
+FFLAGS = -fdefault-real-8  -frecursive -ffree-line-length-none -O3 
 
 FFLAGS += -I/usr/local/include
 LDFLAGS += -L/usr/local/opt/hdf5/lib -lhdf5_fortran

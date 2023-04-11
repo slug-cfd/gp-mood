@@ -48,17 +48,17 @@ contains
 
             if ((cst .eqv. .false.) .and. (skip_for_balanced_dataset .eqv. .false.)) then
 
-               inputs(index,:)=formatted_input(:)
+               inputs(index,1:57)=formatted_input(1:57)
 
                if (CellGPO(l,n)==3) then 
-                  labels(index,:)=(/0.0,1.0/)
+                  labels(index,1:2)=(/zero,one/)
                   NR1=NR1+1
                else
-                  labels(index,:)=(/1.0,0.0/)
+                  labels(index,1:2)=(/one,zero/)
                   NR0=NR0+1
                end if
 
-               freq_R0=NR0*1.0/(NR0+NR1)
+               freq_R0=NR0*one/(NR0+NR1)
                
                if (index == dataset_size) then 
                   index=1
@@ -128,7 +128,7 @@ contains
       logical :: criterion_iter
 
       if (problem==RP_2D_3) then
-         nstep_at_max_CFL = 600
+         nstep_at_max_CFL = 300
       else if (problem==RP_2D_4) then
          nstep_at_max_CFL = 201
       else if (problem==RP_2D_6) then

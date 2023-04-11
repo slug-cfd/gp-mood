@@ -20,6 +20,9 @@ contains
       logical :: cst
 
       real(4), dimension(2) :: r
+      real :: random_num
+
+      call random_seed()
 
       do n = 1, nf
          do l = 1, lf
@@ -43,6 +46,15 @@ contains
                   CellGPO(l,n)=3
                end if
             end if
+
+            ! call random_number(random_num)
+            
+            ! if (random_num<0.5) then 
+            !    CellGPO(l,n)=1
+            !    count_detected_cell_RK=count_detected_cell_RK+1
+            ! else
+            !    CellGPO(l,n)=3
+            ! end if
 
          end do
       end do

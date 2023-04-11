@@ -62,5 +62,5 @@ module constants
 
    ! Constant numbers
 
-   real(4), parameter :: one=Real(1.0,kind=4), two=Real(2.0,kind=4), half=Real(0.5,kind=4)
+   real(4), parameter :: one=Real(1.0,kind=4), two=Real(2.0,kind=4), half=Real(0.5,kind=4), zero=Real(0.0,kind=4)
 end module
