@@ -127,7 +127,7 @@ contains
       logical :: criterion_iter
 
       if (problem==RP_2D_3) then
-         nstep_at_max_CFL = 215
+         nstep_at_max_CFL = 600
          !nstep_at_max_CFL = 100
       else if (problem==RP_2D_4) then
          nstep_at_max_CFL = 201
@@ -148,7 +148,7 @@ contains
       else if (problem==Shu_Osher_rotated) then
          nstep_at_max_CFL = 81
       else if (problem==explosion) then
-         nstep_at_max_CFL = 1000
+         nstep_at_max_CFL = 1500
       else
          print*,"error, add problem to problme list in mod_write_NN_dataset.f90"
          stop

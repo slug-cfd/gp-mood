@@ -12,6 +12,11 @@ contains
 
    subroutine compute_metadata()
 
+      CHARACTER(LEN=10) :: lf_char, nf_char
+
+      WRITE(lf_char, '(I10)') lf
+      WRITE(nf_char, '(I10)') nf
+
       write(CFL_char, "(F3.1)") CFL
 
       if (problem == RP_2D_3 ) then 
@@ -54,10 +59,9 @@ contains
          stop
       end if
 
-      file = 'output_'//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))
+      file = 'output_'//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))//"_"//trim(adjustl(lf_char))//"_"//trim(adjustl(nf_char))
    end subroutine
       
-
    subroutine write_output(fileNumb)
 
       integer :: l,n
@@ -136,6 +140,16 @@ contains
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      !lf and nf
+      dims=[1,1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "lf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, lf, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "nf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, nf, dims, status)
+      call h5dclose_f(dataset_id, status)
+
       ! Close resources
       call h5fclose_f(file_id, status)
       call h5close_f(status)
@@ -149,7 +163,6 @@ contains
    end subroutine 
 
    subroutine write_diagnostic()
-
 
       integer(hid_t) :: file_id, dataspace_id, dataset_id
       integer(hsize_t), dimension(2) :: dims
@@ -203,6 +216,16 @@ contains
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      !lf and nf
+      dims=[1,1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "lf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, lf, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "nf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, nf, dims, status)
+      call h5dclose_f(dataset_id, status)
+
       ! Close resources
       call h5sclose_f(dataspace_id, status)
       call h5fclose_f(file_id, status)
@@ -251,10 +274,7 @@ contains
       call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, transpose(inputs(1:size,1:L)), dims, status)
       call h5dclose_f(dataset_id, status)
       ! Write metadata
-
-      print*,inputs(256,:)
-      print*,labels(256,:)
-
+      
       ! CFL
       dims=[len(trim(adjustl(CFL_char))),1]
       call h5screate_simple_f(1, dims, dataspace_id, status)
