@@ -101,7 +101,7 @@ module global_variables
    ! Metadata 
    character(3)  :: CFL_char
    character(10) :: problem_char
-   character(10) :: method_char
+   character(100) :: method_char
    character(100) :: file
 
    !Training dataset

@@ -101,7 +101,7 @@ program main
    call compute_metadata()
    print*, 'outputs name', file
 
-   if ((method==NN_GP_MOOD).or.(method==eval_NN_GP_MOOD)) call load_NN(NN_filename)
+   if ((method==NN_GP_MOOD).or.(method==eval_NN_GP_MOOD)) call load_NN()
   
    call init_mesh()
    call GP_presim_sphere()

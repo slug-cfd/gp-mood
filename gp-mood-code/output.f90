@@ -51,13 +51,14 @@ contains
       else if (method == POL_MOOD) then 
          method_char="POL_MOOD"
       else if (method == NN_GP_MOOD) then 
-         method_char="NN_GP_MOOD"
+         method_char="NN_GP_MOOD_"//trim(adjustl(NN_filename))
       else if (method == FOG) then 
          method_char="FOG"
       else 
          print*, "Error, add method to method_char list in output.f90"
          stop
       end if
+
 
       file = 'output_'//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))//"_"//trim(adjustl(lf_char))//"_"//trim(adjustl(nf_char))
    end subroutine
@@ -140,6 +141,13 @@ contains
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      ! NN_filename
+      dims=[len(trim(adjustl(NN_filename))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "NN_filename", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(NN_filename)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
       !lf and nf
       dims=[1,1]
       call h5screate_simple_f(1, dims, dataspace_id, status)
@@ -214,6 +222,13 @@ contains
       call h5screate_simple_f(1, dims, dataspace_id, status)
       call h5dcreate_f(file_id, "method", H5T_C_S1, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! NN_filename
+      dims=[len(trim(adjustl(NN_filename))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "NN_filename", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(NN_filename)), dims, status)
       call h5dclose_f(dataset_id, status)
 
       !lf and nf
@@ -294,6 +309,13 @@ contains
       call h5screate_simple_f(1, dims, dataspace_id, status)
       call h5dcreate_f(file_id, "method", H5T_C_S1, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(method_char)), dims, status)
+      call h5dclose_f(dataset_id, status)
+
+      ! NN_filename
+      dims=[len(trim(adjustl(NN_filename))),1]
+      call h5screate_simple_f(1, dims, dataspace_id, status)
+      call h5dcreate_f(file_id, "NN_filename", H5T_C_S1, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(NN_filename)), dims, status)
       call h5dclose_f(dataset_id, status)
 
       !lf and nf

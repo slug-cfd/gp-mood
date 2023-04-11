@@ -49,17 +49,14 @@ contains
 
    end subroutine
 
-   subroutine load_NN(filename)
-
-      character(len=100), intent(in) :: filename
-
+   subroutine load_NN()
       real(4), dimension(2) :: r
       real(4), dimension(L) :: x
 
       integer :: n,i,j
 
       ! Open the file for reading
-      open(10, file=adjustl(filename), status='old', action='read')
+      open(10, file=trim(adjustl(NN_filename))//'.txt', status='old', action='read')
 
       ! Read each line of the file and process the number
 
