@@ -178,7 +178,7 @@ contains
       
       ! Create a new HDF5 file
       call h5open_f(status)
-      call h5fcreate_f('diagnostic_'//trim(adjustl(file))//'_'//'.h5', H5F_ACC_TRUNC_F, file_id, status)
+      call h5fcreate_f('diagnostic_'//trim(adjustl(file))//'.h5', H5F_ACC_TRUNC_F, file_id, status)
       
       ! Create dataspace for datasets
       dims = [size,1]
@@ -256,7 +256,7 @@ contains
 
       ! Create a new HDF5 file
       call h5open_f(status)
-      call h5fcreate_f('dataset_'//trim(adjustl(file))//'_'//'.h5', H5F_ACC_TRUNC_F, file_id, status)
+      call h5fcreate_f('dataset_'//trim(adjustl(file))//'.h5', H5F_ACC_TRUNC_F, file_id, status)
 
        ! Create dataspace for labels
       dims = [2,size]
