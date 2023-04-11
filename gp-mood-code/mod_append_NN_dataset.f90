@@ -12,10 +12,7 @@ contains
       real(PR),  intent(in), dimension(4,lb:le, nb:ne) :: Uin
 
       real(4), dimension(4,sz_sphere_p1) :: U_loc_flattened
-      real(4) , dimension(57) :: formatted_input
-
-      real(4) :: rand_num
-
+      real(4) , dimension(L) :: formatted_input
 
       logical :: cst, skip_for_balanced_dataset
 
@@ -63,10 +60,11 @@ contains
 
                freq_R0=NR0*1.0/(NR0+NR1)
                
-               index=index+1
                if (index == dataset_size) then 
                   index=1
                   print*,"reached end of memory buffer. Starting overwriting ..."
+               else
+                  index=index+1
                end if
 
             end if
@@ -80,7 +78,7 @@ contains
    subroutine format_input(U_loc_flattened, cst, formatted_input)
 
       real(4), intent(inout), dimension(4,sz_sphere_p1) :: U_loc_flattened
-      real(4), intent(inout), dimension(57) :: formatted_input
+      real(4), intent(inout), dimension(L) :: formatted_input
       logical, intent(out) :: cst
 
       real(4), dimension(4) :: F
@@ -117,7 +115,7 @@ contains
       end do
 
       formatted_input(sz_sphere_p1*nbvar+1 : sz_sphere_p1*nbvar+nbvar) = F(:)
-      formatted_input(57) = real(CFL,kind=4)
+      formatted_input(L) = real(CFL,kind=4)
 
    end subroutine format_input
 

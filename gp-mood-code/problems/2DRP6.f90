@@ -20,7 +20,7 @@ module parameters
 
    ! NN variables
    logical :: write_NN_dataset=.false.
-   integer, parameter :: L=57
+   integer, parameter :: L=L
    integer, parameter :: lenght=60
    character(100) :: NN_filename=''
 

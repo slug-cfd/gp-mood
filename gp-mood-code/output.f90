@@ -231,8 +231,6 @@ contains
       end do
       size=size-1
 
-      print*,size
-
       ! Create a new HDF5 file
       call h5open_f(status)
       call h5fcreate_f('dataset_'//trim(adjustl(file))//'_'//'.h5', H5F_ACC_TRUNC_F, file_id, status)
@@ -242,18 +240,20 @@ contains
       call h5screate_simple_f(2, dims, dataspace_id, status)
       !write and close labels
       call h5dcreate_f(file_id, "labels", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, labels(1:size,1:2), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, transpose(labels(1:size,1:2)), dims, status)
       call h5dclose_f(dataset_id, status)
 
       ! Create dataspace for inputs
-      dims = [57,size]
+      dims = [L,size]
       call h5screate_simple_f(2, dims, dataspace_id, status)
       !write and close inputs
       call h5dcreate_f(file_id, "inputs", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, inputs(1:size,1:57), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, transpose(inputs(1:size,1:L)), dims, status)
       call h5dclose_f(dataset_id, status)
-
       ! Write metadata
+
+      print*,inputs(256,:)
+      print*,labels(256,:)
 
       ! CFL
       dims=[len(trim(adjustl(CFL_char))),1]

@@ -13,7 +13,7 @@ contains
    subroutine compute_CellGPO_with_NN(Uin)
 
       real(PR), dimension(4,lb:le, nb:ne ),intent(in) :: Uin
-      real(4) , dimension(57) :: x
+      real(4) , dimension(L) :: x
       real(4) , dimension(4,sz_sphere_p1) :: U_loc_flattened
 
       integer :: l, n,j

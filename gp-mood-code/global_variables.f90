@@ -106,10 +106,9 @@ module global_variables
 
    !Training dataset
    integer, parameter :: dataset_size = 50000
-   real(4), dimension(dataset_size, 57) :: inputs=-666
-   real(4), dimension(dataset_size,  2) :: labels=-666
+   real(4), dimension(dataset_size, L) :: inputs=-666
+   real(4), dimension(dataset_size, 2) :: labels=-666
    real(4) :: NR0=0, NR1=0, freq_R0=0.5, freq_R0_target=0.5
    integer :: index=1
-
 
 end module
