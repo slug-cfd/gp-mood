@@ -40,11 +40,11 @@ contains
                end if
             end if
 
-            if (CellGPO(l,n)==1) then 
-               if (freq_R0>freq_R0_target) then 
-                  skip_for_balanced_dataset=.true.
-               end if
-            end if
+            ! if (CellGPO(l,n)==1) then 
+            !    if (freq_R0>freq_R0_target) then 
+            !       skip_for_balanced_dataset=.true.
+            !    end if
+            ! end if
 
             if ((cst .eqv. .false.) .and. (skip_for_balanced_dataset .eqv. .false.)) then
 
@@ -129,7 +129,6 @@ contains
 
       if (problem==RP_2D_3) then
          nstep_at_max_CFL = 600
-         !nstep_at_max_CFL = 100
       else if (problem==RP_2D_4) then
          nstep_at_max_CFL = 201
       else if (problem==RP_2D_6) then
@@ -158,8 +157,20 @@ contains
       nstep = nstep_at_max_CFL * int(0.8/CFL)
       freq = nstep/noutput
 
-      !print*, freq
       criterion_iter=(mod(niter, freq)==0)
+
+      if ((problem == RP_2D_6)) then
+         if (count_detected_cell_RK>0) then 
+            criterion_iter=.true.
+         end if
+      end if
+
+      if( problem == implosion) then 
+         if ((t>1.0).and.(count_detected_cell_RK>0)) then 
+            criterion_iter=.true.
+         end if
+      end if
+
 
    end function
 
