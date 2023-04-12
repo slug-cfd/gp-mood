@@ -85,7 +85,7 @@ def plot_loss(epoch, lr, tr_loss, te_loss, length, model_name):
     ax2.set_yscale('log')
     ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:.16g}'.format(y)))
 
-    plt.title('L = ' + str(length))
+    plt.title('lenght = ' + str(length))
 
     plt.savefig('losses_'+model_name+'_epoch_L_' + str(length) + '.png', dpi=300)
     plt.clf()

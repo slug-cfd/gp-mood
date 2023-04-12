@@ -182,7 +182,7 @@ if __name__ == '__main__':
         plt.scatter(result[1], result[2], color='red' , label=hide+'training_loss')
         plt.scatter(result[1], result[3], color='blue', label=hide+'testing_loss')
 
-    plt.xlabel("lenght")
+    plt.xlabel("L")
     plt.ylabel("losses")
     plt.legend()
     plt.savefig('L_study.png')
