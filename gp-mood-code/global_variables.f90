@@ -71,20 +71,20 @@ module global_variables
    Real(PR), save :: count_detected_cell_RK, count_NN_PAD_RK
 
    ! NN variables
-   real(4), dimension(lenght, L     ) :: weight0=-6666666
-   real(4), dimension(lenght, lenght) :: weight1=-6666666
-   real(4), dimension(2     , lenght) :: weight2=-6666666
+   real(4), dimension(length, L     ) :: weight0=-6666666
+   real(4), dimension(length, length) :: weight1=-6666666
+   real(4), dimension(2     , length) :: weight2=-6666666
 
-   real(4), dimension(lenght, 1) :: bias0=-6666666
-   real(4), dimension(lenght, 1) :: bias1=-6666666
+   real(4), dimension(length, 1) :: bias0=-6666666
+   real(4), dimension(length, 1) :: bias1=-6666666
    real(4), dimension(2     , 1) :: bias2=-6666666
 
-   integer, parameter :: size_weight0 = lenght*L
-   integer, parameter :: size_weight1 = lenght*lenght
-   integer, parameter :: size_weight2 = 2*lenght
+   integer, parameter :: size_weight0 = length*L
+   integer, parameter :: size_weight1 = length*length
+   integer, parameter :: size_weight2 = 2*length
 
-   integer, parameter :: size_bias0 = lenght
-   integer, parameter :: size_bias1 = lenght
+   integer, parameter :: size_bias0 = length
+   integer, parameter :: size_bias1 = length
    integer, parameter :: size_bias2 = 2
 
    integer, parameter :: up0 = size_weight0

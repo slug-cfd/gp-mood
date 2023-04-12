@@ -243,8 +243,8 @@ contains
       real(4), dimension(L),intent(in) :: x
       real(4), dimension(2) :: r
 
-      real(4), dimension(lenght) :: x0
-      real(4), dimension(lenght) :: x1
+      real(4), dimension(length) :: x0
+      real(4), dimension(length) :: x1
 
 
       x0 = matmul(weight0, x) + bias0(:,1)

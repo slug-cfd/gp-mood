@@ -21,7 +21,7 @@ module parameters
    ! NN variables
    logical :: write_NN_dataset=.true.
    integer, parameter :: L=57
-   integer, parameter :: lenght=60
+   integer, parameter :: length=60
    character(100) :: NN_filename=''
 
    ! flux method
