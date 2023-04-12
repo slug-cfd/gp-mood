@@ -271,7 +271,7 @@ contains
       if (n_overwrite>=1) then 
          size=dataset_size
       else
-         do while ((labels(size,1) > -667))
+         do while ((labels(size,1) > -665))
             size=size+1
          end do
          size=size-1
