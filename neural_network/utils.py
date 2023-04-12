@@ -9,7 +9,6 @@ from torch.utils.data import DataLoader, random_split
 import random
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
-import pickle
 import matplotlib.ticker as ticker
 import math 
 import numpy as np
@@ -40,8 +39,17 @@ class MyDataset(Dataset):
 
         f = h5py.File(dataset_file_hdf5)
 
-        self.inputs = torch.from_numpy(np.array(f['inputs']))
-        self.labels = torch.from_numpy(np.array(f['labels']))
+        inputs_numpy = np.array(f['inputs'])
+        labels_numpy = np.array(f['labels'])
+
+        inputs_numpy_sorted, indices = np.unique(inputs_numpy, axis=0, return_index=True)
+        labels_numpy_sorted= labels_numpy[indices]
+
+        print(inputs_numpy.shape, inputs_numpy_sorted.shape, labels_numpy.shape, labels_numpy_sorted.shape)
+
+        self.inputs= torch.from_numpy(inputs_numpy_sorted)
+        self.labels= torch.from_numpy(labels_numpy_sorted)
+
 
     def __len__(self):
         return len(self.inputs)
