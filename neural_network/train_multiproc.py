@@ -128,8 +128,8 @@ def train(lenght, dataset_file, model_name):
             epoch_list.append(epoch)
             lr_list.append(lr)
 
-            with open('losses_'+model_name+'_epoch_L_'+str(lenght)+'.pkl', 'wb') as f:
-                pickle.dump((epoch_list, training_loss_list, testing_loss_list), f)
+            #with open('losses_'+model_name+'_epoch_L_'+str(lenght)+'.pkl', 'wb') as f:
+            #    pickle.dump((epoch_list, training_loss_list, testing_loss_list), f)
                 
             plot_loss(epoch_list, lr_list, training_loss_list, testing_loss_list, lenght, model_name)
         
@@ -157,7 +157,8 @@ if __name__ == '__main__':
     ncores=cpu_count(logical=False)
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(20,101,20)]
+    #param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(20,121,20)]
+    param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.6_256_256.h5', 'expert_2DRP3') for k in range(10,101,10)]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
