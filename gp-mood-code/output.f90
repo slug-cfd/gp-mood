@@ -267,11 +267,17 @@ contains
       integer :: status, size
 
       size=0
-      do while ((labels(size,1) .ne. -666) .and. (size<=dataset_size) )
-         size=size+1
-      end do
-      size=size-1
 
+      if (n_overwrite>=1) then 
+         size=dataset_size
+      else
+         do while ((labels(size,1) > -667))
+            size=size+1
+         end do
+         size=size-1
+      end if
+
+      print*,size
       ! Create a new HDF5 file
       call h5open_f(status)
       call h5fcreate_f('dataset_'//trim(adjustl(file))//'.h5', H5F_ACC_TRUNC_F, file_id, status)
