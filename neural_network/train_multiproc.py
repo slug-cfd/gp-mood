@@ -158,7 +158,7 @@ if __name__ == '__main__':
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
     #param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(20,121,20)]
-    param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.6_256_256.h5', 'expert_2DRP3') for k in range(10,101,10)]
+    param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(10,51,10)]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
