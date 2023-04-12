@@ -5,7 +5,7 @@ module parameters
 
    implicit none
 
-   real(PR), parameter :: CFL  =  0.8
+   real(PR), parameter :: CFL  =  0.6
    integer , parameter :: integrator    = SSP_RK3
    logical , parameter :: dt_reduction = .false.
 
