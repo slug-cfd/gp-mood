@@ -97,6 +97,7 @@ module global_variables
    !Diagnostic
    Real(4), dimension(nmax) :: time = -666
    Real(4), dimension(nmax) :: pct_detected_cell = -666
+   integer, dimension(nmax) :: steps_NN_produced_NAN = 0
 
    ! Metadata 
    character(3)  :: CFL_char

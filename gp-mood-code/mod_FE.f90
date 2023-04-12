@@ -135,6 +135,7 @@ contains
                call NN_DETECTION(Uin,Uout)
 
                if (MOOD_finished .eqv. .false.) then
+                  steps_NN_produced_NAN(niter) = 1
                   count_steps_NN_produced_NAN=count_steps_NN_produced_NAN+1
                end if
 
