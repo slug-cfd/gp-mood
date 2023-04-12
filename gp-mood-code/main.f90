@@ -97,6 +97,8 @@ program main
    if ( dt_reduction ) then
       print*, ' The time step is reduced to match 5th order'
    end if
+   
+   call random_seed()
 
    call compute_metadata()
    print*, 'outputs name', file

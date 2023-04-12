@@ -22,8 +22,6 @@ contains
       real(4), dimension(2) :: r
       real :: random_num
 
-      call random_seed()
-
       do n = 1, nf
          do l = 1, lf
 

@@ -16,6 +16,8 @@ contains
 
       logical :: cst, skip_for_balanced_dataset
 
+      real :: random_num
+
       integer :: n,l,j
 
       do n =  1, nf
@@ -35,9 +37,12 @@ contains
             skip_for_balanced_dataset=.false.
 
             if (CellGPO(l,n)==3) then 
-               if (freq_R0<freq_R0_target) then 
+               call random_number(random_num)
+
+               if (random_num>freq_R0) then 
                   skip_for_balanced_dataset=.true.
                end if
+
             end if
 
             ! if (CellGPO(l,n)==1) then 
@@ -72,6 +77,8 @@ contains
 
          end do
       end do
+
+      print*,freq_R0
 
       close(10)
    end subroutine append_to_NN_datatset
@@ -128,7 +135,7 @@ contains
       logical :: criterion_iter
 
       if (problem==RP_2D_3) then
-         nstep_at_max_CFL = 300
+         nstep_at_max_CFL = 600
       else if (problem==RP_2D_4) then
          nstep_at_max_CFL = 201
       else if (problem==RP_2D_6) then

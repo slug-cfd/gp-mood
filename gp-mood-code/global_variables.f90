@@ -105,10 +105,10 @@ module global_variables
    character(100) :: file
 
    !Training dataset
-   integer, parameter :: dataset_size = 300000
+   integer, parameter :: dataset_size = 400000
    real(4), dimension(dataset_size, L) :: inputs=-666
    real(4), dimension(dataset_size, 2) :: labels=-666
-   real(4) :: NR0=0, NR1=0, freq_R0=0.5, freq_R0_target=0.5
-   integer :: index=1, n_overwrite=0
+   real(4) :: freq_R0=0.5, freq_R0_target=0.5
+   integer :: index=1, n_overwrite=0,  NR0=0, NR1=0
 
 end module
