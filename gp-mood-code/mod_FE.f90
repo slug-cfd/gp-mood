@@ -40,7 +40,7 @@ contains
 
       CellGPO   =  Mord
 
-      if (method == NN_GP_MOOD) then
+      if ((method == NN_GP_MOOD).and.(niter>nsteps_with_no_NN)) then
          call compute_CellGPO_with_NN(Uin)
       end if
 
@@ -126,7 +126,7 @@ contains
                end do
             end do
 
-            if ((method == GP_MOOD).or.(method == POL_MOOD)) then
+            if ((method == GP_MOOD).or.(method == POL_MOOD).or.((method == NN_GP_MOOD).and.(niter<=nsteps_with_no_NN))) then
 
                call DETECTION(Uin,Uout)
 
@@ -148,7 +148,6 @@ contains
       criterion_iter=criterion_niter_f()
 
       if ((first_RK_stage).and.(write_NN_dataset).and.(criterion_iter)) then
-      !if ((write_NN_dataset).and.(criterion_iter)) then
          call append_to_NN_datatset(Uin)
       end if
 

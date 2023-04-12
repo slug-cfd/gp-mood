@@ -94,6 +94,8 @@ module global_variables
    integer, parameter :: up4 = up3 + size_weight2
    integer, parameter :: up5 = up4 + size_bias2
 
+   integer, parameter :: nsteps_with_no_NN=10
+
    !Diagnostic
    Real(4), dimension(nmax) :: time = -666
    Real(4), dimension(nmax) :: pct_detected_cell = -666
