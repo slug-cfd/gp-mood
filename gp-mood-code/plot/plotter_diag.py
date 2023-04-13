@@ -22,6 +22,7 @@ time = np.array(f['time'])
 pct_detected_cell = np.array(f['pct_detected_cell'])
 steps_NN_produced_NAN= np.array(f['steps_NN_produced_NAN'])
 count_steps_NN_produced_NAN= f['count_steps_NN_produced_NAN'][0]
+steps_NN_sample= np.array(f['steps_NN_sample'])
 
 #Compute running avg
 running_avg_pct_detected_cell = []
@@ -36,10 +37,22 @@ for k in range (0, np.size(time)):
 #List of iter where the NN created NAN
 L=[]
 time_L=[]
-for niter, step in enumerate(steps_NN_produced_NAN):
-    if (step==1):
-        L.append(running_avg_pct_detected_cell[niter])
-        time_L.append(time[niter])
+
+if sum_char(f["method"][0:10]) == "NN_GP_MOOD" :
+    color='red'
+    label='NAN states produced'
+    for niter, step in enumerate(steps_NN_produced_NAN):
+        if (step==1):
+            L.append(running_avg_pct_detected_cell[niter])
+            time_L.append(time[niter])
+elif sum_char(f["method"][0:10]) == "GP_MOOD" :
+    color='green'
+    label='dataset sampling'
+    for niter, step in enumerate(steps_NN_sample):
+        if (step==1):
+            L.append(running_avg_pct_detected_cell[niter])
+            time_L.append(time[niter])
+    print(steps_NN_sample)
 
 #Plot detected cells
 
@@ -47,9 +60,10 @@ for niter, step in enumerate(steps_NN_produced_NAN):
 plt.plot(time,running_avg_pct_detected_cell, color='blue', label='Running avg pct detected cell', zorder=0)
 
 #Plor iter where NN created NAN
-plt.scatter(time_L, L, color='red', marker='.', label='NAN states produced', zorder=1)
+
+plt.scatter(time_L, L, color=color, marker='.', label=label, zorder=1)
 for t in time_L:
-    plt.vlines(t, np.min(running_avg_pct_detected_cell), np.max(running_avg_pct_detected_cell), colors='red', linestyles='dotted', linewidth=0.5, zorder=-1)
+    plt.vlines(t, np.min(running_avg_pct_detected_cell), np.max(running_avg_pct_detected_cell), colors=color, linestyles='dotted', linewidth=0.5, zorder=-1)
 
 #axis legend
 plt.xlabel('time')

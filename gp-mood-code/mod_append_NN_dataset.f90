@@ -78,8 +78,6 @@ contains
          end do
       end do
 
-      print*,freq_R0
-
       close(10)
    end subroutine append_to_NN_datatset
 
@@ -151,7 +149,7 @@ contains
       else if (problem==implosion) then
          nstep_at_max_CFL = 5460
       else if (problem==sedov) then
-         nstep_at_max_CFL = 373
+         nstep_at_max_CFL = 200
       else if (problem==Shu_Osher_rotated) then
          nstep_at_max_CFL = 81
       else if (problem==explosion) then

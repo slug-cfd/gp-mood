@@ -148,6 +148,7 @@ contains
       criterion_iter=criterion_niter_f()
 
       if ((first_RK_stage).and.(write_NN_dataset).and.(criterion_iter)) then
+         steps_NN_sample(niter) = 1
          call append_to_NN_datatset(Uin)
       end if
 
