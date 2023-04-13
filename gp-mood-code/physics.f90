@@ -101,11 +101,13 @@ contains
             call c2p_local(Uin(:,l,n), vx, vy, vx2, vy2, pres, c)
 
 
-            if (dt_reduction)  then
-               dt = min(dt,  min( dx0/(abs(vx)+c), dy0/(abs(vy)+c) ))
-            else
-               dt = min(dt,  min( dx/(abs(vx)+c), dy/(abs(vy)+c) ))
-            end if
+            !if (dt_reduction)  then
+            !   dt = min(dt,  min( dx0/(abs(vx)+c), dy0/(abs(vy)+c) ))
+            !else
+            !   dt = min(dt,  min( dx/(abs(vx)+c), dy/(abs(vy)+c) ))
+            !end if
+
+            dt = min(dt,  1.0/( 1.0/(dx/(abs(vx)+c)) + 1.0/(dy/(abs(vy)+c)) ) ) 
 
          end do
       end do
