@@ -163,21 +163,13 @@ program main
 
       ! dump output files based on the output frequency step
       if ((IO_freqStep > 0) .and. (mod(niter,IO_freqStep) == 0)) then
-         print*,''
-         print*,'======================================================================'
-         print*,'   A new output has been written, file number=',niter
-         print*,'   Output directory:', file
-         print*,'======================================================================'
-         print*,''
          call write_output(niter)
-
       endif
 
       ! dump output files based on the output frequency time interval
       if (IO_freqTime > 0.) then
          if ((t     -real(IO_freqCounter)*IO_freqTime < 0.) .and. &
             (t+dt - real(IO_freqCounter)*IO_freqTime > 0.)) then
-
             IO_freqCounter = IO_freqCounter + 1
             call write_output(niter)
          endif
