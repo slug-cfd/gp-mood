@@ -60,7 +60,6 @@ tail=''
 if sum_char(f["method"][0:10]) == "NN_GP_MOOD" :
     n_RK=3
     pct=(100*count_steps_NN_produced_NAN)/(n_RK*niter)
-    print(pct)
     tail='\n count_steps_NN_produced_NAN='+str(count_steps_NN_produced_NAN)+' that is '+format(pct)+' % '
 plt.title(file[18:-3]+tail)
 
