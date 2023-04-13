@@ -18,9 +18,13 @@ colmap='inferno'
 
 qqt   = np.array(f[var])
 
-print(sum_char(f["CFL"][:]))
-print(sum_char(f["method"][:]))
-print(sum_char(f["problem"][:]))
+CFL=sum_char(f["CFL"][:])
+method=sum_char(f["method"][:])
+problem=sum_char(f["problem"][:])
+lf=str(f["lf"][0])
+nf=str(f["nf"][0])
+
+title="\n problem: "+problem+" "+"CFL="+CFL+" (lf,nf)=("+lf+","+nf+")\n"+"method: "+method+"\n var: "+var
 
 fig, (axAR) = plt.subplots(1, 1)
 
@@ -29,11 +33,10 @@ ny= qqt.shape[1]
 
 ratio = nx/ny
 img = axAR.imshow(qqt, interpolation='none',cmap=colmap, extent=[0.5, -0.5, -0.5*ratio, 0.5*ratio])
-axAR.set_title(file[:-3]+'_'+var)
 ticks = np.linspace(qqt.min(), qqt.max(), 5, endpoint=True)
 axAR.invert_yaxis()
 plt.colorbar(img,ticks=ticks, label=var)
-
-plt.savefig(file[:-3]+'_'+var+'.png',figsize=(4, 3), dpi=100)
+axAR.set_title(title, fontsize=10)
+plt.savefig(file[:-3]+'_'+var+'.png',figsize=(8, 6), dpi=100)
 fig.clf()
 plt.close()
