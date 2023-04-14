@@ -8,11 +8,7 @@ var  = sys.argv[2]
 
 f = h5py.File(file)
 
-colmap='inferno'
-
 qqt   = np.array(f[var])
-
-fig, (axAR) = plt.subplots(1, 1)
 
 nx= qqt.shape[0]
 ny= qqt.shape[1]
