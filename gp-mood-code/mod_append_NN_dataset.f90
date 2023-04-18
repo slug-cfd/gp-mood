@@ -20,8 +20,8 @@ contains
 
       integer :: n,l,j
 
-      do n =  1, nf
-         do l = 1, lf
+      do n =  -1, nf+2
+         do l = -1, lf+2
 
             do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
                U_loc_flattened(:,j) = real( Uin(: ,l+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ), kind=4)
