@@ -60,7 +60,7 @@ contains
       end if
 
 
-      file = 'output_'//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))//"_"//trim(adjustl(lf_char))//"_"//trim(adjustl(nf_char))
+      file = 'output_'//trim(adjustl(prefix))//trim(adjustl(problem_char))//"_"//trim(adjustl(method_char))//"_CFL_"//trim(adjustl(CFL_char))//"_"//trim(adjustl(lf_char))//"_"//trim(adjustl(nf_char))
    end subroutine
       
    subroutine write_output(fileNumb)

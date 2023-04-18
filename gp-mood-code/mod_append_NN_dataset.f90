@@ -145,7 +145,7 @@ contains
       else if (problem==RP_2D_17) then
          nstep_at_max_CFL = 195
       else if (problem==DMR) then
-         nstep_at_max_CFL = 828
+         nstep_at_max_CFL = 500
       else if (problem==implosion) then
          nstep_at_max_CFL = 5460
       else if (problem==sedov) then

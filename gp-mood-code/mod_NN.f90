@@ -35,8 +35,11 @@ contains
 
             if (cst) then
                CellGPO(l,n)=3
+               values_NN(l,n,:)=(/zero, one/)
             else
                r=forward(x)
+               values_NN(l,n,:)=(/r(1), r(2)/)
+
                if (r(1)>r(2)) then
                   CellGPO(l,n)=1
                   count_detected_cell_RK=count_detected_cell_RK+1
@@ -130,6 +133,21 @@ contains
       end do
 
    end subroutine sigmoid
+
+   subroutine softmax(x)
+
+      real(4), dimension(2), intent(inout) :: x
+      
+      real(4) :: denominator 
+
+      x(1)=exp(x(1))
+      x(2)=exp(x(2))
+
+      denominator = x(1)+x(2)
+
+      x(1)=x(1)/denominator
+      x(2)=x(2)/denominator
+  end subroutine
 
    ! subroutine eval_NN(first)
 
@@ -252,7 +270,7 @@ contains
       x1 = matmul(weight1, x0) + bias1(:,1)
       call sigmoid(x1)
       r = matmul(weight2, x1) + bias2(:,1)
-
+      !call softmax(r)
    end function forward
 
 end module mod_NN
