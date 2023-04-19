@@ -50,6 +50,8 @@ class MyDataset(Dataset):
         self.inputs= torch.from_numpy(inputs_numpy_sorted)
         self.labels= torch.from_numpy(labels_numpy_sorted)
 
+        #self.inputs= torch.from_numpy(np.array(f['inputs']))
+        #self.labels= torch.from_numpy(np.array(f['labels']))
 
     def __len__(self):
         return len(self.inputs)

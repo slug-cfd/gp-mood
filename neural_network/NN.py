@@ -2,12 +2,14 @@ from utils import *
 
 class radius_picker(nn.Module):
 
-    def __init__(self, max_radius, nb_layers, hidden_layer_sizes):
-        self.init_parameters = max_radius, nb_layers, hidden_layer_sizes
+    def __init__(self, max_radius, nb_layers, hidden_layer_sizes, softmax=False):
+        self.init_parameters = max_radius, nb_layers, hidden_layer_sizes, softmax
 
         super(radius_picker, self).__init__()
 
         self.max_radius=max_radius
+
+        self.softmax=softmax
 
         if (max_radius == 1):
             self.stencil_size = 13 #3rd order
@@ -55,8 +57,10 @@ class radius_picker(nn.Module):
                 if (verbose):
                     print(k_layer, "sigmoid")
 
-        return x
-    
+        if (self.softmax):
+            return torch.softmax(x,dim=1)
+        else:
+            return x
     def save(self, file='NN.pt'):
         torch.save(self.state_dict(), file)
 
