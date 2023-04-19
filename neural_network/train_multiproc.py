@@ -3,7 +3,13 @@ from multiprocessing import current_process
 from NN import *
 from psutil import cpu_count
 
-def train(lenght, dataset_file, model_name):
+if (len(sys.argv)<3):
+    print("ERROR, usage: python3.9 train_multiproc dataset model_name")
+    sys.exit()
+dataset_file=sys.argv[1]
+model_name=sys.argv[2]
+
+def train(lenght, dataset_file, model_name, softmax):
     #Training / Testing percentage ratio
     train_ratio=0.85
     #Batch size for training
@@ -46,7 +52,7 @@ def train(lenght, dataset_file, model_name):
     testing_loader  =  DataLoader(dataset=testing_set , batch_size=testing_size, shuffle=False)
 
     #Define the NN, loss function and optimize
-    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght])
+    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=softmax)
 
     loss_func = nn.MSELoss()  
     optimizer = optim.Adam(NN.parameters(), lr = lr0)
@@ -158,7 +164,7 @@ if __name__ == '__main__':
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
     #param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(20,121,20)]
-    param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(10,51,10)]
+    param_list=[(k, dataset_file, model_name, True) for k in range(10,51,10)]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
