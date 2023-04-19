@@ -52,6 +52,8 @@ contains
          method_char="POL_MOOD"
       else if (method == NN_GP_MOOD) then 
          method_char="NN_GP_MOOD_"//trim(adjustl(NN_filename))
+      else if (method == NN_GP_MOOD_CC) then 
+         method_char="NN_GP_MOOD_CC_"//trim(adjustl(NN_filename))
       else if (method == FOG) then 
          method_char="FOG"
       else 

@@ -96,7 +96,7 @@ module global_variables
 
    integer, parameter :: nsteps_with_no_NN=10
 
-   real(4), dimension(lf,nf,2) :: values_NN
+   real(4), dimension(-1:lf+2,-1:nf+2,2) :: values_NN
 
    !Diagnostic
    Real(4), dimension(nmax) :: time = -666

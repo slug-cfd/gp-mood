@@ -269,7 +269,7 @@ contains
       x1 = matmul(weight1, x0) + bias1(:,1)
       call sigmoid(x1)
       r = matmul(weight2, x1) + bias2(:,1)
-      !call softmax(r)
+      if (method==NN_GP_MOOD_CC) call softmax(r)
    end function forward
 
 end module mod_NN

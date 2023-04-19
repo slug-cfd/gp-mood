@@ -38,9 +38,12 @@ contains
          count_NN_PAD_RK = 0
       end if
 
+      values_NN(:,:,1)=zero
+      values_NN(:,:,2)=one
+
       CellGPO   =  Mord
 
-      if ((method == NN_GP_MOOD).and.(niter>nsteps_with_no_NN)) then
+      if (((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)).and.(niter>nsteps_with_no_NN)) then
          call compute_CellGPO_with_NN(Uin)
       end if
 
@@ -126,11 +129,11 @@ contains
                end do
             end do
 
-            if ((method == GP_MOOD).or.(method == POL_MOOD).or.((method == NN_GP_MOOD).and.(niter<=nsteps_with_no_NN))) then
+            if ((method == GP_MOOD).or.(method == POL_MOOD).or.(((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)).and.(niter<=nsteps_with_no_NN))) then
 
                call DETECTION(Uin,Uout)
 
-            else if (method == NN_GP_MOOD) then
+            else if ((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)) then
 
                call NN_DETECTION(Uin,Uout)
 

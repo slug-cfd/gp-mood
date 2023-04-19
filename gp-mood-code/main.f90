@@ -67,8 +67,8 @@ program main
       print*, '\ell/dx              =', real(l_16/dx_16,4)
       print*, 'NN filename =', NN_filename
 
-   else if(method == eval_NN_GP_MOOD) then
-      print*, 'Space method         = ', 'eval_NN GP MOOD - Squared exponential kernel'
+   else if(method == NN_GP_MOOD_CC) then
+      print*, 'Space method         = ', 'NN GP MOOD Convex Combination - Squared exponential kernel'
       print*, 'Radius =', (Mord-1)/2
       print*, '\ell =', real(l_16,8)
       print*, 'stencil shape      =', 'sphere'
@@ -102,8 +102,7 @@ program main
 
    call compute_metadata()
    print*, 'outputs name', file
-
-   if ((method==NN_GP_MOOD).or.(method==eval_NN_GP_MOOD)) call load_NN()
+   if ((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)) call load_NN()
   
    call init_mesh()
    call GP_presim_sphere()
@@ -155,7 +154,7 @@ program main
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
          print*,' % of detected cell at the last iteration = ', pct_detected_cell(niter)
-         if (method==NN_GP_MOOD) then 
+         if ((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC))then 
             print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
          end if
       end if

@@ -38,6 +38,7 @@ $(EXEC):  constants.o \
 	mod_HLL.o \
 	mod_LLF.o \
 	mod_GP_MOOD.o  \
+	mod_NN_GP_MOOD_CC.o  \
 	mod_GP_SE.o  \
 	mod_FOG.o \
 	mod_pol_MOOD.o \
