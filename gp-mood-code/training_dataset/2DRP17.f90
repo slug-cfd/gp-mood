@@ -20,7 +20,7 @@ module parameters
 
    ! NN variables
    logical :: write_NN_dataset=.true.
-   integer, parameter :: dataset_size = 500000 ! Leave at one for running simu / high number for generating dataset
+   integer, parameter :: dataset_size = 800000 ! Leave at one for running simu / high number for generating dataset
    integer, parameter :: L=57
    integer, parameter :: length=60
    character(100) :: NN_filename=''
