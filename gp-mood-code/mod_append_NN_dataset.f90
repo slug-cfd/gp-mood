@@ -160,7 +160,7 @@ contains
       end if
 
       nstep = nstep_at_max_CFL * int(0.8/CFL)
-      freq = nstep/noutput
+      freq = max(nstep/noutput,1) ! Avoid division by 0
 
       criterion_iter=(mod(niter, freq)==0)
 
