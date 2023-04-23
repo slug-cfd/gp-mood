@@ -3,10 +3,11 @@ import os
 
 #Load the NN
 
-lenght_list=range(10,51,10)
-#dataset = MyDataset('expert_shu_osher/dataset_output_shu_osher_GP_MOOD_CFL_0.8_256_256.h5')
-
-dataset = MyDataset('expert_sedov/more_sample/dataset_output_sedov_GP_MOOD_CFL_0.8_256_256.h5')
+lenght_list=range(10,101,10)
+#dataset = MyDataset('mixed_2DRP3_sedov_shu_osher.h5')
+#dataset = MyDataset('dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5')
+dataset = MyDataset('dataset_output_sedov_GP_MOOD_CFL_0.8_256_256.h5')
+#dataset = MyDataset('dataset_output_shu_osher_GP_MOOD_CFL_0.8_256_256.h5')
 
 size=int(len(dataset))
 dataset = DataLoader(dataset=dataset, batch_size=size, shuffle=False)
@@ -14,10 +15,7 @@ dataset = DataLoader(dataset=dataset, batch_size=size, shuffle=False)
 for lenght in lenght_list:
     NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=True)
 
-    #NN.load('model_expert_shu_osher_softmax_'+str(lenght)+'.pt')
-    #NN.load("expert_shu_osher/model_expert_shu_osher_"+str(lenght)+'.pt')
-   # NN.load("expert_sedov/more_sample/model_expert_sedov_"+str(lenght)+'.pt')
-    NN.load("model_expert_sedov_softmax_"+str(lenght)+'.pt')
+    NN.load("model_mixed_2DRP3_sedov_shu_osher_"+str(lenght)+'.pt')
 
     for batch_idx, (data, labels) in enumerate(dataset):
         outputs=NN.forward(data)
