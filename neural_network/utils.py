@@ -21,6 +21,12 @@ torch.set_default_dtype(torch.float32)
 def sign(x):
     return int(math.copysign(1,x))
 
+def sum_char(input):
+    r=''
+    for char in input:
+        r=r+str(char)[-2]
+    return r
+
 dir='../gp-mood-code/'
 
 class colors:
