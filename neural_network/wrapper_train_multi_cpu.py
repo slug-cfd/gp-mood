@@ -1,7 +1,4 @@
-import multiprocessing
-from multiprocessing import current_process
 from train_function import train
-from psutil import cpu_count
 from utils import *
 
 if (len(sys.argv)<3):
@@ -17,7 +14,6 @@ if __name__ == '__main__':
     ncores=cpu_count(logical=False)-1
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    #param_list=[(k, '../gp-mood-code/dataset_output_2DRP3_GP_MOOD_CFL_0.8_256_256.h5', 'expert_2DRP3') for k in range(20,121,20)]
     param_list=[(k, dataset_file, model_name, True) for k in range(10,101,10)]
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')

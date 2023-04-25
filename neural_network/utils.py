@@ -13,6 +13,8 @@ import matplotlib.ticker as ticker
 import math 
 import numpy as np
 import h5py
+from psutil import cpu_count
+import multiprocessing
 
 L=57
 nbvar=4
