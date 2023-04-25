@@ -16,7 +16,7 @@ def train(lenght, dataset_file, model_name, softmax):
     max_reduction=100
     max_epoch=99999
     #Stall criterion when the lr decreases
-    stall_criterion=3
+    stall_criterion=5
     #Geometrical progression of the learning rate
     k=np.power(lrend/lr0,1.0/max_reduction) 
 
@@ -114,9 +114,9 @@ def train(lenght, dataset_file, model_name, softmax):
             t_now=time.time()
             total_time=t_now-t_beg_training
             rest=total_time-t_epochs
-            print("Perf (epochs only  ): Time per epoch:", colors.green+format(t_epochs/epoch)  ,"s+colors.ENDC", "Mdatapoint per s:", colors.green+format(epoch*training_size/(t_epochs*10000))+colors.ENDC)
-            print("Perf (all includend): Time per epoch:", colors.green+format(total_time/epoch),"s+colors.ENDC", "Mdatapoint per s:", colors.green+format(epoch*training_size/(total_time*10000))+colors.ENDC)
-            #print("Total time:", colors.green+format(total_time/60), "mins"+colors.ENDC+". Epochs time:", colors.green+format(t_epochs/60),'mins'+colors.ENDC+':', colors.green+format(100*t_epochs/total_time), "%"+colors.ENDC+" Rest:", colors.green+format(rest),'mins'+colors.ENDC :', colors.green+format(100*rest/total_time), "%"+colors.ENDC\n")
+            print("Perf (epochs only  ): Time per epoch:", colors.green+format(t_epochs/epoch)  ,"s"+colors.ENDC, " Mdatapoint per s:", colors.green+format(epoch*training_size/(t_epochs*10000))+colors.ENDC)
+            print("Perf (all includend): Time per epoch:", colors.green+format(total_time/epoch),"s"+colors.ENDC, " Mdatapoint per s:", colors.green+format(epoch*training_size/(total_time*10000))+colors.ENDC)
+            print("Total time:", colors.green+format(total_time/60), "mins"+colors.ENDC+". Epochs time:", colors.green+format(t_epochs/60),'mins'+colors.ENDC+':', colors.green+format(100*t_epochs/total_time), "%"+colors.ENDC," Rest:", colors.green+format(rest/60),'mins'+colors.ENDC+':', colors.green+format(100*rest/total_time), "%"+colors.ENDC+'\n')
             #Update the learning rate
             lr=lr*k
             for g in optimizer.param_groups:
@@ -126,7 +126,7 @@ def train(lenght, dataset_file, model_name, softmax):
             nreduction+=1
         
         #Every 10 epoch, dump and plot  the losses and epoch lists
-        if ((epoch%3==0)and(epoch>1)):
+        if ((epoch%10==0)and(epoch>1)):
 
             #Compute testing error
             for i, (data, label) in enumerate(testing_loader):
@@ -166,16 +166,4 @@ def train(lenght, dataset_file, model_name, softmax):
     print("Reason:", reason)
 
     return model_name, lenght, training_loss_list[-1], testing_loss_list[-1]
-
-if __name__ == '__main__':
-
-    if (len(sys.argv)<3):
-        print("ERROR, usage: python3.9 train_multiproc dataset model_name")
-        sys.exit()
-    dataset_file=sys.argv[1]
-    model_name=sys.argv[2]
-
-    train(10, dataset_file, model_name, True)
-
-
 
