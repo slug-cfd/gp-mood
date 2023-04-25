@@ -150,7 +150,7 @@ contains
       call h5dwrite_f(dataset_id, H5T_C_S1, trim(adjustl(NN_filename)), dims, status)
       call h5dclose_f(dataset_id, status)
 
-      !lf and nf
+      !lf , nf, nstep and time
       dims=[1,1]
       call h5screate_simple_f(1, dims, dataspace_id, status)
       call h5dcreate_f(file_id, "lf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
@@ -158,6 +158,12 @@ contains
       call h5dclose_f(dataset_id, status)
       call h5dcreate_f(file_id, "nf", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, nf, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "niter", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, niter, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "time", H5T_NATIVE_DOUBLE, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_DOUBLE, t, dims, status)
       call h5dclose_f(dataset_id, status)
 
       ! Close resources

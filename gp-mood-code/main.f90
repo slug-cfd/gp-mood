@@ -8,7 +8,7 @@ program main
    use output
    use GP_init
    use mod_NN
-
+   use reader
 
    implicit none
 
@@ -118,6 +118,9 @@ program main
    niter = 0
    count_steps_NN_produced_NAN = 0
 
+   ! Restart
+   if (restart) call read()
+   
    ! dump outout at t=0
    call write_output(niter)
 
@@ -125,11 +128,9 @@ program main
 
    do while ((t .lt. tmax) .and. (niter .le. nmax) )
 
-
       niter = niter + 1
 
       dtfinal = tmax - t
-
 
       call Setdt(U)
 

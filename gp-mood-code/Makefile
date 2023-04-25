@@ -52,6 +52,7 @@ $(EXEC):  constants.o \
 	mod_SSP_RK3.o \
 	mod_SSP_RK4.o \
 	time_stepper.o \
+	reader.o \
 	output.o  \ \
 	main.o ## Liste des modules puis programmes à compiler ##
 	$(FC) -o $(EXEC) $^ $(LDFLAGS)

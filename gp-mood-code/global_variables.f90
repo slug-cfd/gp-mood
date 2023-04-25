@@ -116,4 +116,7 @@ module global_variables
    real(4) :: freq_R0=0.5, freq_R0_target=0.5
    integer :: index=1, n_overwrite=0,  NR0=0, NR1=0
 
+   logical , parameter :: dt_reduction = .false.
+
+
 end module
