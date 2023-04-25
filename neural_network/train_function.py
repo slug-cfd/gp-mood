@@ -1,8 +1,8 @@
 from NN import *
 
-def train(lenght, dataset_file, model_name, softmax):
+def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
             
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:'+str(gpu_id) if torch.cuda.is_available() else 'cpu')
 
     #Training / Testing percentage ratio
     train_ratio=0.85
