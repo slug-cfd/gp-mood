@@ -4,7 +4,7 @@ from NN import *
 file=sys.argv[1]
 lenght = int(file[-5:-3])
 print(lenght)
-NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght])
+NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=True)
 
 NN.load(file)
 
