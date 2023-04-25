@@ -64,8 +64,8 @@ contains
       do n = 1, nf
          do l = 1, lf
             if (decrease(l,n)) then
-               count_NN_PAD_RK = count_NN_PAD_RK+1
-
+               !count_NN_PAD_RK = count_NN_PAD_RK+1
+               !print*, values_NN(l,n,1), mesh_x(l),mesh_y(n)
                MOOD_finished = .false.
 
                if (CellGPO(l,n) == 3)  then
