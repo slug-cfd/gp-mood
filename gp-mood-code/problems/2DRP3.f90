@@ -7,7 +7,8 @@ module parameters
 
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: integrator    = SSP_RK3
-   logical , parameter :: dt_reduction = .false.
+   logical , parameter :: restart = .false.
+   character(100) :: restart_filename='.'
 
    integer, parameter :: method   = GP_MOOD
    real(16), parameter :: ell_o_dx = 12.0
