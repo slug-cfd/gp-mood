@@ -69,7 +69,7 @@ class MyDataset(Dataset):
 
 def format(x):
     """Format a double with one digit after the comma"""
-    return f"{x:.5f}"
+    return f"{x:.2f}"
 
 
 def plot_loss(epoch, lr, tr_loss, te_loss, length, model_name):

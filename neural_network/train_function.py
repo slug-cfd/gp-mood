@@ -3,7 +3,6 @@ from NN import *
 def train(lenght, dataset_file, model_name, softmax):
             
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    print(colors.HEADER+"CUDA AVAILABLE:", torch.cuda.is_available(), colors.ENDC)
 
     #Training / Testing percentage ratio
     train_ratio=0.85
@@ -27,15 +26,18 @@ def train(lenght, dataset_file, model_name, softmax):
     #define training and testing sizes
     training_size = int(len(dataset) * train_ratio)
     testing_size = len(dataset) - training_size
-    
-    print('DATASET FILE=', dataset_file)
-    print('model_name=', model_name)
-    print('DATASET SIZE=', len(dataset))
-    print('TRAINING SIZE=', training_size)
-    print('TESTING SIZE=', testing_size)
-    print('Batch size=',batch_size)
+    print("\n---------------------------------")
+    print("\n"+colors.HEADER+"CUDA AVAILABLE:", torch.cuda.is_available(), colors.ENDC+"\n")
+    print('DATASET FILE:', dataset_file)
+    print('model_name:', model_name)
+    print('DATASET SIZE:', len(dataset))
+    print('TRAINING SIZE:', training_size)
+    print('TESTING SIZE:', testing_size)
+    print('Batch size:',batch_size)
     nbatchs=int(training_size/batch_size)
-    print('nbatch=training size/batch_size=',nbatchs)
+    print('nbatch=training size/batch_size:',nbatchs)
+    print("---------------------------------\n")
+
 
     #define training and testing datasets
     training_set, testing_set = torch.utils.data.random_split(dataset, [training_size, testing_size])
@@ -66,10 +68,16 @@ def train(lenght, dataset_file, model_name, softmax):
     nreduction=0
     epoch=0
 
+    t_epochs=0
+
     #training loop
+    t_beg_training=time.time()
     while((max_reduction>nreduction)and(max_epoch>epoch)):
 
         #Do one epoch
+
+        t_beg_epoch=time.time()
+
         for batch_idx, (data, labels) in enumerate(batched_training_loader):
             #send data and labels to device 
             data=data.to(device)
@@ -86,6 +94,9 @@ def train(lenght, dataset_file, model_name, softmax):
             optimizer.step()
             #store batch error
             all_training_errors.append(loss)
+
+        t_end_epoch=time.time()
+        t_epochs+=t_end_epoch-t_beg_epoch
      
         #Running avg of loss
         running_training_loss=sum(all_training_errors[-nbatchs:])/nbatchs
@@ -99,10 +110,13 @@ def train(lenght, dataset_file, model_name, softmax):
 
         #If its stalling, reduce lr
         if (nstall == stall_criterion):
-            print("Lenght = ",colors.green+str(lenght)+colors.ENDC,'stalling, reducing lr from', format(lr), 'to', format(lr*k), "epoch=",str(epoch)+'/'+str(max_epoch), "nreduction=",str(nreduction+1)+'/'+str(max_reduction+1))
-            print("Last training error =", format(training_loss_list[-1]))
-            print("Last testing error =", format(testing_loss_list[-1]))
-
+            print("Lenght = ",colors.green+str(lenght)+colors.ENDC,'stalling, reducing lr:', format(lr), '->', format(lr*k), "epoch:",colors.green+str(epoch)+'/'+str(max_epoch)+colors.ENDC, "nreduction:",colors.green+str(nreduction+1)+'/'+str(max_reduction+1)+colors.ENDC)
+            t_now=time.time()
+            total_time=t_now-t_beg_training
+            rest=total_time-t_epochs
+            print("Time per epoch (epochs only  ):", format(t_epochs/epoch),"s" )
+            print("Time per epoch (all includend):", format(total_time/epoch),"s" )
+            print("Total time:", format(total_time/60), "Epochs time", format(t_epochs/60),'mins :', format(100*t_epochs/total_time), "%, Rest", format(rest),'mins :', format(100*rest/total_time), "%\n")
             #Update the learning rate
             lr=lr*k
             for g in optimizer.param_groups:
@@ -132,9 +146,6 @@ def train(lenght, dataset_file, model_name, softmax):
             testing_loss_list.append(testing_min_loss)
             epoch_list.append(epoch)
             lr_list.append(lr)
-
-            #with open('losses_'+model_name+'_epoch_L_'+str(lenght)+'.pkl', 'wb') as f:
-            #    pickle.dump((epoch_list, training_loss_list, testing_loss_list), f)
                 
             plot_loss(epoch_list, lr_list, training_loss_list, testing_loss_list, lenght, model_name)
         
