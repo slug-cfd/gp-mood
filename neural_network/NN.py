@@ -29,7 +29,6 @@ class radius_picker(nn.Module):
         self.layers=nn.ModuleList()
         self.nb_layers=nb_layers
     
-
         self.layers.append(  nn.Linear(self.input_size, hidden_layer_sizes[0])  )
 
         for k_layer in range(1,nb_layers-2):

@@ -15,7 +15,7 @@ import numpy as np
 import h5py
 from psutil import cpu_count
 import multiprocessing
-
+import time
 L=57
 nbvar=4
 torch.set_default_dtype(torch.float32) 
@@ -52,8 +52,8 @@ class MyDataset(Dataset):
 
         inputs_numpy_sorted, indices = np.unique(inputs_numpy, axis=0, return_index=True)
         labels_numpy_sorted= labels_numpy[indices]
-
-        print(inputs_numpy.shape, inputs_numpy_sorted.shape, labels_numpy.shape, labels_numpy_sorted.shape)
+        print("\n"+colors.HEADER+"Dataset trimming:"+colors.ENDC)
+        print(inputs_numpy.shape,"->", inputs_numpy_sorted.shape, labels_numpy.shape,"->", labels_numpy_sorted.shape)
 
         self.inputs= torch.from_numpy(inputs_numpy_sorted)
         self.labels= torch.from_numpy(labels_numpy_sorted)
