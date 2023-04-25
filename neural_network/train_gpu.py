@@ -73,7 +73,7 @@ def train(lenght, dataset_file, model_name, softmax):
         for batch_idx, (data, labels) in enumerate(batched_training_loader):
             #send data and labels to device 
             data=data.to(device)
-            labels=labels.to(labels)
+            labels=labels.to(device)
             #Zero gradients
             optimizer.zero_grad()
             #Compute output
