@@ -114,9 +114,9 @@ def train(lenght, dataset_file, model_name, softmax):
             t_now=time.time()
             total_time=t_now-t_beg_training
             rest=total_time-t_epochs
-            print("Time per epoch (epochs only  ):", format(t_epochs/epoch),"s" )
-            print("Time per epoch (all includend):", format(total_time/epoch),"s" )
-            print("Total time:", format(total_time/60), "Epochs time", format(t_epochs/60),'mins :', format(100*t_epochs/total_time), "%, Rest", format(rest),'mins :', format(100*rest/total_time), "%\n")
+            print("Perf (epochs only  ): Time per epoch:", colors.green+format(t_epochs/epoch)  ,"s+colors.ENDC", "Mdatapoint per s:", colors.green+format(epoch*training_size/(t_epochs*10000))+colors.ENDC)
+            print("Perf (all includend): Time per epoch:", colors.green+format(total_time/epoch),"s+colors.ENDC", "Mdatapoint per s:", colors.green+format(epoch*training_size/(total_time*10000))+colors.ENDC)
+            #print("Total time:", colors.green+format(total_time/60), "mins"+colors.ENDC+". Epochs time:", colors.green+format(t_epochs/60),'mins'+colors.ENDC+':', colors.green+format(100*t_epochs/total_time), "%"+colors.ENDC+" Rest:", colors.green+format(rest),'mins'+colors.ENDC :', colors.green+format(100*rest/total_time), "%"+colors.ENDC\n")
             #Update the learning rate
             lr=lr*k
             for g in optimizer.param_groups:
