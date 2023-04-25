@@ -28,6 +28,8 @@ def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
     testing_size = len(dataset) - training_size
     print("\n---------------------------------")
     print("\n"+colors.HEADER+"CUDA AVAILABLE:", torch.cuda.is_available(), colors.ENDC+"\n")
+    print("Device:", device)
+    print("Hidden layers lenght:", lenght)
     print('DATASET FILE:', dataset_file)
     print('model_name:', model_name)
     print('DATASET SIZE:', len(dataset))
@@ -129,11 +131,13 @@ def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
         if ((epoch%10==0)and(epoch>1)):
 
             #Compute testing error
+            NN.train(mode=False)
             for i, (data, label) in enumerate(testing_loader):
                 data=data.to(device)
                 label=label.to(device)
                 output=NN.forward(data)
                 testing_loss = loss_func(output, label)
+            NN.train(mode=True)
 
             #if progress, save !
             if (training_loss.item()<training_min_loss):
