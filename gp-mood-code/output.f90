@@ -185,36 +185,35 @@ contains
 
       integer :: status, size
 
-      size=0
+      size=iter_0
       do while (time(size) .ne. -666)
          size=size+1
       end do
       size=size-1
 
-      
       ! Create a new HDF5 file
       call h5open_f(status)
       call h5fcreate_f('diagnostic_'//trim(adjustl(file))//'.h5', H5F_ACC_TRUNC_F, file_id, status)
       
       ! Create dataspace for datasets
-      dims = [size,1]
+      dims = [size-iter_0,1]
       call h5screate_simple_f(1, dims, dataspace_id, status)
 
       !write and close datasets
       call h5dcreate_f(file_id, "time", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, time(1:size), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, time(iter_0:size), dims, status)
       call h5dclose_f(dataset_id, status)
 
       call h5dcreate_f(file_id, "pct_detected_cell", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, pct_detected_cell(1:size), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, pct_detected_cell(iter_0:size), dims, status)
       call h5dclose_f(dataset_id, status)
 
       call h5dcreate_f(file_id, "steps_NN_produced_NAN", H5T_NATIVE_INTEGER , dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER , steps_NN_produced_NAN(1:size), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER , steps_NN_produced_NAN(iter_0:size), dims, status)
       call h5dclose_f(dataset_id, status)
 
       call h5dcreate_f(file_id, "steps_NN_sample", H5T_NATIVE_INTEGER , dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER , steps_NN_sample(1:size), dims, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER , steps_NN_sample(iter_0:size), dims, status)
       call h5dclose_f(dataset_id, status)
 
       ! Write metadata
@@ -374,7 +373,6 @@ contains
       print*,'======================================================================'
       print*,''
    end subroutine
-
 
    subroutine write_output_old(fileNumb)
 

@@ -120,9 +120,10 @@ program main
 
    ! Restart
    if (restart) call read()
+   iter_0=niter+1
    
    ! dump outout at t=0
-   call write_output(niter)
+   !call write_output(niter)
 
    dt_sim = dt
 
