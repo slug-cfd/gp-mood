@@ -107,6 +107,16 @@ module reader
             end do
         end do
 
+        if( niter >= nmax) then 
+            print*,"Error while reading: niter >= nmax"
+            stop 
+        end if
+
+        if( t >= tmax) then 
+            print*,"Error while reading: t >= tmax"
+            stop 
+        end if
+
         end subroutine
  
 
