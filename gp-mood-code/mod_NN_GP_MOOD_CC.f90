@@ -18,8 +18,6 @@ contains
       logical                     :: reconstruction, done
       integer                     :: ord
 
-      real(PR) :: prob_3 
-
       do n = 0, nf+1
          do l = 0, lf+1
 

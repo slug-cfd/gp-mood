@@ -119,8 +119,12 @@ program main
    count_steps_NN_produced_NAN = 0
 
    ! Restart
-   if (restart) call read()
-   iter_0=niter+1
+   if (restart) then
+      call read()
+      iter_0=niter+1
+   else
+      iter_0=1
+   end if
    
    ! dump outout at t=0
    !call write_output(niter)

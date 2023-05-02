@@ -99,10 +99,10 @@ module global_variables
    real(4), dimension(-1:lf+2,-1:nf+2,2) :: values_NN
 
    !Diagnostic
-   Real(4), dimension(nmax) :: time = -666
-   Real(4), dimension(nmax) :: pct_detected_cell = -666
-   integer, dimension(nmax) :: steps_NN_sample = 0
-   integer, dimension(nmax) :: steps_NN_produced_NAN = 0
+   Real(4), dimension(nmax+2) :: time = -666
+   Real(4), dimension(nmax+2) :: pct_detected_cell = -666
+   integer, dimension(nmax+2) :: steps_NN_sample = 0
+   integer, dimension(nmax+2) :: steps_NN_produced_NAN = 0
 
    ! Metadata 
    character(3)  :: CFL_char

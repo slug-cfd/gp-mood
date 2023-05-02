@@ -20,7 +20,6 @@ contains
       logical :: cst
 
       real(4), dimension(2) :: r
-      real :: random_num
 
       do n = 1, nf
          do l = 1, lf

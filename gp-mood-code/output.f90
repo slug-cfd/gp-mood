@@ -184,12 +184,13 @@ contains
       integer(hsize_t), dimension(2) :: dims
 
       integer :: status, size
-
+      
       size=iter_0
-      do while (time(size) .ne. -666)
+      do while (time(size) > -665)
          size=size+1
       end do
       size=size-1
+   
 
       ! Create a new HDF5 file
       call h5open_f(status)

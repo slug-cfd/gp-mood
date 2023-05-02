@@ -11,8 +11,8 @@ module reader
 
     subroutine read()
 
-        integer(hid_t) :: file_id, dset_id, space_id, memspace_id, datatype
-        integer :: rank=2, status, i, j,l,n
+        integer(hid_t) :: file_id, dset_id, space_id, memspace_id
+        integer :: rank=2, status,l,n
         integer(hsize_t), dimension(2) :: dims=(/lf, nf/)
         real(PR), dimension(4,1:lf,1:nf) :: Uprim
     
