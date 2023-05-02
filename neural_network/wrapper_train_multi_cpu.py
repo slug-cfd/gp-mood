@@ -1,12 +1,6 @@
 from train_function import train
 from utils import *
 
-if (len(sys.argv)<3):
-    print("ERROR, usage: python3.9 train_multiproc dataset model_name")
-    sys.exit()
-
-dataset_file=sys.argv[1]
-model_name=sys.argv[2]
 
 if __name__ == '__main__':
 
@@ -14,7 +8,12 @@ if __name__ == '__main__':
     ncores=cpu_count(logical=False)-1
     print(colors.HEADER+' == Initializing the hyperparameter study on'+colors.green, ncores, colors.HEADER+'cores =='+colors.ENDC)
     #List if NN lenght we want to study
-    param_list=[(k, dataset_file, model_name, True) for k in range(10,101,10)]
+    param_list=[]
+    param_list.append((10, "mixed_all_2DRP/try_2_all_dataset/mixed_all_2DRP.h5", "mixed_all_2DRP_CEL", "CEL"))
+    param_list.append((20, "mixed_all_2DRP/try_2_all_dataset/mixed_all_2DRP.h5", "mixed_all_2DRP_CEL", "CEL"))
+    param_list.append((30, "mixed_all_2DRP/try_2_all_dataset/mixed_all_2DRP.h5", "mixed_all_2DRP_CEL", "CEL"))
+    param_list.append((40, "mixed_all_2DRP/try_2_all_dataset/mixed_all_2DRP.h5", "mixed_all_2DRP_CEL", "CEL"))
+    param_list.append((50, "mixed_all_2DRP/try_2_all_dataset/mixed_all_2DRP.h5", "mixed_all_2DRP_CEL", "CEL"))
 
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 

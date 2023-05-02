@@ -1,6 +1,6 @@
 from NN import *
 
-def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
+def train(lenght, dataset_file, model_name, loss_func="CEL", gpu_id=0):
             
     device = torch.device('cuda:'+str(gpu_id) if torch.cuda.is_available() else 'cpu')
 
@@ -26,6 +26,23 @@ def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
     #define training and testing sizes
     training_size = int(len(dataset) * train_ratio)
     testing_size = len(dataset) - training_size
+
+    #Define the NN, loss function and optimize
+    if (loss_func=="MSE"):
+        softmax=True
+        loss_func=nn.MSELoss()
+    elif(loss_func == "CEL"):
+        softmax=False #CEL does softmax automatically
+        loss_func=nn.CrossEntropyLoss()
+    else:
+        print('error in softmax choice, train_function.py')
+        sys.exit()
+
+
+    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=softmax).to(device)
+ 
+    optimizer = optim.Adam(NN.parameters(), lr = lr0)
+
     print("\n---------------------------------")
     print("\n"+colors.HEADER+"CUDA AVAILABLE:", torch.cuda.is_available(), colors.ENDC+"\n")
     print("Device:", device)
@@ -38,6 +55,9 @@ def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
     print('Batch size:',batch_size)
     nbatchs=int(training_size/batch_size)
     print('nbatch=training size/batch_size:',nbatchs)
+    print("loss_func:", loss_func)
+    #print("optimizer:", optimizer)
+    print("softmax: ", softmax)
     print("---------------------------------\n")
 
 
@@ -49,12 +69,6 @@ def train(lenght, dataset_file, model_name, softmax, gpu_id=0):
 
     #Ordered datasets for evaluation
     testing_loader  =  DataLoader(dataset=testing_set , batch_size=testing_size, shuffle=False)
-
-    #Define the NN, loss function and optimize
-    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=softmax).to(device)
-
-    loss_func = nn.MSELoss()  
-    optimizer = optim.Adam(NN.parameters(), lr = lr0)
 
     training_loss_list=[]
     testing_loss_list=[]
