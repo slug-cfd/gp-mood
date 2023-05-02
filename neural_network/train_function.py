@@ -1,6 +1,6 @@
 from NN import *
 
-def train(lenght, dataset_file, model_name, loss_func="CEL", gpu_id=0):
+def train(lenght, dataset_file, model_name, loss_func="CEL", dropout =0, gpu_id=0):
             
     device = torch.device('cuda:'+str(gpu_id) if torch.cuda.is_available() else 'cpu')
 
@@ -39,7 +39,7 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", gpu_id=0):
         sys.exit()
 
 
-    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=softmax).to(device)
+    NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=softmax, dropout=dropout).to(device)
  
     optimizer = optim.Adam(NN.parameters(), lr = lr0)
 
@@ -58,6 +58,7 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", gpu_id=0):
     print("loss_func:", loss_func)
     #print("optimizer:", optimizer)
     print("softmax: ", softmax)
+    print("dropout:", dropout)
     print("---------------------------------\n")
 
 

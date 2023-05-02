@@ -2,7 +2,7 @@ from utils import *
 
 class radius_picker(nn.Module):
 
-    def __init__(self, max_radius, nb_layers, hidden_layer_sizes, softmax=False):
+    def __init__(self, max_radius, nb_layers, hidden_layer_sizes, softmax=False, dropout=0):
         self.init_parameters = max_radius, nb_layers, hidden_layer_sizes, softmax
 
         super(radius_picker, self).__init__()
@@ -37,6 +37,9 @@ class radius_picker(nn.Module):
 
         self.layers.append(  nn.Linear(hidden_layer_sizes[-1], self.output_size)  )
 
+        # Define proportion or neurons to dropout
+        self.dropout = nn.Dropout(dropout)
+
     def forward(self, x, verbose=False): 
     #Feed forward function
         for k_layer,layer in enumerate(self.layers):
@@ -44,7 +47,9 @@ class radius_picker(nn.Module):
             #layer evaluation
             if (verbose):
                 print(k_layer,"input_size = ",x.shape)
+
             x=layer(x) 
+            x=self.dropout(x)
 
             if (verbose):
                 print(k_layer,"output_size = ",x.shape)
@@ -60,6 +65,7 @@ class radius_picker(nn.Module):
             return torch.softmax(x,dim=1)
         else:
             return x
+        
     def save(self, file='NN.pt'):
         torch.save(self.state_dict(), file)
 
