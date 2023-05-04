@@ -276,13 +276,12 @@ contains
 
    subroutine write_NN_dataset_()
 
-
       integer(hid_t) :: file_id, dataspace_id, dataset_id
       integer(hsize_t), dimension(2) :: dims
 
       integer :: status, size
 
-      size=0
+      size=1
 
       if (n_overwrite>=1) then 
          size=dataset_size
