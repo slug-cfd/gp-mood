@@ -42,3 +42,9 @@ fig.clf()
 plt.close()
 err='{:.3E}'.format(np.sum(np.abs(qqt-qqt.transpose()))/(nx*ny))
 print('*----------'+var+' '+method+' '+err+'---------*')
+
+with open("results_"+problem+".txt", "a") as myfile:
+
+    myfile.write(method+" "+str(err)+"\n")
+
+myfile.close()

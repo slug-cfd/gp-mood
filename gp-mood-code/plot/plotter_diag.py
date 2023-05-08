@@ -23,6 +23,7 @@ pct_detected_cell = np.array(f['pct_detected_cell'])
 steps_NN_produced_NAN= np.array(f['steps_NN_produced_NAN'])
 count_steps_NN_produced_NAN= f['count_steps_NN_produced_NAN'][0]
 steps_NN_sample= np.array(f['steps_NN_sample'])
+problem = f['problem']
 
 #Compute running avg
 running_avg_pct_detected_cell = []
@@ -82,3 +83,12 @@ plt.savefig(file[:-3]+'.png', dpi=100)
 plt.close()
 
 print(file[:-3]," ",format(pct))
+
+#Open the file "results.txt" and write the results
+with open("results_"+sum_char(problem)+".txt", "a") as myfile:
+
+    myfile.write(sum_char(f["method"])+" "+str(count_steps_NN_produced_NAN)+"\n")
+
+myfile.close()
+
+
