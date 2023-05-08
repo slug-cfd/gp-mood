@@ -176,6 +176,7 @@ contains
          end if
       end if
 
+      criterion_iter=.true. ! Forcing to write at each time step, ONLY FOR ONLINE LEARNING
 
    end function
 
