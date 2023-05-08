@@ -5,7 +5,7 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", dropout =0, gpu_id=
     device = torch.device('cuda:'+str(gpu_id) if torch.cuda.is_available() else 'cpu')
 
     #Training / Testing percentage ratio
-    train_ratio=0.85
+    train_ratio=0.99
     #Batch size for training
     batch_size=1024
     #Initial learning
