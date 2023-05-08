@@ -33,7 +33,7 @@ for file in file_list:
     slice_qqt=np.zeros(nx)
 
     for i in range(nx):
-        slice_qqt[i]=qqt[128,i]
+        slice_qqt[i]=qqt[i,i]
 
     plt.plot(slice_qqt, label=method)
 

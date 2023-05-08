@@ -78,5 +78,7 @@ if sum_char(f["method"][0:10]) == "NN_GP_MOOD" :
 plt.title(file[18:-3]+tail)
 
 plt.legend()
-plt.savefig(file[:-3]+'.png',figsize=(8, 6), dpi=100)
+plt.savefig(file[:-3]+'.png', dpi=100)
 plt.close()
+
+print(file[:-3]," ",format(pct))
