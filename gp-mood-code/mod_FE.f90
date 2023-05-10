@@ -9,6 +9,7 @@ module mod_FE
    use mod_HLLC
    use mod_LLF
    use mod_HLL
+   use mod_unsplit
    use mod_append_NN_dataset
    use mod_NN
 
@@ -76,6 +77,8 @@ contains
                            Flux_gauss(rho:ener,j) =  LLF_Flux(ul,ur,dir_x)
                         elseif (numFlux == HLL) then
                            Flux_gauss(rho:ener,j) =  HLL_Flux(ul,ur,dir_x)
+                        elseif (numFlux == unsplit) then
+                           Flux_gauss(rho:ener,j) =  unsplit_Flux(ul,ur,dir_x)
                         endif
 
                      end do
@@ -106,6 +109,8 @@ contains
                            Flux_gauss(rho:ener,j) =  LLF_Flux(ub,ut,dir_y)
                         elseif (numFlux == HLL) then
                            Flux_gauss(rho:ener,j) =  HLL_Flux(ub,ut,dir_y)
+                        elseif (numFlux == unsplit) then
+                           Flux_gauss(rho:ener,j) =  unsplit_Flux(ub,ut,dir_y)
                         endif
 
                      end do
