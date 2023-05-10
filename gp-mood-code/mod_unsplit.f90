@@ -20,7 +20,7 @@ module mod_unsplit
        !============= Output(s) =============!
        real(PR), dimension(4)                :: F
 
-       Real(PR) :: vx_L, vx_R, vy_L, vy_R, p_L, p_R, c_L, c_R, a, pistar, ustar
+       Real(PR) :: vx_L, vx_R, vy_L, vy_R, p_L, p_R, c_L, c_R, a, pistar, ustar, trans_diff
        Real(PR) :: no
 
        logical :: adm
@@ -36,9 +36,11 @@ module mod_unsplit
        if (dir==dir_x) then
          pistar = 0.5*(p_L+p_R) - 0.5*a*(vx_R-vx_L)
          ustar  = 0.5*(vx_L+vx_R) - 0.5*(p_R-p_L)/a
+         trans_diff = -0.5*a*(vy_R-vy_L)
        else
          pistar = 0.5*(p_L+p_R) - 0.5*a*(vy_R-vy_L)
          ustar  = 0.5*(vy_L+vy_R) - 0.5*(p_R-p_L)/a
+         trans_diff = -0.5*a*(vx_R-vx_L)
        end if
 
   
@@ -53,10 +55,13 @@ module mod_unsplit
 
          if (dir==dir_x) then
            F(momx) = F(momx) + pistar
+           F(momy) = F(momy) + trans_diff
+
          else
            F(momy) = F(momy) + pistar
+           F(momx) = F(momx) + trans_diff
          end if
-         
+
          F(ener) = F(ener) + pistar*ustar
  
        else
