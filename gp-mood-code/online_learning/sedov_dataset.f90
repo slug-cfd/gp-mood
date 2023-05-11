@@ -22,12 +22,12 @@ module parameters
    ! NN variables
    logical :: write_NN_dataset=.true.
    integer, parameter :: dataset_size = 400000 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57
-   integer, parameter :: length=20
+   integer, parameter :: L=57-5
+   integer, parameter :: length=5
    character(100) :: NN_filename=''
 
    ! flux method
-   integer, parameter :: numFlux = HLLC
+   integer, parameter :: numFlux = unsplit
 
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
@@ -40,7 +40,7 @@ module parameters
    ! IC, BC and domain setup
    integer, parameter  :: problem = sedov
    real(PR), parameter :: tmax = 0.05
-   integer, parameter  :: nmax = 74 ! put a large number if want to finish based on tmax only
+   integer, parameter  :: nmax = 140 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
    integer, parameter  :: BC_type = Neumann ! Boundary conditions

@@ -15,9 +15,8 @@ if __name__ == '__main__':
     param_list=[]
 
     for k in range(0, ntrain+1):
-        param_list.append((20, dataset, problem+"_first_10%_CEL_dropout_0.1_"+str(k), "CEL", 0.1))
+        param_list.append((5, dataset, problem+"_first_10%_CEL_dropout_0.1_"+str(k), "CEL", 0.1))
  
-
     print("List of hyperparameters to be shared: ", [i for i in param_list], "i.e"+colors.green, len(param_list),colors.ENDC,'elements')
 
     # create a pool of processes

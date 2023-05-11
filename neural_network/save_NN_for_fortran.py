@@ -2,7 +2,8 @@ from utils import *
 from NN import *
 
 file=sys.argv[1]
-lenght = int(file[-5:-3])
+lenght = int(file[-4:-3])
+#lenght = int(file[-5:-3])
 print(lenght)
 NN=radius_picker(max_radius=1, nb_layers=4, hidden_layer_sizes=[lenght,lenght], softmax=False)
 
@@ -24,4 +25,4 @@ for param in NN.parameters():
     iparam+=1
 
 x=torch.ones((1,L))
-print(NN.forward(x))#, F.sigmoid(x))
+print(NN.forward(x))
