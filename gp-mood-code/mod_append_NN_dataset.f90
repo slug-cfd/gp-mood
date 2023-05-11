@@ -2,6 +2,7 @@ module mod_append_NN_dataset
    use constants
    use parameters
    use GP_init
+   use physics
 
    implicit none
 
@@ -18,25 +19,27 @@ contains
 
       real :: random_num
 
-      integer :: n,l,j
+      integer :: n,l_,j
 
       do n =  1, nf
-         do l = 1, lf
+         do l_ = 1, lf
 
             do j = 1, sz_sphere_p1 ! Getting the whole dependancy domain of the cell l,n that is the R'=R+1 stencil
-               U_loc_flattened(:,j) = real( Uin(: ,l+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ), kind=4)
+              !U_loc_flattened(:,j) = real( conservative_to_primitive( Uin(: ,l_+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2) ) ), kind=4)
+               U_loc_flattened(:,j) = real(                            Uin(: ,l_+ixiy_sp1(mord+2, j ,1) , n+ixiy_sp1(mord+2,j,2)   ), kind=4)
+
             end do
 
             call format_input(U_loc_flattened, cst, formatted_input)
 
-            if ((cst .eqv. .true.).and.(CellGPO(l,n)==1)) then
+            if ((cst .eqv. .true.).and.(CellGPO(l_,n)==1)) then
                print*, 'weird'
                stop
             end if
 
             skip_for_balanced_dataset=.false.
 
-            if (CellGPO(l,n)==3) then 
+            if (CellGPO(l_,n)==3) then 
                call random_number(random_num)
 
                if (random_num>freq_R0) then 
@@ -45,7 +48,7 @@ contains
 
             end if
 
-            ! if (CellGPO(l,n)==1) then 
+            ! if (CellGPO(l_,n)==1) then 
             !    if (freq_R0>freq_R0_target) then 
             !       skip_for_balanced_dataset=.true.
             !    end if
@@ -53,9 +56,9 @@ contains
 
             if ((cst .eqv. .false.) .and. (skip_for_balanced_dataset .eqv. .false.)) then
 
-               inputs(index,1:57)=formatted_input(1:57)
+               inputs(index,1:L)=formatted_input(1:L)
 
-               if (CellGPO(l,n)==3) then 
+               if (CellGPO(l_,n)==3) then 
                   labels(index,1:2)=(/zero,one/)
                   NR1=NR1+1
                else
@@ -102,16 +105,16 @@ contains
          min = minval(U_loc_flattened(var,:))
 
          if (max-min < 1e-10) then
-            F(var) = 0.0
-            do j = 1, sz_sphere_p1
-               U_loc_flattened(var,j) = 1.0
-            end do
+            !F(var) = 0.0
+            !do j = 1, sz_sphere_p1
+               !U_loc_flattened(var,j) = 1.0
+            !end do
          else
             cst=.false.
-            F(var) = sign(real(1.0,kind=4),min)*(max-min)
-            do j = 1, sz_sphere_p1
-               U_loc_flattened(var,j) = (U_loc_flattened(var,j)-half*(max+min))*(two/(max-min))
-            end do
+            !F(var) = sign(real(1.0,kind=4),min)*(max-min)
+            !do j = 1, sz_sphere_p1
+              !U_loc_flattened(var,j) = (U_loc_flattened(var,j)-half*(max+min))*(two/(max-min))
+            !end do
          end if
 
       end do
@@ -120,8 +123,10 @@ contains
          formatted_input(nbvar*(j-1)+1:nbvar*j) = U_loc_flattened(:,j)
       end do
 
-      formatted_input(sz_sphere_p1*nbvar+1 : sz_sphere_p1*nbvar+nbvar) = F(:)
-      formatted_input(L) = real(CFL,kind=4)
+      !formatted_input(sz_sphere_p1*nbvar+1 : sz_sphere_p1*nbvar+nbvar) = F(:)
+      !formatted_input(sz_sphere_p1*nbvar+1 : sz_sphere_p1*nbvar+nbvar) = 0.0
+      !formatted_input(L) = real(CFL,kind=4)
+      !formatted_input(L) = 0.0
 
    end subroutine format_input
 
@@ -153,6 +158,8 @@ contains
       else if (problem==Shu_Osher_rotated) then
          nstep_at_max_CFL = 81
       else if (problem==explosion) then
+         nstep_at_max_CFL = 1500
+      else if (problem==Mach800) then
          nstep_at_max_CFL = 1500
       else
          print*,"error, add problem to problme list in mod_write_NN_dataset.f90"
