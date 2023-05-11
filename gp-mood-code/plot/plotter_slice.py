@@ -18,7 +18,8 @@ slice_qqt=np.zeros(nx)
 for i in range(nx):
     slice_qqt[i]=qqt[i,i]
 
-
+axAR = plt.subplot(111)
+fig=  plt.figure(1)
 plt.plot(slice_qqt, label=var)
 plt.xlabel('slice axis')
 plt.ylabel(var)
