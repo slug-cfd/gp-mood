@@ -5,7 +5,7 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", dropout =0, gpu_id=
     device = torch.device('cuda:'+str(gpu_id) if torch.cuda.is_available() else 'cpu')
 
     #Training / Testing percentage ratio
-    train_ratio=0.99
+    train_ratio=0.90
     #Batch size for training
     batch_size=1024
     #Initial learning
@@ -14,7 +14,7 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", dropout =0, gpu_id=
     lrend=0.0001
     #Amout of lr reduction
     max_reduction=100
-    max_epoch=99999
+    max_epoch=300
     #Stall criterion when the lr decreases
     stall_criterion=5
     #Geometrical progression of the learning rate
