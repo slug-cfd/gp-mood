@@ -18,7 +18,7 @@ class radius_picker(nn.Module):
             sys.exit()
         
         #Input size = stencil * nbvar + nbvar normalisation factors + CFL
-        self.input_size=self.stencil_size*nbvar + nbvar + 1 
+        self.input_size=self.stencil_size*nbvar #+ nbvar + 1 
         #Output size = max radius + 1
         self.output_size=max_radius+1 
 

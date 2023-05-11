@@ -16,7 +16,7 @@ import h5py
 from psutil import cpu_count
 import multiprocessing
 import time
-L=57
+L=57-5
 nbvar=4
 torch.set_default_dtype(torch.float32) 
 
