@@ -15,7 +15,7 @@ for i in $(seq 0 $2);
 do
   echo "Iteration $i"
   cp online_learning/$1_eval.f90 parameters.f90
-  sed "s/NN_string/model_$1_first_10%_CEL_dropout_0.1_"$i"_5/g" parameters.f90 >parameters.tmp && mv parameters.tmp parameters.f90s
+  sed "s/NN_string/model_$1_first_10%_CEL_dropout_0.1_"$i"_5/g" parameters.f90 >parameters.tmp && mv parameters.tmp parameters.f90
   if [ "$i" -eq $2 ]; then
     make new 
   else
@@ -26,6 +26,7 @@ done
 rm *.txt 
 for file in diagnostic_output* ; do python3.9 plot/plotter_diag.py $file ; done
 for file in output_*           ; do python3.9 plot/plotter_hdf5.py $file rho ; done
+for file in output_*           ; do python3.9 plot/plotter_hdf5.py $file ordr ; done
 make clean
 cd ../results
 mkdir $1
