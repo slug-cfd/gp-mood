@@ -122,5 +122,7 @@ module global_variables
    real(4) :: time_spent_correcting=0.0
    real(4) :: time_spent_first_shot=0.0
 
+   ! Gravity
+   real(4), parameter :: g = 0.1
 
 end module

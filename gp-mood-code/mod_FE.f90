@@ -178,6 +178,11 @@ contains
          call append_to_NN_datatset(Uin)
       end if
 
+      if (problem == RT) then
+         Uout(ener,:,:) = Uout(ener,:,:) - dt * g*Uout(momy,:,:)
+         Uout(momy,:,:) = Uout(momy,:,:) - dt * g*Uout(rho,:,:)
+      end if
+
       if ((integrator == SSP_RK4)) Uout = Uout - Uin
 
    end subroutine Forward_Euler

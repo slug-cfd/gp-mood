@@ -216,7 +216,12 @@ contains
             else  if (problem == isentropic_vortex) then
 !!$             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
                U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 0.5*Lx, 0.5*Ly, 0.)
+
+            else if (problem==RT) then 
+               U(:,l,n) = f_RT(mesh_x(l),mesh_y(n))
+
             end if
+
 
 
 
@@ -455,6 +460,27 @@ contains
 
    end function f_rmi
 
+   function f_RT(x,y)result(res)
+      real(PR), intent(in)  :: x, y
+      real(PR),dimension(4) :: res
+
+      real(PR) :: dens, pres, vy 
+
+      real(4) :: density_bottom=1, density_top=2, pres_bottom=5.0/2, pert=0.01
+
+      if (y<Ly/2) then 
+         dens=density_bottom
+      else 
+         dens=density_top
+      end if
+
+      pres=pres_bottom+g*y
+
+      vy = pert * (1+cos(2*pi*(x-Lx/2)/Lx))*(1+cos(2*pi*(y-Ly/2)/Ly))/4;
+
+      res = primitive_to_conservative((/dens, 0.0, vy, pres/))
+
+   end function
 
    function quadrature(ax, bx, ay, by, xc, yc, t)result(r)
 

@@ -13,6 +13,7 @@ contains
 
       integer                                            :: l, n, k
       real(PR) :: x, y, xmin
+      real(PR) , dimension(4) :: Qin, Qout
 
       if (BC_type ==  Neumann) then
 
@@ -338,7 +339,57 @@ contains
             end if
 
          end do
-      else
+     
+         else if (BC_type == RT_BC) then 
+            do n = 1-ngc, nf+ngc
+               ! Right
+               k = 0
+               do l = lf+1, lf+ngc
+   
+                  U(:,l,n) = U(:,lf-k,n)
+   
+                  k = k + 1
+                  U(momx,l,n) = -U(momx,l,n)
+               end do
+   
+               ! Left
+               k = 0
+               do l = 0,1-ngc,-1
+                  U(:,l,n) = U(:,1+k,n)
+                  !U(:,l,n) = U(:,1,n)
+   
+                  k = k + 1
+                  U(momx,l,n) = -U(momx,l,n)
+               end do
+            end do
+
+            do l = 1-ngc, lf+ngc
+               !top
+               k = 0
+               do n = nf+1, nf+ngc
+                  Qin(:) = conservative_to_primitive(U(:,l,nf-k))
+                  Qout(rho)  =  Qin(rho)
+                  Qout(momx) =  Qin(momx)
+                  Qout(momy) = -Qin(momy)
+                  Qout(ener) = Qin(ener) - 2*k*dy*g*Qin(rho)
+                  U(:,l,n)= primitive_to_conservative(Qout)
+                  k = k + 1
+               end do
+   
+               ! bottom
+               k = 0
+               do n = 0, 1-ngc,-1
+                  Qin(:) = conservative_to_primitive(U(:,l,1+k))
+                  Qout(rho)  =  Qin(rho)
+                  Qout(momx) =  Qin(momx)
+                  Qout(momy) = -Qin(momy)
+                  Qout(ener) = Qin(ener) + 2*k*dy*g*Qin(rho)
+                  U(:,l,n)= primitive_to_conservative(Qout)
+                  k = k + 1
+               end do
+            end do
+
+         else
 
          print*, 'BC type not programmed'
       end if

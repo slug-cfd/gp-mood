@@ -43,6 +43,8 @@ contains
          problem_char='explosion'
       else if(problem == Mach800) then 
          problem_char='Mach800'
+      else if(problem == RT) then 
+         problem_char='RT'
       else 
          print*, "Error, add problem to problem_char list in output.f90"
          stop
