@@ -30,9 +30,11 @@ contains
       real(PR)   , dimension(4, -1:lf+1,  0:nf+1  ) :: L_Flux_x
       real(PR)   , dimension(4,  0:lf+1  , -1:nf+1) :: L_Flux_y
 
-      integer :: l, n, j, k
+      integer :: l, n, j, k, count_
 
       logical :: criterion_iter
+
+      real(4) :: tic_pred, tac_pred, tic_corr, tac_corr
 
       if (first_RK_stage) then 
          count_detected_cell_RK = 0
@@ -45,7 +47,10 @@ contains
       CellGPO   =  Mord
 
       if (((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)).and.(niter>nsteps_with_no_NN)) then
+         call cpu_time(tic_pred)
          call compute_CellGPO_with_NN(Uin)
+         call cpu_time(tac_pred)
+         time_spent_predicting=time_spent_predicting+tac_pred-tic_pred
       end if
 
       DetCell   = .true.
@@ -58,7 +63,10 @@ contains
 
       Uout = Uin
 
+      count_=0
       do while (MOOD_finished .eqv. .false.)
+
+            call cpu_time(tic_corr)
 
             call Recons(Uin)
 
@@ -151,6 +159,16 @@ contains
                MOOD_finished = .true.
             end if
 
+            call cpu_time(tac_corr)
+
+            if (count_==0) then
+               time_spent_first_shot=time_spent_first_shot+tac_corr-tic_corr
+            end if
+
+            if (count_>=1) then
+               time_spent_correcting = time_spent_correcting +tac_corr-tic_corr
+            end if
+            count_=count_+1
       end do
       
       criterion_iter=criterion_niter_f()

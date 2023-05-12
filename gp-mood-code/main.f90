@@ -14,6 +14,7 @@ program main
 
    Real(PR) :: tic, tac, dt_sim, cfl_dt
    integer  :: IO_freqCounter = 1
+   real(PR) :: nsteps
 
    print*,'----------------------------------------------------------------------------'
    print*,'Simulation parameters : '
@@ -187,7 +188,14 @@ program main
    res_time = tac - tic
    print*,'time = ',t,'dt=', dt
    print*,'Res time = ', tac - tic
+   print*,'time_spent_predicting = ', time_spent_predicting
+   print*,'time_spent_correcting = ', time_spent_correcting
+   print*,'time_spent_first_shot = ', time_spent_first_shot
 
+   nsteps=(niter-iter_0+1)*nf*lf*1.0/1e6
+   print*,'----------------MCell update per second = ', nsteps/res_time
+
+   
    call write_output(niter)
    call write_diagnostic()
    if (write_NN_dataset) then 

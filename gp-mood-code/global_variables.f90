@@ -118,5 +118,9 @@ module global_variables
 
    logical , parameter :: dt_reduction = .false.
 
+   real(4) :: time_spent_predicting=0.0
+   real(4) :: time_spent_correcting=0.0
+   real(4) :: time_spent_first_shot=0.0
+
 
 end module
