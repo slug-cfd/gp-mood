@@ -266,8 +266,11 @@ contains
       call h5dcreate_f(file_id, "count_steps_NN_produced_NAN", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, count_steps_NN_produced_NAN, dims, status)
       call h5dclose_f(dataset_id, status)
-      call h5dcreate_f(file_id, "count_correction", H5T_NATIVE_REAL, dataspace_id, dataset_id, status)
-      call h5dwrite_f(dataset_id, H5T_NATIVE_REAL, count_correction, dims, status)
+      call h5dcreate_f(file_id, "count_correction", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, count_correction, dims, status)
+      call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "iter_0", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, iter_0, dims, status)
       call h5dclose_f(dataset_id, status)
 
       ! Close resources
