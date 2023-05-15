@@ -151,6 +151,8 @@ contains
             if (decrease(l,n)) then
 
                count_detected_cell_RK = count_detected_cell_RK + 1
+               
+               count_correction=count_correction+1
 
                MOOD_finished = .false.
 

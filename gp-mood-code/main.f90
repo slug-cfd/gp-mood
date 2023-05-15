@@ -118,7 +118,7 @@ program main
 
    niter = 0
    count_steps_NN_produced_NAN = 0
-
+   count_correction = 0
    ! Restart
    if (restart) then
       call read()
@@ -161,6 +161,7 @@ program main
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
          print*,' % of detected cell at the last iteration = ', pct_detected_cell(niter)
+         print*,' % of a posteriori correction needed=', real(count_correction*100/(niter*nf*lf*3),4)
          if ((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC))then 
             print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
          end if
