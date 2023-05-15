@@ -3,6 +3,7 @@ echo $1 #Problem
 echo $2 #Number of trained NN
 echo $3 #Name of the folder for saving the results
 echo $4 #Resolution of the problem
+
 cd gp-mood-code
 cp online_learning/$1_dataset.f90 parameters.f90
 make new
@@ -23,7 +24,11 @@ do
     sleep 60
   fi  
 done
-rm *.txt 
+
+cp problems/$1_GPMOOD.f90 parameters.f90 ; make new
+cp problems/$1_FOG.f90 parameters.f90 ; make new
+cp problems/$1_GPMOOD_noDMP.f90 parameters.f90 ; make new
+
 for file in diagnostic_output* ; do python3.9 plot/plotter_diag.py $file ; done
 for file in output_*           ; do python3.9 plot/plotter_hdf5.py $file rho ; done
 for file in output_*           ; do python3.9 plot/plotter_hdf5.py $file ordr ; done
@@ -36,3 +41,6 @@ mv ../gp-mood-code/*.png $1/$3
 mv ../gp-mood-code/*.h5 $1/$3
 mv ../neural_network/*.pt $1/$3
 mv ../neural_network/*.png $1/$3
+
+cd $1/$3
+python3.9 ../../compare_diagnostic.py $1 $4
