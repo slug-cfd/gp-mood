@@ -64,6 +64,6 @@ plt.plot(time_NN_GP_MOOD[window_size:], run_avg[window_size:], color='red', labe
 plt.plot()
 plt.xlabel('Time')
 plt.ylabel('Percentage of detected cells')
-plt.title(problem)
+plt.title("Percentage of detected cells, Problem: "+problem)
 plt.legend()
 plt.savefig('compare_low_order_update_'+problem+'.png', dpi=100)
