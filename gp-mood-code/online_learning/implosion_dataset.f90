@@ -21,28 +21,28 @@ module parameters
 
    ! NN variables
    logical :: write_NN_dataset=.true.
-   integer, parameter :: dataset_size = 1000000 ! Leave at one for running simu / high number for generating dataset
+   integer, parameter :: dataset_size = 2100000 ! Leave at one for running simu / high number for generating dataset
    integer, parameter :: L=57-5
    integer, parameter :: length=5
    character(100) :: NN_filename=''
 
    ! flux method
-   integer, parameter :: numFlux = HLL
+   integer, parameter :: numFlux = unsplit
 
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
-   real(PR), parameter:: IO_freqTime = -100 ! (this is the default way to dump output files; put a positive number to use)
+   real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
    ! Mesh parameter
    integer,  parameter :: lf = 256 ! Number of cell in the x direction
    integer,  parameter :: nf = 256  ! Number of cell in the y direction
-   
-  ! IC, BC and domain setup
-  integer, parameter  :: problem = Mach800
-  real(PR), parameter :: tmax = 0.005
-  integer, parameter  :: nmax = 500 ! put a large number if want to finish based on tmax only
-  real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
-  real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
-  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
+
+   !IC, BC and domain setup
+   integer, parameter  :: problem = implosion
+   real(PR), parameter :: tmax = 2.5
+   integer, parameter  :: nmax = 1143 ! put a large number if want to finish based on tmax only
+   real(16), parameter :: Lx_16 = 0.3 !Lenght of the domain in the x-direction
+   real(16), parameter :: Ly_16 = 0.3 !Lenght of the domain in the y-direction
+   integer, parameter  :: BC_type = reflective! Boundary conditions
    
 end module
