@@ -9,9 +9,10 @@ def train(lenght, dataset_file, model_name, loss_func="CEL", dropout =0, gpu_id=
     #Batch size for training
     batch_size=1024
     #Initial learning
+    #lr0=0.0001 Mach 800
     lr0=0.01
     #Final learning rate
-    lrend=0.0001
+    lrend=lr0/100
     #Amout of lr reduction
     max_reduction=100
     max_epoch=300
