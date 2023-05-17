@@ -12,7 +12,7 @@ cp problems/2DRP3.f90 parameters.f90
 make new
 
 
-### Reproducing the result ###
+### Reproducing the results ###
 Running the simulation requires a working installation of fortran and the hdf5 librairy
 Running the training requires:
 -python3
