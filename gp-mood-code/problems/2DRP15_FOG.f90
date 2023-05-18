@@ -6,14 +6,14 @@ module parameters
    implicit none
 
    real(PR), parameter :: CFL  =  0.8
-   integer , parameter :: integrator    = SSP_RK3
-   logical , parameter :: restart = .true.
-   character(100) :: restart_filename='output_2DRP15_GP_MOOD_CFL_0.8_256_256_100022.h5'
+   integer , parameter :: integrator    = FE
+   logical , parameter :: restart = .false.
+   character(100) :: restart_filename='.'
    
-   integer, parameter :: method   = NN_GP_MOOD_CC
+   integer, parameter :: method   = FOG
    real(16), parameter :: ell_o_dx = 12.0
    integer, parameter :: Mord= 3  ! Order
-   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+   integer, parameter :: ngp = 1  ! Number of gaussian quadrature points per edges
 
    logical , parameter :: DMP        = .true.
    logical , parameter :: U2         = .true.
@@ -22,9 +22,9 @@ module parameters
    ! NN variables
    logical :: write_NN_dataset=.false.
    integer, parameter :: dataset_size = 1 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57-5
-   integer, parameter :: length=5
-   character(100) :: NN_filename= 'NN_string'
+   integer, parameter :: L=57
+   integer, parameter :: length=60
+   character(100) :: NN_filename=''
 
    ! flux method
    integer, parameter :: numFlux = unsplit
@@ -40,7 +40,7 @@ module parameters
    ! IC, BC and domain setup
    integer, parameter  :: problem = RP_2D_15
    real(PR), parameter :: tmax = 0.2
-   integer, parameter  :: nmax = 999 ! put a large number if want to finish based on tmax only
+   integer, parameter  :: nmax = 9999 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
    integer, parameter  :: BC_type = Neumann ! Boundary conditions

@@ -22,13 +22,13 @@ module parameters
    ! NN variables
    logical :: write_NN_dataset=.true.
    integer, parameter :: dataset_size = 300000 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57
-   integer, parameter :: length=20
-   character(100) :: NN_filename=''
+   integer, parameter :: L=57-5
+   integer, parameter :: length=5
+   character(100) :: NN_filename= 'NN_string'
 
    ! flux method
-   integer, parameter :: numFlux = HLLC
-
+   integer, parameter :: numFlux = unsplit
+   
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
    real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
