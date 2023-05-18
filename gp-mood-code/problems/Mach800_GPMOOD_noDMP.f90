@@ -15,34 +15,34 @@ module parameters
    integer, parameter :: Mord= 3  ! Order
    integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
 
-   logical , parameter :: DMP        = .true.
-   logical , parameter :: U2         = .true.
-   logical , parameter :: U2_tol     = .true.
+   logical , parameter :: DMP        = .false.
+   logical , parameter :: U2         = .false.
+   logical , parameter :: U2_tol     = .false.
 
    ! NN variables
    logical :: write_NN_dataset=.false.
    integer, parameter :: dataset_size = 1 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57
-   integer, parameter :: length=60
+   integer, parameter :: L=57-5
+   integer, parameter :: length=5
    character(100) :: NN_filename=''
 
    ! flux method
-   integer, parameter :: numFlux = HLLC
+   integer, parameter :: numFlux = HLL
 
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
-   real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
+   real(PR), parameter:: IO_freqTime = -100 ! (this is the default way to dump output files; put a positive number to use)
 
    ! Mesh parameter
    integer,  parameter :: lf = 256 ! Number of cell in the x direction
    integer,  parameter :: nf = 256  ! Number of cell in the y direction
-
+   
   ! IC, BC and domain setup
-   integer, parameter  :: problem = Shu_Osher_rotated
-   real(PR), parameter :: tmax = 1.8
-   integer, parameter  :: nmax = 9999 ! put a large number if want to finish based on tmax only
-   real(16), parameter :: Lx_16 = 28.2842712474619!Lenght of the domain in the x-direction
-   real(16), parameter :: Ly_16 = 28.2842712474619!Lenght of the domain in the y-direction
-   integer, parameter  :: BC_type = Periodic! Boundary conditions
+  integer, parameter  :: problem = Mach800
+  real(PR), parameter :: tmax = 0.005
+  integer, parameter  :: nmax = 99999 ! put a large number if want to finish based on tmax only
+  real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
+  real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
+  integer, parameter  :: BC_type = Mach800_BC! Boundary conditions
    
 end module
