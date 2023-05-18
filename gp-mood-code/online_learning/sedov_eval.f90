@@ -10,7 +10,7 @@ module parameters
    logical , parameter :: restart = .true.
    character(100) :: restart_filename='output_sedov_GP_MOOD_CFL_0.8_256_256_100141.h5'
    
-   integer, parameter :: method   = NN_GP_MOOD_CC
+   integer, parameter :: method   = NN_GP_MOOD
    real(16), parameter :: ell_o_dx = 12.0
    integer, parameter :: Mord= 3  ! Order
    integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges

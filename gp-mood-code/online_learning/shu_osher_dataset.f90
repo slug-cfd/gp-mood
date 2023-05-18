@@ -27,7 +27,7 @@ module parameters
    character(100) :: NN_filename=''
 
    ! flux method
-   integer, parameter :: numFlux = unsplit
+   integer, parameter :: numFlux = HLL
 
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
