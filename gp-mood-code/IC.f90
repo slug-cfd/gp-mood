@@ -208,7 +208,7 @@ contains
                r1=normal_random()*exp(-((mesh_y(n)-0.5)/(0.1))**2)
                r2=normal_random()*exp(-((mesh_y(n)-0.5)/(0.1))**2)
 
-               if ((mesh_y(n)>=0.25).and.(mesh_y(n)<=0.75)) then
+               if (mesh_y(n)<=0.5) then
                   U(:,l,n) = primitive_to_conservative((/2.,  0.5+r1, r2, 2.5/))
                else
                   U(:,l,n) = primitive_to_conservative((/1., -0.5+r1, r2, 2.5/))
