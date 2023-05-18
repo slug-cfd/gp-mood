@@ -37,7 +37,7 @@ running_avg_GP_MOOD=compute_running_average(pct_detected_cell, window_size=windo
 step_min=999999
 for n_NN in range(10):
 
-    file='diagnostic_output_'+problem+'_'+'NN_GP_MOOD_CC_model_'+problem+'_first_10%_CEL_dropout_0.1_'+str(n_NN)+'_5_CFL_0.8_'+resolution+'.h5'
+    file='diagnostic_output_'+problem+'_'+'NN_GP_MOOD_CC_model_'+problem+'_first_10pct_CEL_dropout_0.1_'+str(n_NN)+'_5_CFL_0.8_'+resolution+'.h5'
     data = h5py.File(file,'r')
     pct_detected_cell = np.array(data['pct_detected_cell'])
     time = np.array(data['time'])
@@ -51,7 +51,7 @@ for n_NN in range(10):
 run_avg=np.zeros(step_min)
 for n_NN in range(10):
 
-    file='diagnostic_output_'+problem+'_'+'NN_GP_MOOD_CC_model_'+problem+'_first_10%_CEL_dropout_0.1_'+str(n_NN)+'_5_CFL_0.8_'+resolution+'.h5'
+    file='diagnostic_output_'+problem+'_'+'NN_GP_MOOD_CC_model_'+problem+'_first_10pct_CEL_dropout_0.1_'+str(n_NN)+'_5_CFL_0.8_'+resolution+'.h5'
     data = h5py.File(file,'r')
     pct_detected_cell = np.array(data['pct_detected_cell'])
     run_avg = run_avg + pct_detected_cell[0:step_min]
