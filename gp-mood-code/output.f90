@@ -45,6 +45,8 @@ contains
          problem_char='Mach800'
       else if(problem == RT) then 
          problem_char='RT'
+      else if(problem == KH) then 
+         problem_char='KH'
       else 
          print*, "Error, add problem to problem_char list in output.f90"
          stop

@@ -164,8 +164,8 @@ contains
       else if (problem==RT) then
          nstep_at_max_CFL = 100
       else
-         print*,"error, add problem to problme list in mod_append_NN_dataset.f90"
-         stop
+         !print*,"error, add problem to problme list in mod_append_NN_dataset.f90"
+         !stop
       end if
 
       nstep = nstep_at_max_CFL * int(0.8/CFL)
