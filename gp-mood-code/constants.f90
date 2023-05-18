@@ -21,7 +21,7 @@ module constants
    integer, parameter :: HLLC = 100, LLF = 101, HLL = 102, unsplit=103
 
    !BC indices
-   integer, parameter :: Neumann =17, Periodic =18, Dirichlet =19, Reflective =20
+   integer, parameter :: Neumann =17, Periodic =18, Dirichlet =19, Reflective =20, KH_BC=403
    integer, parameter :: Mach800_BC = 201, DoubleMach800_BC = 301, RMI_BC = 401, RT_BC=402
    !IC indices
    integer, parameter :: SODx        =21, SODy             =22, SODxy        =23, explosion =36

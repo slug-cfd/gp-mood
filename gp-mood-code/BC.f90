@@ -389,6 +389,29 @@ contains
                end do
             end do
 
+         else if (BC_type == KH_BC) then 
+            
+            ! Periodic in x
+            do n = 1-ngc, nf+ngc
+               ! Right
+               U(:,lf+1:lf+ngc,n) = U(:,1:ngc,n)
+               ! Left
+               U(:,1-ngc:0,n) = U(:,lf-ngc+1:lf,n)
+            end do
+            
+            !Neumann in y
+            do l = 1-ngc, lf+ngc
+               ! top
+               do n = nf+1, nf+ngc
+                  U(:,l,n) = U(:,l,nf)
+               end do
+   
+               ! bottom
+               do n = 1-ngc,0
+                  U(:,l,n) = U(:,l,1)
+               end do
+            end do
+
          else
 
          print*, 'BC type not programmed'
