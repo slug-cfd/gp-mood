@@ -16,11 +16,13 @@ contains
       !
       ! Local variables:
 
-      integer  :: l, n
+      integer  :: l, n, seed
       real(PR) :: r,int,xx,yy, r1,r2, x_p
       real(PR) :: slope_dens, dens_amb ! for mach 800 with varying ambient density
       !real(PR) :: densR, densL, presR, presL, velxR, velxL, velyR, velyL
       real(PR) :: sim_posn, sim_shockPosn, sim_xcos, sim_ycos, sim_xangle
+      ! Initialize the random number seed
+      call random_seed()
 
       !Instructions
 
@@ -202,19 +204,17 @@ contains
 
 
             else if (problem == KH) then
-               !r1 = (random_normal())*0.01
-               !r2 = (random_normal())*0.01
 
+               r1=normal_random()*exp(-((mesh_y(n)-0.5)/(0.1))**2)
+               r2=normal_random()*exp(-((mesh_y(n)-0.5)/(0.1))**2)
 
                if ((mesh_y(n)>=0.25).and.(mesh_y(n)<=0.75)) then
-
                   U(:,l,n) = primitive_to_conservative((/2.,  0.5+r1, r2, 2.5/))
                else
                   U(:,l,n) = primitive_to_conservative((/1., -0.5+r1, r2, 2.5/))
                end if
 
             else  if (problem == isentropic_vortex) then
-!!$             U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 5., 5., 0.)
                U(:,l,n) = (1./(dx*dy))*quadrature(mesh_x(l)-dx/2,mesh_x(l)+dx/2, mesh_y(n)-dy/2,mesh_y(n)+dy/2, 0.5*Lx, 0.5*Ly, 0.)
 
             else if (problem==RT) then 
@@ -222,14 +222,20 @@ contains
 
             end if
 
-
-
-
          end do
       end do
    end subroutine InitialCdt
 
+   function normal_random()
+      implicit none
+      double precision :: normal_random, u1, u2
+      double precision, parameter :: pi = 3.14159265358979323846
 
+      call random_number(u1)
+      call random_number(u2)
+
+      normal_random = sqrt(-2.0 * log(u1)) * cos(2.0 * pi * u2)
+  end function normal_random
 
 
    function f_RP_2D_3(x,y)result(r)
