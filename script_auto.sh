@@ -43,4 +43,4 @@ mv ../neural_network/*.pt $1/$3
 mv ../neural_network/*.png $1/$3
 
 cd $1/$3
-python3.9 ../../compare_diagnostic.py $1 $4
+python3.9 ../../../gp-mood-code/plot/compare_diagnostic.py $1 $4

@@ -49,18 +49,25 @@ for n_NN in range(10):
 
 #Compute avg over all runs
 run_avg=np.zeros(step_min)
+run_avg_priori=np.zeros(step_min)
+
 for n_NN in range(10):
 
     file='diagnostic_output_'+problem+'_'+'NN_GP_MOOD_CC_model_'+problem+'_first_10pct_CEL_dropout_0.1_'+str(n_NN)+'_5_CFL_0.8_'+resolution+'.h5'
     data = h5py.File(file,'r')
     pct_detected_cell = np.array(data['pct_detected_cell'])
-    run_avg = run_avg + pct_detected_cell[0:step_min]
+    pct_detected_cell_a_priori = np.array(data['pct_detected_cell_a_priori'])
 
+    run_avg = run_avg + pct_detected_cell[0:step_min]
+    run_avg_priori = run_avg_priori + pct_detected_cell_a_priori[0:step_min]
 run_avg=run_avg/10
+run_avg_priori=run_avg_priori/10
 
 #Plot running average of detected cells
 plt.plot(time_GP_MOOD[window_size:], running_avg_GP_MOOD[window_size:], color='black', label='GP-MOOD')
 plt.plot(time_NN_GP_MOOD[window_size:], run_avg[window_size:], color='red', label='NN-GP-MOOD (avegared over 10 runs)')
+plt.plot(time_NN_GP_MOOD[window_size:], run_avg_priori[window_size:], color='blue', label='NN-GP-MOOD, a priori (avegared over 10 runs)')
+
 plt.plot()
 plt.xlabel('Time')
 plt.ylabel('Percentage of detected cells')
