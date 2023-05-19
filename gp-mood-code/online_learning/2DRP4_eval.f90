@@ -8,7 +8,7 @@ module parameters
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: integrator    = SSP_RK3
    logical , parameter :: restart = .true.
-   character(100) :: restart_filename='output_2DRP4_GP_MOOD_CFL_0.8_256_256_100036.h5'
+   character(100) :: restart_filename='output_2DRP4_GP_MOOD_CFL_0.8_256_256_100041.h5'
    
    integer, parameter :: method   = NN_GP_MOOD_CC
    real(16), parameter :: ell_o_dx = 12.0
@@ -22,8 +22,8 @@ module parameters
    ! NN variables
    logical :: write_NN_dataset=.false.
    integer, parameter :: dataset_size = 1 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57
-   integer, parameter :: length=20
+   integer, parameter :: L=57-5
+   integer, parameter :: length=5
    character(100) :: NN_filename= 'NN_string'
 
    ! flux method
