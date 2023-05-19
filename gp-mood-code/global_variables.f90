@@ -67,9 +67,9 @@ module global_variables
 
    real(PR)   , dimension(5,5), save :: gauss_weight
 
-   integer, save  :: niter, count_steps_NN_produced_NAN, iter_0, count_correction
-   Real(PR), save :: count_detected_cell_RK, count_NN_PAD_RK
-
+   integer, save  :: niter, iter_0
+   integer, save  :: count_detected_cell, count_detected_cell_a_posteriori, count_detected_cell_a_priori
+   integer, save  :: count_steps_NN_produced_NAN
    ! NN variables
    real(4), dimension(length, L     ) :: weight0=-6666666
    real(4), dimension(length, length) :: weight1=-6666666
@@ -101,6 +101,9 @@ module global_variables
    !Diagnostic
    Real(4), dimension(nmax+2) :: time = -666
    Real(4), dimension(nmax+2) :: pct_detected_cell = -666
+   Real(4), dimension(nmax+2) :: pct_detected_cell_a_priori = -666
+   Real(4), dimension(nmax+2) :: pct_detected_cell_a_posteriori = -666
+
    integer, dimension(nmax+2) :: steps_NN_sample = 0
    integer, dimension(nmax+2) :: steps_NN_produced_NAN = 0
 

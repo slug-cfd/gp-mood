@@ -20,9 +20,6 @@ contains
 
       call Forward_Euler(U1 ,Uout, .false.)
 
-      count_detected_cell_RK = count_detected_cell_RK /2
-      count_NN_PAD_RK = count_NN_PAD_RK/2
-
       Uout = 0.5*(Uin+Uout)
    end subroutine
 

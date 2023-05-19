@@ -30,9 +30,6 @@ contains
       U4 = a40*Uin + a43*U3 + c4*FU3
       call Forward_Euler(U4, FU4, .false.)
 
-      count_detected_cell_RK = count_detected_cell_RK /5
-      count_NN_PAD_RK = count_NN_PAD_RK/5
-
       Uout = f2*u2 + f3*U3 + ff3*FU3 + f4*u4 + ff4*FU4
    end subroutine
 

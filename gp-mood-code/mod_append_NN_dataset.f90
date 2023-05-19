@@ -167,13 +167,13 @@ contains
       criterion_iter=(mod(niter, freq)==0)
 
       if ((problem == RP_2D_6)) then
-         if (count_detected_cell_RK>0) then 
+         if (count_detected_cell>0) then 
             criterion_iter=.true.
          end if
       end if
 
       if( problem == implosion) then 
-         if ((t>1.0).and.(count_detected_cell_RK>0)) then 
+         if ((t>1.0).and.(count_detected_cell>0)) then 
             criterion_iter=.true.
          end if
       end if

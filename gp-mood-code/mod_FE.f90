@@ -37,8 +37,9 @@ contains
       real(4) :: tic_pred, tac_pred, tic_corr, tac_corr
 
       if (first_RK_stage) then 
-         count_detected_cell_RK = 0
-         count_NN_PAD_RK = 0
+         count_detected_cell_a_posteriori = 0
+         count_detected_cell_a_priori = 0
+         count_detected_cell = 0
       end if
 
       values_NN(:,:,1)=zero

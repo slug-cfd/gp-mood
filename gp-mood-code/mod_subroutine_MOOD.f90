@@ -150,9 +150,9 @@ contains
 
             if (decrease(l,n)) then
 
-               count_detected_cell_RK = count_detected_cell_RK + 1
+               count_detected_cell = count_detected_cell + 1
                
-               count_correction=count_correction+1
+               count_detected_cell_a_posteriori=count_detected_cell_a_posteriori+1
 
                MOOD_finished = .false.
 

@@ -13,7 +13,7 @@ program main
    implicit none
 
    Real(PR) :: tic, tac, dt_sim, cfl_dt
-   integer  :: IO_freqCounter = 1
+   integer  :: IO_freqCounter = 1, rk_factor
    real(PR) :: nsteps
 
    print*,'----------------------------------------------------------------------------'
@@ -98,6 +98,16 @@ program main
    if ( dt_reduction ) then
       print*, ' The time step is reduced to match 5th order'
    end if
+
+   if (integrator==SSP_RK2) then
+      rk_factor=2
+   else if (integrator==SSP_RK3) then
+      rk_factor=3
+   else if (integrator==SSP_RK4) then
+      rk_factor=5
+   else
+      rk_factor=1
+   end if
    
    call random_seed()
 
@@ -118,7 +128,7 @@ program main
 
    niter = 0
    count_steps_NN_produced_NAN = 0
-   count_correction = 0
+   count_detected_cell_a_posteriori = 0
    ! Restart
    if (restart) then
       call read()
@@ -152,7 +162,9 @@ program main
       U = Ur
 
       time(niter) = real(t,4)
-      pct_detected_cell(niter) = real(count_detected_cell_RK*100/(nf*lf),4)
+      pct_detected_cell(niter) = real(count_detected_cell*100.0/(rk_factor*nf*lf),4)
+      pct_detected_cell_a_posteriori(niter) = real(count_detected_cell_a_posteriori*100.0/(rk_factor*nf*lf),4)
+      pct_detected_cell_a_priori(niter) = real(count_detected_cell_a_priori*100.0/(rk_factor*nf*lf),4)
 
       if ((mod(niter,10) == 0) .or.(niter == 1)) then
          if (abs(cfl_dt - dt) > 0.) then
@@ -160,8 +172,14 @@ program main
          else
             print*,'nstep = ', niter, '|time = ',t,'|dt=', dt, '|' , real(100*(tmax-t)/tmax,4),'% done'
          endif
-         print*,' % of detected cell at the last iteration = ', pct_detected_cell(niter)
-         print*,' % of a posteriori correction needed=', real(count_correction*100.0/(niter*nf*lf*3),4)
+         print*,' % of detected cell              at the last iteration = ', pct_detected_cell(niter)
+         print*,' % of detected cell a posteriori at the last iteration = ', pct_detected_cell_a_posteriori(niter)
+         print*,' % of detected cell a priori     at the last iteration = ', pct_detected_cell_a_priori(niter)
+
+         if (count_detected_cell_a_posteriori + count_detected_cell_a_priori-count_detected_cell .ne. 0) then 
+            stop 
+         end if
+
          if ((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC))then 
             print*,' count_steps_NN_produced_NAN = ', count_steps_NN_produced_NAN
          end if
