@@ -48,12 +48,6 @@ contains
 
             end if
 
-            ! if (CellGPO(l_,n)==1) then 
-            !    if (freq_R0>freq_R0_target) then 
-            !       skip_for_balanced_dataset=.true.
-            !    end if
-            ! end if
-
             if ((cst .eqv. .false.) .and. (skip_for_balanced_dataset .eqv. .false.)) then
 
                inputs(index,1:L)=formatted_input(1:L)
@@ -129,7 +123,6 @@ contains
       !formatted_input(L) = 0.0
 
    end subroutine format_input
-
 
    function criterion_niter_f()result(criterion_iter)
 
