@@ -7,10 +7,10 @@ module parameters
 
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: integrator    = SSP_RK3
-   logical , parameter :: restart = .false.
-   character(100) :: restart_filename='.'
+   logical , parameter :: restart = .true.
+   character(100) :: restart_filename='output_KH_GP_MOOD_CFL_0.8_256_256_100171.h5'
    
-   integer, parameter :: method   = GP_MOOD
+   integer, parameter :: method   = NN_GP_MOOD_CC
    real(16), parameter :: ell_o_dx = 12.0
    integer, parameter :: Mord= 3  ! Order
    integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
@@ -20,17 +20,17 @@ module parameters
    logical , parameter :: U2_tol     = .true.
 
    ! NN variables
-   logical :: write_NN_dataset=.true.
-   integer, parameter :: dataset_size = 400000 ! Leave at one for running simu / high number for generating dataset
-   integer, parameter :: L=57
-   integer, parameter :: length=60
-   character(100) :: NN_filename=''
+   logical :: write_NN_dataset=.false.
+   integer, parameter :: dataset_size = 1 ! Leave at one for running simu / high number for generating dataset
+   integer, parameter :: L=57-5
+   integer, parameter :: length=5
+   character(100) :: NN_filename= 'NN_string'
 
    ! flux method
    integer, parameter :: numFlux = unsplit
 
    ! IO parameter
-   integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)
+   integer, parameter :: IO_freqStep = -1000   ! (put a positive number to use, e.g., 500)
    real(PR), parameter:: IO_freqTime = -1.e-3 ! (this is the default way to dump output files; put a positive number to use)
 
    ! Mesh parameter
@@ -38,11 +38,11 @@ module parameters
    integer,  parameter :: nf = 256  ! Number of cell in the y direction
 
    ! IC, BC and domain setup
-   integer, parameter  :: problem = RP_2D_4
-   real(PR), parameter :: tmax = 0.25
-   integer, parameter  :: nmax = 35 ! put a large number if want to finish based on tmax only
+   integer, parameter  :: problem = KH
+   real(PR), parameter :: tmax = 1.0
+   integer, parameter  :: nmax = 9999 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
-   integer, parameter  :: BC_type = Neumann ! Boundary conditions
+   integer, parameter  :: BC_type = KH_BC! Boundary conditions
    
 end module

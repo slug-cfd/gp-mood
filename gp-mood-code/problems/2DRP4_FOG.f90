@@ -6,14 +6,14 @@ module parameters
    implicit none
 
    real(PR), parameter :: CFL  =  0.8
-   integer , parameter :: integrator    = SSP_RK3
+   integer , parameter :: integrator    = FE
    logical , parameter :: restart = .false.
    character(100) :: restart_filename='.'
    
-   integer, parameter :: method   = GP_MOOD
+   integer, parameter :: method   = FOG
    real(16), parameter :: ell_o_dx = 12.0
    integer, parameter :: Mord= 3  ! Order
-   integer, parameter :: ngp = 2  ! Number of gaussian quadrature points per edges
+   integer, parameter :: ngp = 1  ! Number of gaussian quadrature points per edges
 
    logical , parameter :: DMP        = .true.
    logical , parameter :: U2         = .true.
@@ -27,7 +27,7 @@ module parameters
    character(100) :: NN_filename=''
 
    ! flux method
-   integer, parameter :: numFlux = HLLC
+   integer, parameter :: numFlux = unsplit
 
    ! IO parameter
    integer, parameter :: IO_freqStep = -100    ! (put a positive number to use, e.g., 500)

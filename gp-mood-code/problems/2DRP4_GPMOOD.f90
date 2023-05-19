@@ -20,8 +20,8 @@ module parameters
    logical , parameter :: U2_tol     = .true.
 
    ! NN variables
-   logical :: write_NN_dataset=.true.
-   integer, parameter :: dataset_size = 400000 ! Leave at one for running simu / high number for generating dataset
+   logical :: write_NN_dataset=.false.
+   integer, parameter :: dataset_size = 1 ! Leave at one for running simu / high number for generating dataset
    integer, parameter :: L=57
    integer, parameter :: length=60
    character(100) :: NN_filename=''
@@ -40,7 +40,7 @@ module parameters
    ! IC, BC and domain setup
    integer, parameter  :: problem = RP_2D_4
    real(PR), parameter :: tmax = 0.25
-   integer, parameter  :: nmax = 35 ! put a large number if want to finish based on tmax only
+   integer, parameter  :: nmax = 9999 ! put a large number if want to finish based on tmax only
    real(16), parameter :: Lx_16 = 1. !Lenght of the domain in the x-direction
    real(16), parameter :: Ly_16 = 1. !Lenght of the domain in the y-direction
    integer, parameter  :: BC_type = Neumann ! Boundary conditions
