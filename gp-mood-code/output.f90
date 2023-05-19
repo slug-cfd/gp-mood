@@ -277,6 +277,9 @@ contains
       call h5dcreate_f(file_id, "iter_0", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
       call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, iter_0, dims, status)
       call h5dclose_f(dataset_id, status)
+      call h5dcreate_f(file_id, "niter", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, niter, dims, status)
+      call h5dclose_f(dataset_id, status)
 
       ! Close resources
       call h5sclose_f(dataspace_id, status)
