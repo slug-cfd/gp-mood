@@ -49,15 +49,6 @@ contains
                end if
             end if
 
-            ! call random_number(random_num)
-            
-            ! if (random_num<0.5) then 
-            !    CellGPO(l_,n)=1
-            !    count_detected_cell_RK=count_detected_cell_RK+1
-            ! else
-            !    CellGPO(l_,n)=3
-            ! end if
-
          end do
       end do
 
