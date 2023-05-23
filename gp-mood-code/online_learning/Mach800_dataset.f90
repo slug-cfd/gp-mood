@@ -40,7 +40,7 @@ module parameters
   ! IC, BC and domain setup
   integer, parameter  :: problem = Mach800
   real(PR), parameter :: tmax = 0.005
-  integer, parameter  :: nmax = 500 ! put a large number if want to finish based on tmax only
+  integer, parameter  :: nmax = 300 ! put a large number if want to finish based on tmax only
   real(16), parameter :: Lx_16 = 1.5 !Lenght of the domain in the x-direction
   real(16), parameter :: Ly_16 = 1.5 !Lenght of the domain in the y-direction
   integer, parameter  :: BC_type = Mach800_BC! Boundary conditions

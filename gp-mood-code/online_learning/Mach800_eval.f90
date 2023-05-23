@@ -8,7 +8,7 @@ module parameters
    real(PR), parameter :: CFL  =  0.8
    integer , parameter :: integrator    = SSP_RK3
    logical , parameter :: restart = .true.
-   character(100) :: restart_filename='output_Mach800_GP_MOOD_CFL_0.8_256_256_100501.h5'
+   character(100) :: restart_filename='output_Mach800_GP_MOOD_CFL_0.8_256_256_100301.h5'
    
    integer, parameter :: method   = NN_GP_MOOD_CC
    real(16), parameter :: ell_o_dx = 12.0
