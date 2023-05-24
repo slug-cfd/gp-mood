@@ -56,7 +56,7 @@ module global_variables
    !MOOD variables
    logical, save                                :: MOOD_finished
 
-   integer, dimension(lb:le, nb:ne), save       :: CellGPO, CellGPO_MOOD
+   integer, dimension(lb:le, nb:ne), save       :: CellGPO, CellGPO_priori
    logical, dimension(lb:le, nb:ne), save       :: DetCell
 
    integer, dimension(-1:lf+1,  1:nf  ), save   :: FaceGPO_x

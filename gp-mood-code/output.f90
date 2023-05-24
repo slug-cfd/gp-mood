@@ -129,6 +129,10 @@ contains
       call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, CellGPO(1:lf, 1:nf), dims, status)
       call h5dclose_f(dataset_id, status)
 
+      call h5dcreate_f(file_id, "ordr_priori", H5T_NATIVE_INTEGER, dataspace_id, dataset_id, status)
+      call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, CellGPO_priori(1:lf, 1:nf), dims, status)
+      call h5dclose_f(dataset_id, status)
+
       ! Write metadata
 
       ! CFL

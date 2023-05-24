@@ -45,7 +45,8 @@ contains
       values_NN(:,:,1)=zero
       values_NN(:,:,2)=one
 
-      CellGPO   =  Mord
+      CellGPO   =  mord
+      CellGPO_priori= mord
 
       if (((method==NN_GP_MOOD).or.(method==NN_GP_MOOD_CC)).and.(niter>nsteps_with_no_NN)) then
          call cpu_time(tic_pred)

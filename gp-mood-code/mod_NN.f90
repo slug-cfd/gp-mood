@@ -37,12 +37,14 @@ contains
 
             if (cst) then
                CellGPO(l_,n)=3
+               CellGPO_priori(l_,n)=3
                values_NN(l,n,:)=(/zero, one/)
             else
                r=forward(x)
                values_NN(l,n,:)=(/r(1), r(2)/)
                if (r(1)>r(2)) then
                   CellGPO(l_,n)=1
+                  CellGPO_priori(l_,n)=1
                   count_detected_cell=count_detected_cell+1
                   count_detected_cell_a_priori=count_detected_cell_a_priori+1
                else
