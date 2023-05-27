@@ -22,10 +22,7 @@ Running the training requires:
 -numpy
 -multiprocessing
 
-## for the 2DRP3 simulations:
-./script_auto.sh 2DRP3 9 base 256  
-results are stored in results/2DRP3/base    
+## a given problem in {sedov, shu_osher, 2DRP3, 2DRP4, 2DRP15}
+./script_auto.sh problem 9 base 256  
+results are stored in results/problem/base    
 
-## for the sedov simulations:
-./script_auto.sh sedov 9 base 256  
-results are stored in results/sedov/base    
